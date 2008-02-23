@@ -13,7 +13,7 @@ module GroupHelper
   end
 
   def actions(group)
-    [ group_show_link(group),
+    [ link_to('Se alla grupper', :controller => 'group', :action => 'list'),
       group_ajax_delete_link(group) ]
   end
 
