@@ -1,0 +1,10 @@
+<p>
+<span class="message">
+  <%= @message %>
+</span>
+<span class="failure">
+  <%= @failure %>
+</span>
+</p>
+
+<%= error_messages_for @object if @object -%>

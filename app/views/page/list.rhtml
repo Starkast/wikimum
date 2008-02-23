@@ -1,0 +1,54 @@
+<% @page_title = 'Innehållsförteckning' -%>
+
+<h1 class="title">Innehållsförteckning
+  <%= link_to image_tag('feed.png'), rss_list_url, 
+    :title => 'RSS-feed för innehållsförteckning' %></h1>
+
+<ul id="sections">
+<% (['#'] + ('A'..'Z').to_a).each do |char| -%>
+  <li>
+  <%= link_to_if (@sections.include? char), char, page_list_url(:id => char), 
+    :title => "Visa endast \"#{char}\"", 
+    :class => ('active' if char == params[:id]) %>
+  </li>
+<% end -%>
+</ul>
+
+<% if not @pages.empty? -%>
+<% latest_section = @pages.first.section -%>
+
+<h3>
+  <%= link_to latest_section, page_list_url(:id => latest_section),
+      :title => "Visa endast \"#{latest_section}\"" %>
+
+  <% if params[:id] -%>
+    <small>(<%= link_to 'Visa alla', page_list_url(:id => nil) -%>)</small>
+  <% end -%>
+</h3>
+
+<div id="list">
+<ul>
+<% for page in @pages -%>
+
+  <% if latest_section < page.section -%>
+    <% latest_section = page.section -%>
+    </ul>
+    <h3>
+      <%= link_to latest_section, page_list_url(:id => latest_section), 
+        :title => "Visa endast \"#{latest_section}\"" %>
+    </h3>
+    <ul>
+  <% end %>
+    <li>
+      <%= link_to page, page_show_url(:id => page) %>
+      (<%= link_to page.revision, revision_history_url(:id => page), 
+        :title => 'Se revisionshistoria'%>)
+      <% if not page.description.empty? -%>
+        <span class="description">"<%= page.description %>"</span>
+      <% end %>
+    </li>
+<% end -%>
+</ul>
+</div>
+
+<% end -%>

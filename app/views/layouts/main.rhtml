@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title><%=h page_title -%></title>
+  <link rel="shortcut icon" type="image/ico" href="/favicon.ico" />
+  <%= auto_discovery_link_tag :rss, rss_latest_url, {:title => 'Senast ändrad'} %>
+  <%= stylesheet_link_tag "default" %>
+  <%= javascript_include_tag :defaults %>
+</head>
+<body>
+  <div id="container">
+    <div id="header">
+      <div id="login">
+        <%= render :partial => 'layouts/login' %>
+      </div>
+      <div id="administration">
+        <%= render :partial => 'layouts/administration' %>
+      </div>
+    </div>
+    <div id="logo">
+      <%= render :partial => 'layouts/logo' %>
+    </div>
+    <div id="navigation">
+      <%= render :partial => 'layouts/navigation' %>
+    </div>
+    <div id="sub-navigation">
+      <div id="actions">
+        <%= render_actions %>
+      </div>
+      <div id="status">
+        <%= render_status %>
+      </div>
+    </div>
+    <%= render :partial => 'shared/flash' %>
+    <div id="content">
+      <%= yield :layout %>
+    </div>
+  </div>
+  <div id="footer">
+    <%= render :partial => 'layouts/footer' %>
+  </div>
+</body>
+</html>

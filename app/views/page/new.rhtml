@@ -1,0 +1,36 @@
+<% @page_title = 'Skapar ny sida' -%>
+<h1 class="title">Skapa ny sida</h1>
+
+<% if flash[:error] -%>
+<span class="failure">
+<%= error_messages_for 'page' %>
+</span>
+<% end -%>
+
+<% form_for :page do |page| -%>
+
+<label class="block" for="page_title">Titel</label>
+<%= page.text_field :title, :maxlength => 35, :size => 35  %>
+
+
+<label class="block" for="page_content">Innehåll</label>
+<%= page.text_area :content, :cols => 84, :rows => 20  %>
+
+<p style="margin-top: 1em;">
+  <%= submit_tag 'Skapa sida' %>
+	eller
+  <%= link_to 'Avbryt', :action => 'list' %>
+</p>
+
+<hr />
+
+<label class="block" for="page_comment">Kommentar</label>
+<%= page.text_field :comment, :maxlength => 74, :size => 50 %>
+
+<label class="block" for="page_description">Sidbeskrivning</label>
+<%= page.text_area :description, :cols => 50, :rows => 3 %>
+
+<label class="block" for="page_markup">Formatering</label>
+<%= page.select :markup, markups_available %>
+
+<% end -%>

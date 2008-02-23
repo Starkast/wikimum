@@ -1,0 +1,41 @@
+<% @page_title = "Ändrar #{@page}" -%>
+<h1 class="title">Ändrar <%= title_link @page -%></h1>
+
+<%= error_messages_for :page %>
+
+<% form_for :page do |page| -%>
+<%= hidden_field :page, :lock_version %>
+
+<label class="block" for="page_content">Innehåll</label>
+<%= page.text_area :content, :cols => 84, :rows => 20  %>
+
+<p style="margin-top: 1em;">
+  <%= submit_tag 'Spara' %>
+	eller
+  <%= link_to 'Avbryt', page_show_url(:id => @page) %>
+</p>
+
+<hr />
+
+<label class="block" for="page_comment">Kommentar</label>
+<%= page.text_field :comment, :maxlength => 74, :size => 50 %>
+
+<label class="block" for="page_description">Sidbeskrivning</label>
+<%= page.text_area :description, :cols => 50, :rows => 3 %>
+
+<label class="block" for="page_markup">Formatering</label>
+<%= page.select :markup, markups_available %>
+
+<p>
+  <span id="live_message" class="failure"></span>
+</p>
+
+<%= periodically_call_remote(
+  :update => 'live_message',
+  :url => { 
+    :action       => :check_for_changes,
+    :id           => @page,
+    :lock_version => @page.lock_version},
+  :frequency => 30) %>
+
+<% end -%>

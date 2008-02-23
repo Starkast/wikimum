@@ -1,0 +1,132 @@
+<% @page_title = "Rättigheter för #{@page}" -%>
+<% @permission = ReadPermission.new -%>
+<% @action     = 'view' -%>
+<h1 class="title">Rättigheter för <%= title_link @page %></h1>
+
+<h2 class="extra_margin">Globala rättigheter</h2>
+
+<div class="add_permission_link">
+<%= link_to_function 'Lägg till global rättighet',
+  visual_effect(:toggle_appear, 'global_permission_input', :duration => 0.3) -%>
+</div>
+
+<% form_remote_tag \
+  :url => {
+    :action  => :add_permission,
+    :page_id => @page.id,
+    :type    => 'global' },
+  :update   => 'global_permissions',
+  :loading  => "disable_and_reset('global_submit_button', 'null')",
+  :complete => "enable_and_focus('global_submit_button', 'null')" do %>
+
+<div id="global_permission_input" style="display: none;">
+<table>
+  <tr>
+    <td><strong>Rättighet</strong></td>
+    <td><strong>Åtgärd</strong></td>
+  </tr>
+  <tr>
+    <td><%= permission_list('global') %></td>
+    <td>
+      <%= submit_tag 'Lägg till', :id => 'global_submit_button' -%>
+      /
+      <%= link_to_function 'Avbryt',
+        visual_effect(:toggle_appear, 'global_permission_input', :duration => 0.3) -%>
+    </td>
+  </tr>
+</table>
+</div>
+
+<% end %>
+
+<div id="global_permissions">
+  <%= render :partial => 'global_permissions' %>
+</div>
+
+<hr />
+
+<h2 class="extra_margin">Användarrättigheter</h2>
+
+<div class="add_permission_link">
+<%= link_to_function 'Lägg till användarrättighet',
+  visual_effect(:toggle_appear, 'user_permission_input', :duration => 0.3) -%>
+</div>
+
+<% form_remote_tag \
+  :url => {
+    :action  => :add_permission,
+    :page_id => @page.id,
+    :type    => 'user' },
+  :update   => 'user_permissions',
+  :loading  => "disable_and_reset('user_submit_button', 'user_login')",
+  :complete => "enable_and_focus('user_submit_button','user_login')" do %>
+
+<div id="user_permission_input" style="display: none;">
+<table>
+  <tr>
+    <td><strong>Användarnamn</strong></td>
+    <td><strong>Rättighet</strong></td>
+    <td><strong>Åtgärd</strong></td>
+  </tr>
+  <tr>
+    <td><%= text_field :user, :login, :maxlength => 15, :size => 15 -%></td>
+    <td><%= permission_list -%></td>
+    <td>
+      <%= submit_tag 'Lägg till', :id => 'user_submit_button' -%> 
+      / 
+      <%= link_to_function 'Avbryt',
+        visual_effect(:toggle_appear, 'user_permission_input', :duration => 0.3) -%>
+    </td>
+  </tr>
+</table>
+</div>
+
+<% end %>
+
+<div id="user_permissions">
+  <%= render :partial => 'user_permissions' %>
+</div>
+
+<hr />
+
+<h2 class="extra_margin">Grupprättigheter</h2>
+
+<div class="add_permission_link">
+<%= link_to_function 'Lägg till grupprättighet',
+  visual_effect(:toggle_appear, 'group_permission_input', :duration => 0.3) -%>
+</div>
+
+<% form_remote_tag \
+  :url => {
+    :action  => :add_permission,
+    :page_id => @page.id,
+    :type    => 'group' },
+  :update   => 'group_permissions',
+  :loading  => "disable_and_reset('group_submit_button', 'group_name')",
+  :complete => "enable_and_focus('group_submit_button','group_name')" do %>
+
+<div id="group_permission_input" style="display: none;">
+<table>
+  <tr>
+    <td><strong>Gruppnamn</strong></td>
+    <td><strong>Rättighet</strong></td>
+    <td><strong>Åtgärd</strong></td>
+  </tr>
+  <tr>
+    <td><%= text_field :group, :name, :maxlength => 15, :size => 15 -%></td>
+    <td><%= permission_list -%></td>
+    <td>
+      <%= submit_tag 'Lägg till', :id => 'group_submit_button' -%> 
+      / 
+      <%= link_to_function 'Avbryt',
+        visual_effect(:toggle_appear, 'group_permission_input', :duration => 0.3) -%>
+    </td>
+  </tr>
+</table>
+</div>
+
+<% end %>
+
+<div id="group_permissions">
+  <%= render :partial => 'group_permissions' %>
+</div>

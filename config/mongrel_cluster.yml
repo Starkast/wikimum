@@ -1,0 +1,9 @@
+--- 
+user: jage
+group: jage
+environment: "production"
+cwd: /home/jage/webapps/wiki.starkast.net
+log_file: log/mongrel.log
+port: 8198
+pid_file: tmp/pids/mongrel.pid
+servers: 2

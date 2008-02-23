@@ -1,0 +1,35 @@
+<%= ajax_messages 'group' %>
+
+<% unless @group.users.empty? -%>
+
+<table>
+  <tr>
+    <td><strong>Namn</strong></td>
+    <td><strong>Åtgärd</strong></td>
+  </tr>
+  <% for user in @group.users -%>
+  <tr id="<%= user.login -%>">
+    <td><%= link_to user, user_show_url(:id => user) -%>
+      (<%= link_to user.login, user_show_url(:id => user) %>)
+    </td>
+    <td>
+    <%= link_to_function 'Ta bort',
+      visual_effect(:toggle_appear, "confirm_#{user.login}", :duration => 0.3) %>
+    </td>
+    <td>
+      <span id="confirm_<%= user.login -%>" class="message" style="display: none;">
+        Är du säker?
+        <%= link_to_remote 'Ja', 
+          :url => { :action => 'remove_user', :group => @group, :user => user },
+          :update => 'user_list',
+          :loading => visual_effect(:fade, user.login) %>
+        /
+        <%= link_to_function 'Nej',
+          visual_effect(:toggle_appear, "confirm_#{user.login}", :duration => 0.3) %>
+      </span>
+    </td>
+  </tr>
+  <% end -%>
+</table>
+
+<% end %>

@@ -1,0 +1,57 @@
+<% @page_title = @user -%>
+<% @upper_left_line_text = render :partial => 'edit'-%>
+<h1 class="title"><%= name_link(@user) %></h1>
+
+<h2>Användaruppgifter</h2>
+
+<ul class="user_attributes">
+  <li>
+    <strong>Användarnamn:</strong>
+    <%=h @user.login -%>
+  </li>
+  <li>
+    <strong>Namn:</strong>
+    <%=h @user.name -%>
+  </li>
+  <li>
+    <strong>E-post:</strong>
+    <%=h @user.email -%>
+  </li>
+  <% if not @user.groups.empty? %>
+  <li>
+    <strong>Grupper:</strong>
+    <% groups = [] 
+       for group in @user.groups
+         groups << link_to(group.name, group_show_url(:id => group.name))
+       end -%>
+    <%= groups.join(', ') -%>
+  </li>
+  <% end %>
+</ul>
+
+<h2>Statistik</h2>
+<ul class="user_attributes">
+  <li>
+    <strong>Senast inloggad:</strong>
+    <%=h last_login_in_swedish_words(@user) -%>
+  </li>
+  <li>
+    <strong>Skapad för:</strong>
+    <%=h @user.created_on.age_in_swedish_words -%> sen
+  </li>
+  <li>
+    <strong>Antal skapade sidor:</strong>
+    <%=h @user.number_of_created_pages.none_or_number_in_swedish.capitalize -%>
+  </li>
+  <li>
+    <strong>Antal sidmodifieringar:</strong>
+    <%=h @user.number_of_changes.none_or_number_in_swedish.capitalize -%>
+  </li>
+</ul>
+
+<% if @user.compiled_notes != '' %>
+<h2>Anteckningar</h2>
+<div class="notes">
+  <%= wiki_markup(@user.compiled_notes) %>
+</div>
+<% end %>

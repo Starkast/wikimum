@@ -1,0 +1,8 @@
+<% @page_title = 'Sökresultat' -%>
+<h1 class="title">Sökresultat</h1>
+
+<ul>
+<% if @pages.each do |page| %>
+  <li><%= link_to page, page_show_url(:id => page) %></li>
+<% end; end %>
+</ul>

@@ -1,0 +1,2 @@
+class DeletedUser < User
+end

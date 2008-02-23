@@ -1,0 +1,39 @@
+<%= ajax_messages 'group' %>
+
+<% if not @groups.empty? %>
+<table>
+  <tr>
+    <td class="action"><b>Namn</b></td>
+    <td><b>Medlemmar</b></td>
+    <td><b>Skapad för</b></td>
+    <td class="name"><b>Skapad av</b></td>
+    <td><b>Åtgärd</b></td>
+  </tr>
+  <% for group in @groups %>
+  <tr id="<%= @highlight == group ? 'new_group' : group -%>">
+    <td><%= link_to group.name, group_show_url(:id => group.name) -%></td>
+    <td><%=h group.users.length.none_one_or_number_in_swedish.capitalize -%></td>
+    <td><%= group.created_on.age_in_swedish_words(:minutes => true) -%> sen</td>
+    <td><%= user_show_link(group.creator) -%></td>
+    <td>
+      <%= link_to 'Ändra', :action => 'show', :id => group.name %>
+       / 
+      <%= link_to_function 'Radera',
+        visual_effect(:toggle_appear, "confirm_#{group}", :duration => 0.3) %>
+    </td>
+    <td>
+      <span id="confirm_<%= group -%>" class="message" style="display: none;">
+        Verkligen?
+        <%= link_to_remote 'Ja', 
+          :url => { :action => 'delete', :name => group },
+          :update => 'group_list',
+          :loading => visual_effect(:fade, group) %>
+        /
+        <%= link_to_function 'Nej',
+          visual_effect(:toggle_appear, "confirm_#{group}", :duration => 0.3) %>
+      </span>
+    </td>
+  </tr>
+  <% end %>
+</table>
+<% end %>

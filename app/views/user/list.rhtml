@@ -1,0 +1,10 @@
+<% @page_title = 'Användarhantering' %>
+<h1 class="title">Användarhantering</h1>
+
+<p>
+	<%= link_to 'Skapa ny användare', :action => 'new' %>
+</p>
+
+<div id="user_list">
+  <%= render :partial => 'user_list' %>
+</div>

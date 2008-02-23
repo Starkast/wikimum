@@ -1,0 +1,34 @@
+<%= ajax_messages %>
+
+<table>
+  <tr>
+    <td><b>Admin?</b></td>
+    <td class="name"><b>Namn</b></td>
+    <td><b>Senast inloggad</b></td>
+    <td class="action"><b>Åtgärd</b></td>
+  </tr>
+  <% for user in @users %>
+  <tr id="<%= user.login -%>">
+    <td><%=h user.admin? ? 'Ja' : 'Nej' -%></td>
+    <td><%= link_to user, user_show_url(:id => user.login) -%>
+        (<%= link_to user.login, user_show_url(:id => user.login) -%>)</td>
+    <td><%=h last_login_in_swedish_words(user) -%></td>
+    <td>
+      <%= [ user_edit_link(user),
+            user_ajax_delete_link(user) ].compact.join(' / ') -%>
+    </td>
+    <td>
+      <span id="confirm_<%= user.login -%>" class="message" style="display: none;">
+        Är du säker?
+        <%= link_to_remote 'Ja',
+          :url => { :action => 'delete', :id => user },
+          :update => 'user_list',
+          :loading => visual_effect(:fade, user.login) %>
+          /
+        <%= link_to_function('Nej',
+          visual_effect(:toggle_appear, "confirm_#{user.login}", :duration => 0.3)) -%>
+      </span>
+    </td>
+  </tr>
+  <% end %>
+</table>

@@ -1,0 +1,22 @@
+<%= ajax_messages %>
+
+<% if not @user_permissions.empty? -%>
+<%= form_remote_tag \
+  :update => 'user_permissions',
+  :url => {
+            :action  => :update_permission,
+            :page_id => @page.id,
+            :type    => 'user'
+          } -%>
+
+<table>
+  <tr>
+    <td><strong>Namn</strong></td>
+    <td><strong>Rättigheter</strong></td>
+    <td><strong>Åtgärd</strong></td>
+  </tr>
+  <%= render :partial => 'user_permission', :collection => @user_permissions %>
+</table>
+
+</form>
+<% end -%>

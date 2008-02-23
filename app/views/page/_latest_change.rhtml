@@ -1,0 +1,4 @@
+<% if logged_in? -%>
+Ändrad för <%= @page.updated_on.age_in_swedish_words -%> sedan av 
+<%= user_show_link(@page.updater) -%>
+<% end -%>

@@ -1,0 +1,30 @@
+<% @page_title = "Förändingar av #{@page}" -%>
+<h1 class="title">Förändingar av <%= title_link @page -%></h1>
+
+<p>
+<%= link_to "revision #{@new.revision}", revision_show_url(:id => @page, :revision => @new.revision) -%> 
+(<%= @new.updated_on.strftime('%Y-%m-%d %H:%M') -%>) skapad av <%= user_show_link(@new.updater) %><br/>
+Jämfört med: <br />
+<%= link_to "revision #{@old.revision}", revision_show_url(:id => @page, :revision => @old.revision) -%> 
+(<%= @old.updated_on.strftime('%Y-%m-%d %H:%M') -%>) skapad av <%= user_show_link(@old.updater) %>.
+</p>
+
+<% if not @new.compiled_comment == '' %>
+<p>
+Tillhörande kommentar: "<%= @new.compiled_comment %>".
+</p>
+<% end %>
+
+<h2>Innehåll</h2>
+
+<p class="diff_source">
+<%= @content_diff.gsub("\n", "<br />") %>
+</p>
+
+<% if not @description_diff == '' %>
+<h2>Beskrivning</h2>
+
+<p class="diff_source">
+<%= @description_diff %>
+</p>
+<% end %>

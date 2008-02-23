@@ -1,0 +1,49 @@
+  <tr id="row_<%= user_permission.id -%>">
+    <td><%= name_link user_permission.user %> (<%= link_to user_permission.user.login, user_show_url(:id => user_permission.user) -%>)</td>
+    <% unless @editing == user_permission.id %>
+    <td><%= user_permission %></td>
+    <td>
+      <%= link_to_remote 'Ändra',
+        :url => { 
+          :action  => :edit_permission, 
+          :id      => user_permission.id,
+          :page_id => @page.id,
+          :type    => 'user' },
+        :update => 'user_permissions' %>
+      /
+      <%= link_to_function('Ta bort',
+        visual_effect(:toggle_appear, "confirm_#{user_permission.id}", :duration => 0.3)) -%>
+    </td>
+    <td>
+      <span id="confirm_<%= user_permission.id -%>" class="message" style="display: none;">
+        Är du säker?
+        <%= link_to_remote 'Ja',
+          :url => { 
+            :action  => :remove_permission, 
+            :id      => user_permission.id, 
+            :page_id => @page.id,
+            :type    => 'user' },
+          :update => 'user_permissions',
+          :loading => visual_effect(:fade, "row_#{user_permission.id}") -%>
+        /
+        <%= link_to_function('Nej',
+          visual_effect(:toggle_appear, "confirm_#{user_permission.id}", :duration => 0.3)) -%>
+      </span>
+    </td>
+    <% else %>
+    <% @permission = user_permission %>
+    <td><%= permission_list %></td>
+    <td>
+      <%= hidden_field :permission, :id, :value => user_permission.id %>
+      <%= submit_tag 'Spara' -%>
+      / 
+      <%= link_to_remote 'Avbryt', 
+        :url => { 
+          :action  => :show_permissions,
+          :id      => user_permission.id,
+          :page_id => @page.id,
+          :type    => 'user' },
+        :update => 'user_permissions' -%>
+    </td>
+    <% end %>
+  </tr>

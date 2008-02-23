@@ -1,0 +1,5 @@
+<ul class="groups">
+<% @groups.each do |group| %>
+  <li class="groups"><div><strong><%= highlight(group.name, params[:group][:name]) %></strong></div></li>
+<% end %>
+</ul>

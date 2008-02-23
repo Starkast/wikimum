@@ -1,0 +1,18 @@
+development:
+  adapter: mysql
+  database: wiki_dev
+  username: wiki
+  password: 
+  #socket: /var/run/mysql/mysql.sock
+
+test:
+  adapter: mysql
+  database: wiki_test
+  username: wiki
+  password: 
+
+production:
+  adapter: mysql
+  database: wiki_prod
+  username: wiki
+  password: 

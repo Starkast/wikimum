@@ -1,0 +1,17 @@
+    <h1>Dokumentation</h1>
+    <div id="documentation_navigation">
+      <%= document_page_link('Allmänt', 'default') -%>
+      <%= document_page_link('Textformatering', 'markup') -%>
+      <%= document_page_link('Sidor & Revisioner', 'pages_revisions') -%><br />
+      <%= document_page_link('Rättigheter', 'permissions') -%>
+      <%= document_page_link('Användare & Grupper', 'users_groups') -%>
+    </div>
+    <div id="documentation_content">
+      <%= render :partial => "documentation/" + (session[:documentation_page] || 'default') -%>
+    </div>
+    <div id="documentation_bottom" class="right">
+    <%= link_to_remote('Stäng',
+      :url      => { :controller => 'documentation', :action => :hide_documentation },
+      :update   => nil,
+      :complete => visual_effect(:blindUp, 'documentation', :duration => 0.4)) %>
+    </div>

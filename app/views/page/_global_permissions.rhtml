@@ -1,0 +1,22 @@
+<%= ajax_messages %>
+
+<% if not @global_permission.nil? -%>
+	<% form_remote_tag \
+	  :url => {
+	            :action  => :update_permission,
+	            :page_id => @page.id,
+	            :type    => 'global'
+	          },
+	  :update => 'global_permissions',
+	  :complete => visual_effect(:highlight, ("row_#{@global_permission.id}" if @global_permission)) do -%>
+
+	<table>
+	  <tr>
+	    <td><strong>Rättigheter</strong></td>
+	    <td><strong>Åtgärd</strong></td>
+	  </tr>
+	  <%= render :partial => 'global_permission' if @global_permission %>
+	</table>
+
+	<% end %>
+<% end %>

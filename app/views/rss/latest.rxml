@@ -1,0 +1,23 @@
+xml.instruct! :xml, :version=>"1.0", :encoding=>"UTF-8"
+xml.rss "version"=>"2.0", "xmlns:dc"=>"http://purl.org/dc/elements/1.1/" do
+  xml.channel do
+    xml.title page_title + ' - Senast ändrad'
+    xml.link page_latest_url
+    xml.language 'sv'
+    xml.ttl '40'
+    xml.description 'Senast ändrad'
+
+    for page in @pages
+      xml.item do
+        xml.title page.title
+		xml.link page_show_url(:id => page)
+        description = "Uppdaterad av #{page.updater.name}"
+        if not page.comment.empty?
+          description += " med kommentaren \"#{page.compiled_comment}\""
+        end
+        xml.description description
+		xml.pubDate page.updated_on.gmtime.strftime('%a, %d %b %Y %H:%M:%S GMT')
+      end
+    end
+  end
+end

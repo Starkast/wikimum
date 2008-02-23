@@ -1,0 +1,38 @@
+<% @page_title = "Medlemmar i #{@group}" -%>
+
+<h1 class="title">Medlemmar i <%= name_link @group -%></h1>
+
+<p>
+<%= link_to_function('Lägg till ny medlem', 
+  visual_effect(:toggle_appear, 'add_user', :duration => 0.3)) -%>
+</p>
+
+
+<div id="add_user" style="display:none;">
+    <% form_remote_tag :url => { :action => 'add_user' },
+      :update => 'user_list',
+      :loading => "disable_and_reset('form-submit-button', 'user_login')",
+      :complete => "enable_and_focus('form-submit-button', 'user_login')" do %>
+    <table>
+      <tr>
+        <td>
+          <label for="user_login"><span class="label">Användare: </span></label>
+        </td>
+        <td>
+          <%= hidden_field :group, :name %>
+          <%= text_field :user, :login, { :maxlength => 15, :size => 15 } %>
+        </td>
+        <td>
+          <%= submit_tag 'Lägg till', :id => 'form-submit-button' %>
+          /
+          <%= link_to_function('Avbryt', 
+            visual_effect(:toggle_appear, 'add_user', :duration => 0.3)) -%>
+          <% end %>
+        </td>
+      </tr>
+    </table>
+</div>
+
+<div id="user_list">
+  <%= render :partial => 'users_in_group' %>
+</div>

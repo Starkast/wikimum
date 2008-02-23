@@ -1,0 +1,4 @@
+#!/bin/sh
+/var/lighttpd/wiki/current/script/process/spinner \
+	-c '/var/lighttpd/wiki/current/script/process/spawner -p 7000 -i 2' \
+	-d -i 30

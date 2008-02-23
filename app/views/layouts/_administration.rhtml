@@ -1,0 +1,8 @@
+<% if logged_in? %>
+  <% if @current_user.admin? %>
+    <ul>
+      <li><%= link_to 'Användarhantering', :controller => 'user', :action => 'list' %></li>
+      <li><%= link_to 'Grupphantering', :controller => 'group', :action => 'list' %></li>
+    </ul>
+  <% end %>
+<% end %>

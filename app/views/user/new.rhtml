@@ -1,0 +1,29 @@
+<% @page_title = 'Skapar ny användare' -%>
+<h1 class="title"><%= @page_title -%></h1>
+
+<%= error_messages_for 'user' %>
+
+<% form_for :user, :action => 'new' do |user| %>
+
+<label class="block" for="user_login">Användarnamn</label>
+<%= user.text_field :login, :maxlength => 25, :size => 25 %>
+
+<label class="block" for="user_name">Namn</label>
+<%= user.text_field :name, :maxlength => 45, :size => 45 %>
+
+<label class="block" for="user_email">Epost</label>
+<%= user.text_field :email, :maxlegth => 45, :size => 45 %>
+
+<label class="block" for="user_password">Lösenord</label>
+<%= user.password_field :password, :maxlength => 45, :size => 45 %>
+
+<label class="block" for="user_password_confirmation">Verifiera lösenordet</label>
+<%= user.password_field :password_confirmation, :maxlength => 45, :size => 45 %>
+
+<label class="block" for="user_admin">Admin?
+<%= user.check_box :admin %></label>
+
+<p>
+  <%= submit_tag 'Skapa' %> <%= link_to 'Avbryt', :action => :list %>
+</p>
+<% end %>
