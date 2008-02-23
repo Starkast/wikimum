@@ -6,6 +6,9 @@
 <% form_for :page do |page| -%>
 <%= hidden_field :page, :lock_version %>
 
+<label class="block" for="page_title">Titel</label>
+<%= page.text_field :title, :maxlength => 35, :size => 35  %>
+
 <label class="block" for="page_content">Innehåll</label>
 <%= page.text_area :content, :cols => 84, :rows => 20  %>
 
