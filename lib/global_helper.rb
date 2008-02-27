@@ -64,7 +64,16 @@ class Time
 end
 
 class String
-
+  
+  # Removes all weird characters
+  def to_shorthand
+    self.space_to_underline.gsub(/[^\d\w\sÅÄÖåäö_:-]/i, '')
+  end
+  
+  def to_shorthand!
+    self.space_to_underline.gsub!(/[^\d\w\sÅÄÖåäö_:-]/i, '')
+  end
+  
   def space_to_underline
     self.gsub(' ', '_')
   end

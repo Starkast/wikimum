@@ -21,7 +21,7 @@ class Page < ActiveRecord::Base
   def self.find_by_title(title = nil, user = nil)
     return false if title.nil?
 
-    shorthand = title.space_to_underline
+    shorthand = title.to_shorthand
 
     Page.find(:first, 
               :conditions => [ "shorthand_title = ? AND #{read_conditions_for(user)}", shorthand ],
@@ -94,8 +94,8 @@ class Page < ActiveRecord::Base
 
   def fix_title
     self.title           = self.title.strip
-    self.title_char      = self.title.first_char.capitalize
-    self.shorthand_title = self.title.space_to_underline
+    self.shorthand_title = self.title.to_shorthand
+    self.title_char      = self.shorthand_title.first_char.capitalize
     
     true
   end
@@ -252,10 +252,19 @@ class Page < ActiveRecord::Base
     return [from, to]
   end
 
-	validates_format_of     :title, :with   => /^[\d\w\sÅÄÖåäö_:-]*$/, 
-		:on => :create, :message => 'Titeln får endast innehålla A-Ö, 0-9, _, - och :'
-	validates_length_of     :title, :within => 1..35, :too_short => 'Minst ett tecken i titeln', 
-		:too_long => 'Inte längre än 35 tecken'
-	validates_uniqueness_of :title, :message => 'Det finns redan en sida med denna titel'
-
+	def validate
+	  fix_title
+	  if self.shorthand_title.length < 1 or self.title.length < 1
+	    errors.add :page, 'Några bokstäver i titeln tack'
+    end
+    if self.title.length > 35
+      errors.add :page, 'Max 35 bokstäver i titeln'
+    end
+    if Page.find_by_title(self.title)
+      errors.add :page, 'Det finns redan en sida med samma titel'
+    end
+    if self.title =~ /[<>]/
+      errors.add :page, ERB::Util.h('Nej! Inga < eller > i titeln')
+    end
+  end
 end
