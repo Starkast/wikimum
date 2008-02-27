@@ -260,11 +260,11 @@ class Page < ActiveRecord::Base
     if self.title.length > 35
       errors.add :page, 'Max 35 bokstäver i titeln'
     end
-    if Page.find_by_title(self.title)
-      errors.add :page, 'Det finns redan en sida med samma titel'
-    end
     if self.title =~ /[<>]/
       errors.add :page, ERB::Util.h('Nej! Inga < eller > i titeln')
+    end
+    if (page = Page.find_by_title(self.title)) and not page == self
+      errors.add :page, 'Det finns redan en sida med samma titel'
     end
   end
 end
