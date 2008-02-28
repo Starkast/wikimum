@@ -1,0 +1,12 @@
+<% for page_alias in @page.aliases %>
+	<li><%= page_alias %>
+	<%= link_to_function 'Ta bort', 
+		visual_effect(:toggle_appear, "confirm_#{page_alias}", :duration => 0.3) %>
+		<span id="confirm_<%= page_alias %>" class="message" style="display:none;">
+			Är du säker?
+			<%= link_to_remote 'Ja', :update => "page_aliases",
+			 	:url => { :action => 'remove_alias', :id => page_alias.id } %> /
+			<%= link_to_function 'Nej', 
+				visual_effect(:toggle_appear, "confirm_#{page_alias}", :duration => 0.3) %>
+		</span></li>
+<% end %>

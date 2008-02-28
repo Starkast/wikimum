@@ -9,7 +9,9 @@ class PageController < ApplicationController
       :show_permissions,
       :auto_complete_for_user_login, 
       :auto_complete_for_group_name,
-      :check_for_changes
+      :check_for_changes,
+      :add_alias,
+      :remove_alias
     ]
 
   before_filter :login_required, 
@@ -186,6 +188,29 @@ class PageController < ApplicationController
       redirect_to index_url
     else
       flash[:error] = "<strong>#{@page.title}</strong> gick inte att radera"
+    end
+  end
+  
+  def add_alias
+    if @page = Page.find(params[:page][:id], :include => [:aliases])
+      if @page.aliases << Alias.new(params[:alias])
+        render :partial => 'aliases'
+      else
+        @page.reload
+        @error = 'Oh'
+        render :partial => 'aliases'
+      end
+    else
+      render :text => 'On noes'
+    end
+  end
+  
+  def remove_alias
+    if @alias = Alias.find(params[:id], :include => [:page]) and @alias.destroy
+      @page = @alias.page
+      render :partial => 'aliases'
+    else
+      render :text => 'Oh noes'
     end
   end
 

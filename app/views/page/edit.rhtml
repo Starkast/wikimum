@@ -5,9 +5,28 @@
 
 <% form_for :page do |page| -%>
 <%= hidden_field :page, :lock_version %>
+<%= hidden_field :page, :id %>
+
 
 <label class="block" for="page_title">Titel</label>
 <%= page.text_field :title, :maxlength => 35, :size => 35  %>
+<small><%= link_to_function 'Se alias', 
+	visual_effect(:toggle_appear, "page_alias", :duration => 0.3) %></small>
+
+<div id="page_alias" style="display:none;">
+
+<label class="block" for="alias_name">Lägg till alias</label>
+<% fields_for :alias do |alias_field| %>
+  <%= alias_field.text_field :alias, :maxlength => 35, :size => 35 %>
+  <%= submit_to_remote 'create', 'Skapa', :url => { :action => 'add_alias' },
+    :update => { :success => "page_aliases", :failure => "fail" } %>
+<% end %>
+
+<ul id="page_aliases">
+  <%= render :partial => 'aliases' %>
+</ul>
+
+</div>
 
 <label class="block" for="page_content">Innehåll</label>
 <%= page.text_area :content, :cols => 84, :rows => 20  %>
