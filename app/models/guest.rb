@@ -11,5 +11,4 @@ class Guest < User
   def has_create_permission?
     false
   end
-
 end

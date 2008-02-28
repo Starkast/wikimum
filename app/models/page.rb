@@ -4,6 +4,7 @@ class Page < ActiveRecord::Base
   belongs_to :creator, :class_name => 'User', :foreign_key => 'created_by'
   has_many   :revisions, :dependent => :destroy
   has_many   :permissions, :dependent => :destroy
+  has_many   :aliases, :dependent => :destroy
 
   after_validation :verify_updater
   before_save   :compile, :fix_title
@@ -23,9 +24,16 @@ class Page < ActiveRecord::Base
 
     shorthand = title.to_shorthand
 
-    Page.find(:first, 
+    page = Page.find(:first, 
               :conditions => [ "shorthand_title = ? AND #{read_conditions_for(user)}", shorthand ],
               :include    => [ :permissions, :updater ])
+              
+    unless page
+      page_alias = Alias.find(:first, :conditions => [ "alias = ?", shorthand ], :include => :page)
+      page = page_alias.page if page_alias
+    end
+    
+    page
   end
 
   def self.find_all_by_section(section = nil, user = nil)
