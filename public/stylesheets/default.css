@@ -30,6 +30,7 @@ h5 { font-size: 1.6em; }
 h6 { font-size: 1.4em; }
 
 table { margin: 0.75em 0 0.75em 0; }
+th { font-size: 1em; font-weight: bold; }
 
 p, pre, ul, ol, textarea, input {
   font-size: 1.6em; 
