@@ -130,7 +130,7 @@ class Page < ActiveRecord::Base
   def revise
     raise if self.changed? or @revised
 
-    ActiveRecord::Base.record_timestamps = false
+    Revision.record_timestamps = false
 
     revision            = Revision.new
     revision.attributes = self.attributes
@@ -138,7 +138,7 @@ class Page < ActiveRecord::Base
     revision.save!
     @revised = true
 
-    ActiveRecord::Base.record_timestamps = true
+    Revision.record_timestamps = true
   end
 
   def revoke_latest_revision
