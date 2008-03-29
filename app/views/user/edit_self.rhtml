@@ -2,8 +2,6 @@
 
 <h1 class="title">Modifierar <%= link_to 'mitt konto', user_show_url(:id => @user) -%></h1>
 
-<%= error_messages_for 'user' %>
-
 <% form_for :user do |user| %>
 
 <p>
@@ -21,12 +19,15 @@
 
 <label class="block" for="user_name">Namn</label>
 <%= user.text_field :name, :maxlength => 45, :size => 45 %>
+<%= error_message_on @user, :name %>
 
 <label class="block" for="user_email">Epost</label>
 <%= user.text_field :email, :maxlength => 45, :size => 45 %>
+<%= error_message_on @user, :email %>
 
 <label class="block" for="user_notes">Anteckningar</label>
 <%= user.text_area :notes, :cols => 43, :rows => 7 %>
+<%= error_message_on @user, :notes %>
 
 <label class="block" for="user_markup">Formatering</label>
 <%= user.select :markup, markups_available %>

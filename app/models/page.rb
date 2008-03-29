@@ -263,16 +263,16 @@ class Page < ActiveRecord::Base
 	def validate
 	  fix_title
 	  if self.shorthand_title.length < 1 or self.title.length < 1
-	    errors.add :page, 'Några bokstäver i titeln tack'
+	    errors.add :title, 'Några bokstäver i titeln tack'
     end
     if self.title.length > 35
-      errors.add :page, 'Max 35 bokstäver i titeln'
+      errors.add :title, 'Max 35 bokstäver i titeln'
     end
     if self.title =~ /[<>]/
-      errors.add :page, ERB::Util.h('Nej! Inga < eller > i titeln')
+      errors.add :title, ERB::Util.h('Nej! Inga < eller > i titeln')
     end
     if (page = Page.find_by_title(self.title)) and not page == self
-      errors.add :page, 'Det finns redan en sida med samma titel'
+      errors.add :title, 'Det finns redan en sida med samma titel'
     end
   end
 end

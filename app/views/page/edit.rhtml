@@ -1,8 +1,6 @@
 <% @page_title = "Ändrar #{@page}" -%>
 <h1 class="title">Ändrar <%= title_link @page -%></h1>
 
-<%= error_messages_for :page %>
-
 <% form_for :page do |page| -%>
 <%= hidden_field :page, :lock_version %>
 <%= hidden_field :page, :id %>
@@ -12,6 +10,8 @@
 <%= page.text_field :title, :maxlength => 35, :size => 35  %>
 <small><%= link_to_function 'Se alias', 
 	visual_effect(:toggle_appear, "page_alias", :duration => 0.3) %></small>
+<%= error_message_on @page, :title %>
+
 
 <div id="page_alias" style="display:none;">
 

@@ -1,17 +1,11 @@
 <% @page_title = 'Skapar ny sida' -%>
 <h1 class="title">Skapa ny sida</h1>
 
-<% if flash[:error] -%>
-<span class="failure">
-<%= error_messages_for 'page' %>
-</span>
-<% end -%>
-
 <% form_for :page do |page| -%>
 
 <label class="block" for="page_title">Titel</label>
 <%= page.text_field :title, :maxlength => 35, :size => 35  %>
-
+<%= error_message_on @page, :title %>
 
 <label class="block" for="page_content">Innehåll</label>
 <%= page.text_area :content, :cols => 84, :rows => 20  %>

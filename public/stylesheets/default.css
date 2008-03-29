@@ -193,6 +193,7 @@ p.extra-margin { margin: 0.5em; }
 p.less-margin  { margin: 0.025em; }
 
 .fieldWithErrors input { background: #ffd0d0; }
+.formError { font-size: 1.2em; }
 
 /* Headers */
 h1.logo    { font-size: 5.8em; margin: 0; padding: 0; display: inline; }

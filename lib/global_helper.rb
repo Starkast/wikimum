@@ -126,21 +126,22 @@ class Fixnum
 
 end
 
-module ActionView
-  module Helpers
-    module ActiveRecordHelper
-      def error_messages_for(object_name)
-        object = instance_variable_get("@#{object_name}")
-
-        unless object.errors.empty?
-          error = "<h3 class=\"error\">Vad gick fel?</h3>"
-          error << "\n<ul class=\"error\">"
-          object.errors.each do |attr_name, message|
-            error << "\n  <li class=\"error\">#{message}</li>"
-          end
-          error << "\n</ul>"
-        end
-      end
-    end
-  end
-end
+#module ActionView
+#  module Helpers
+#    module ActiveRecordHelper
+#      def error_messages_for(object_name)
+#        object = instance_variable_get("@#{object_name}")
+#
+#        unless object.errors.empty?
+#          error = "<h3 class=\"error\">Vad gick fel?</h3>"
+#          error << "\n<ul class=\"error\">"
+#          object.errors.each do |attr_name, message|
+#            error << "\n  <li class=\"error\">#{message}</li>"
+#          end
+#          error << "\n</ul>"
+#        end
+#      end
+#    end
+#  end
+#end
+#
