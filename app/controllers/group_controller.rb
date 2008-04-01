@@ -19,7 +19,9 @@ class GroupController < ApplicationController
       return
     end
     
-    access_denied if not @current_user.admin? or not @current_user.member_of?(@group)
+    unless @current_user.admin?
+      access_denied if not @current_user.member_of?(@group)
+    end
   end
 
   def list
