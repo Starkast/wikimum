@@ -5,13 +5,16 @@
 <table>
   <tr>
     <td><strong>Namn</strong></td>
+	<% if @current_user.admin? %>
     <td><strong>Åtgärd</strong></td>
+	<% end %>
   </tr>
   <% for user in @group.users -%>
   <tr id="<%= user.login -%>">
     <td><%= link_to user, user_show_url(:id => user) -%>
       (<%= link_to user.login, user_show_url(:id => user) %>)
     </td>
+	<% if @current_user.admin? %>
     <td>
     <%= link_to_function 'Ta bort',
       visual_effect(:toggle_appear, "confirm_#{user.login}", :duration => 0.3) %>
@@ -28,6 +31,7 @@
           visual_effect(:toggle_appear, "confirm_#{user.login}", :duration => 0.3) %>
       </span>
     </td>
+	<% end %>
   </tr>
   <% end -%>
 </table>

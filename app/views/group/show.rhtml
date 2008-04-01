@@ -2,11 +2,11 @@
 
 <h1 class="title">Medlemmar i <%= name_link @group -%></h1>
 
+<% if @current_user.admin? %>
 <p>
 <%= link_to_function('Lägg till ny medlem', 
   visual_effect(:toggle_appear, 'add_user', :duration => 0.3)) -%>
 </p>
-
 
 <div id="add_user" style="display:none;">
     <% form_remote_tag :url => { :action => 'add_user' },
@@ -32,6 +32,8 @@
       </tr>
     </table>
 </div>
+
+<% end %>
 
 <div id="user_list">
   <%= render :partial => 'users_in_group' %>

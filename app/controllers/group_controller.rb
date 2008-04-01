@@ -1,7 +1,7 @@
 class GroupController < ApplicationController
 
   before_filter :login_required
-  before_filter :admin_required
+  before_filter :admin_required, :except => [ :show ]
   before_filter :xhr_call,
     :only => [
       :create,
@@ -16,7 +16,10 @@ class GroupController < ApplicationController
     if @group.nil?
       flash[:error] = 'Gruppen hittades inte'
       redirect_back_or_default group_list_url
+      return
     end
+    
+    access_denied unless @current_user.member_of?(@group)
   end
 
   def list

@@ -22,7 +22,7 @@
     <strong>Grupper:</strong>
     <% groups = [] 
        for group in @user.groups
-         groups << link_to(group.name, group_show_url(:id => group.name))
+         groups << link_to_if(@user.member_of?(group), group.name, group_show_url(:id => group.name))
        end -%>
     <%= groups.join(', ') -%>
   </li>
