@@ -258,6 +258,8 @@ class Page < ActiveRecord::Base
     to = Time.now       unless year
 
     return [from, to]
+  rescue # Not sure how good this is but at least there's no exeption ...
+    return [Time.now, Time.now]
   end
 
 	def validate
