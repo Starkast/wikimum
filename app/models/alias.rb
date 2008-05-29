@@ -4,6 +4,11 @@ class Alias < ActiveRecord::Base
   def to_s
     self.alias
   end
+
+  # Already in shorthand form
+  def to_param
+    self.alias
+  end
   
   def validate # and fix
     self.alias = self.alias.strip.to_shorthand

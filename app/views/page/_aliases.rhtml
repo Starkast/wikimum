@@ -1,5 +1,5 @@
 <% for page_alias in @page.aliases %>
-	<li><%= page_alias %>
+  <li><%= link_to page_alias, page_show_url(:id => page_alias) %>
 	<%= link_to_function 'Ta bort', 
 		visual_effect(:toggle_appear, "confirm_#{page_alias}", :duration => 0.3) %>
 		<span id="confirm_<%= page_alias %>" class="message" style="display:none;">
