@@ -89,6 +89,11 @@ p select          { font-size: 1em; } /* IE */
 li *              { font-size: 1em; }
 li p              { font-size: 1em; } /* IE */
 
+blockquote {
+  font-style: italic;
+  padding-left: 1em;
+}
+
 hr { 
   height: 0.1em;
   background: #CCC;
