@@ -1,1 +1,8 @@
-<%= link_to_if @page.write_by?(@current_user), "Revision #{@page.revision}", revision_history_url(:id => @page) %>, ändrad för <%= @page.updated_on.age_in_swedish_words(:minutes => true) -%> sen av <%= user_show_link(@page.updater) -%>
+<%= link_to_if @page.write_by?(@current_user), "Revision #{@page.revision}", revision_history_url(:id => @page) %>,
+<% if @page.revision == 1 %>
+skapad för <%= @page.updated_on.age_in_swedish_words(:minutes => true) %> sen
+<% else%>
+<%= link_to "ändrad för #{@page.updated_on.age_in_swedish_words(:minutes => true)} sen", 
+	revision_diff_url(:id => @page, :new => @page.revision, :old => @page.previous), :title => 'Se skillnaden mot tidigare version' %>
+<% end %>
+av <%= user_show_link(@page.updater) -%>
