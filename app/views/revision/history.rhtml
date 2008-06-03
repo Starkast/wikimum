@@ -5,11 +5,11 @@
 <ol class="revision_history">
   <% for revision in @revisions -%>
   <li value="<%=h revision.number -%>">
-    <%= link_to 'Se revision', revision_show_url(:id => revision, 
+    <%= link_to 'Se revision', revision_show_url(:id => @page, 
       :revision => revision.number),
       :title => 'Se revisionen' %>
     <% if not revision.first? -%>
-      (<%= link_to 'skillnad', revision_diff_url(:id => revision, 
+      (<%= link_to 'skillnad', revision_diff_url(:id => @page, 
         :new => revision.number, 
         :old => revision.previous), 
         :title => 'Skillnad jämfört med tidigare revision' -%>)

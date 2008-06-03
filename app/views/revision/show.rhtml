@@ -1,3 +1,4 @@
-<% @page_title = "Revision #{@revision.number} av #{@page}" -%>
-<h1 class="title">Revision <%=h @revision.number %> av <%= title_link @page -%></h1>
+<% @page_title = "#{@page} (revision #{@revision.number})" -%>
+<h1 class="title"><%= title_link @revision -%> (revision <%=h @revision.number %>)</h1>
+
 <%= wiki_markup(@revision.compiled_content) %>

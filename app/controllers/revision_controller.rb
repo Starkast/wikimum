@@ -14,7 +14,7 @@ class RevisionController < ApplicationController
     end
 
     @revisions = [@page]
-    @revisions.concat Revision.find_by_title(params[:id])
+    @revisions.concat @page.revisions.reverse
   end
 
   def show
@@ -22,8 +22,8 @@ class RevisionController < ApplicationController
       redirect_to page_show_url(:id => params[:id]); return
     end
     
-    @revision = Revision.find_by_title(params[:id], params[:revision])
     @page     = Page.find_by_title(params[:id], @current_user)
+    @revision = Revision.find_by_page(@page, params[:revision])
 
     if @page.nil?
       page_not_found; return
@@ -53,7 +53,7 @@ class RevisionController < ApplicationController
   end
 
   def diff
-    @page = Page.find_by_title(params[:id], @current_user)
+    @page = Page.find_by_title(params[:id], @current_user) || Revision.find_by_title(params[:id]).first.page
     @revision = @page # Used by the status information
 
     if @page.nil?
@@ -71,8 +71,8 @@ class RevisionController < ApplicationController
       @old = @page
     end
 
-    @new ||= Revision.find_by_title(params[:id], params[:new])
-    @old ||= Revision.find_by_title(params[:id], params[:old])
+    @new ||= Revision.find_by_page(@page, params[:new])
+    @old ||= Revision.find_by_page(@page, params[:old])
 
     if @new.nil? or @old.nil?
       flash[:notice] = 'Hittade inte revisionerna'
