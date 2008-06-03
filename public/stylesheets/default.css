@@ -106,7 +106,7 @@ hr {
 /* Layout and structure */
 
 #busy           { display: inline; font-size: 1.6em; }
-#container      { width: 70em; margin: 4em auto 0 auto; text-align: left; }
+#container      { width: 80em; margin: 4em auto 0 auto; text-align: left; }
 #login          { position: absolute; right: 1em; top: 1em; margin: 0.6em; }
 #administration { position: absolute; right: 1em; top: 4em; }
 #message        { margin: 1.5em 0 1em 0; font-size: 1.6em; }
