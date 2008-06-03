@@ -16,10 +16,10 @@
   <%= link_to 'Avbryt', :action => 'list' %>
 </p>
 
-<hr />
-
 <label class="block" for="page_comment">Kommentar</label>
 <%= page.text_field :comment, :maxlength => 74, :size => 50 %>
+
+<hr />
 
 <label class="block" for="page_description">Sidbeskrivning</label>
 <%= page.text_area :description, :cols => 50, :rows => 3 %>
