@@ -43,9 +43,10 @@ module ApplicationHelper
 
   def wiki_markup(text)
     return '' if text.to_s.empty?
-    text.gsub(/\{\{([\d\w\sÅÄÖåäö_:-]{1,35})\}\}/i) do
+    text.gsub!(/\{\{([\d\w\sÅÄÖåäö_:-]{1,35})\}\}/i) do
       link_to $1, page_show_url(:id => $1.gsub(' ', '_'))
     end
+    auto_link(text)
   end
 
   def text_field_with_auto_complete_for_user_login
