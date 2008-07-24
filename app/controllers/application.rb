@@ -96,7 +96,7 @@ class ApplicationController < ActionController::Base
   def store_location
     if response.headers['Status'] == '200 OK' and not 
       (request.post? or request.xhr?) then
-      session[:return_to] = request.request_uri
+      session[:return_to] = request.request_uri unless request.request_uri.include? 'rss'
     end
   end
 
