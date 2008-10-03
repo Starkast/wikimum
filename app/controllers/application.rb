@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
   end
   helper_method :registration_available?
 
-  def default_url_options(options)
+  def default_url_options(options=nil)
     { :protocol => WikiConf['main']['default_protocol'] }
   end
 
