@@ -241,7 +241,7 @@ class PageController < ApplicationController
       permission = type.new(:global => true)
     when 'user'
       unless user = User.find_by_login(params[:user][:login])
-        @failure = "Gick inte att hitta använadren <strong>params[:user][:login]</strong>"
+        @failure = "Gick inte att hitta använadren <strong>#{params[:user][:login]}</strong>"
       end
       permission = type.new(:user => user)
     when 'group'
