@@ -68,3 +68,6 @@ Rails::Initializer.run do |config|
   # Make Active Record use UTC-base instead of local time
   # config.active_record.default_timezone = :utc
 end
+
+# Disable XML params parser, fixes params vulnerability (CVE-2013-0156)
+ActionController::Base.param_parsers.delete(Mime::XML)
