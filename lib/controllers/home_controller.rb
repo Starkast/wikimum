@@ -1,5 +1,6 @@
 class HomeController < BaseController
-	get '/' do
-		'Hello World!'
-	end
+  get '/' do
+    @pages = Page.all
+    haml :index
+  end
 end
