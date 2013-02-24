@@ -18,7 +18,7 @@ GEM
       activeresource (= 2.0.2)
       activesupport (= 2.0.2)
       rake (>= 0.7.2)
-    rake (10.0.3)
+    rake (0.8.7)
 
 PLATFORMS
   ruby
@@ -26,3 +26,4 @@ PLATFORMS
 DEPENDENCIES
   mysql (= 2.9.0)
   rails (= 2.0.2)
+  rake (= 0.8.7)
