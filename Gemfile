@@ -1,8 +1,12 @@
-source "http://rubygems.org/"
+source 'http://rubygems.org/'
+ruby '2.0.0'
 
 gem 'sequel'
 gem 'pg'
 gem 'sinatra'
 gem 'haml'
 gem 'thin'
-ruby "2.0.0"
+
+group :development do
+  gem 'foreman'
+end
