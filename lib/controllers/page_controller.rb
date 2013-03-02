@@ -4,6 +4,11 @@ class PageController < BaseController
     haml :index
   end
 
+  get '/list' do
+    @pages = Page.all
+    haml :index
+  end
+
   get '/new' do
     haml :new
   end
