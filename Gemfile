@@ -4,6 +4,7 @@ ruby '2.0.0'
 gem 'sequel'
 gem 'pg'
 gem 'sinatra'
+gem 'sinatra-contrib'
 gem 'haml'
 gem 'thin'
 

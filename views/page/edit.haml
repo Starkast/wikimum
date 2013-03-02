@@ -1,0 +1,26 @@
+%h1.title
+  Ändrar
+  %a{href: "/#{@page.pk}"}= @page.title
+
+%form{action: "/#{@page.pk}", method: :post}
+  %label.block{for: 'title'} Titel
+  %input#title{type: :text, name: 'title', maxlength: 35, size: 35, value: @page.title}
+
+  %label.block{for: 'content'} Innehåll
+  %textarea#content{name: 'content', cols: 84, rows: 20, value: @page.content}
+
+  %label.block{for: 'comment'} Kommentar
+  %input#comment{type: :text, name: 'comment', maxlength: 74, size: 50}
+
+  %p{style: "margin-top: 1em;"}
+    %button 'Spara'
+    eller
+    %a{href: "/#{@page.pk}"} Avbryt
+
+  %hr
+
+  %label.block{for: 'description'} Sidbeskrivning
+  %textarea#description{name: 'description', cols: 50, rows: 3}
+
+  %label.block{for: 'markup'} Formatering
+  %select#markup{name: 'markup'}

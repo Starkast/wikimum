@@ -16,5 +16,5 @@ map '/' do
     :cache_control => "public,max-age=#{365 * 24 * 3600}"
   }
 
-  run HomeController
+  run PageController
 end
