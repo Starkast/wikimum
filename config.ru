@@ -1,3 +1,7 @@
+require 'bundler'
+
+Bundler.require
+
 require './config/environment'
 require './lib/models'
 require './lib/controllers'
