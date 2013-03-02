@@ -4,13 +4,13 @@ class PageController < BaseController
     haml :index
   end
 
+  get '/new' do
+    haml :new
+  end
+
   get '/:id' do |id|
     @page = Page[id]
     haml :show
-  end
-
-  get '/new' do
-    haml :new
   end
 
   post '/new' do
