@@ -10,4 +10,5 @@ gem 'thin'
 
 group :development do
   gem 'foreman'
+  gem 'racksh'
 end
