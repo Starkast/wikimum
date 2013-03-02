@@ -1,24 +1,24 @@
 %h1.title Skapa ny sida
 
-%form{method: :post}
-  %label.block{for: 'title'} Titel
-  %input#title{type: :text, name: 'title', maxlength: 35, size: 35}
+%form{ method: :post }
+  %label.block{ for: 'title' } Titel
+  %input#title{ type: :text, name: 'title', maxlength: 35, size: 35 }
 
-  %label.block{for: 'content'} Innehåll
-  %textarea#content{name: 'content', cols: 84, rows: 20}
+  %label.block{ for: 'content' } Innehåll
+  %textarea#content{ name: 'content', cols: 84, rows: 20 }
 
-  %label.block{for: 'comment'} Kommentar
-  %input#comment{type: :text, name: 'comment', maxlength: 74, size: 50}
+  %label.block{ for: 'comment' } Kommentar
+  %input#comment{ type: :text, name: 'comment', maxlength: 74, size: 50 }
 
-  %p{style: "margin-top: 1em;"}
+  %p{ style: "margin-top: 1em;" }
     %button 'Skapa sida'
     eller
-    %a{href: '/list'} Avbryt
+    %a{ href: '/list' } Avbryt
 
   %hr
 
-  %label.block{for: 'description'} Sidbeskrivning
-  %textarea#description{name: 'description', cols: 50, rows: 3}
+  %label.block{ for: 'description' } Sidbeskrivning
+  %textarea#description{ name: 'description', cols: 50, rows: 3 }
 
-  %label.block{for: 'markup'} Formatering
-  %select#markup{name: 'markup'}
+  %label.block{ for: 'markup' } Formatering
+  %select#markup{ name: 'markup' }
