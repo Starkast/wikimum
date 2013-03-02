@@ -7,7 +7,7 @@
   %input#title{type: :text, name: 'title', maxlength: 35, size: 35, value: @page.title}
 
   %label.block{for: 'content'} Innehåll
-  %textarea#content{name: 'content', cols: 84, rows: 20, value: @page.content}
+  %textarea#content{name: 'content', cols: 84, rows: 20}= @page.content
 
   %label.block{for: 'comment'} Kommentar
   %input#comment{type: :text, name: 'comment', maxlength: 74, size: 50}
