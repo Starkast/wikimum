@@ -25,6 +25,8 @@
         != haml :'../layouts/_navigation', layout: false
       #sub-navigation
         #actions
+          -if @page
+            != haml :'../page/_actions', locals: { page: @page }, layout: false
         #status
       != haml :'../layouts/_flash', layout: false
       #content

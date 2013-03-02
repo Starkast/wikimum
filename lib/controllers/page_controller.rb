@@ -1,7 +1,7 @@
 class PageController < BaseController
   get '/' do
-    @pages = Page.all
-    haml :index
+    @page = Page.first
+    haml :show
   end
 
   get '/list' do
@@ -23,7 +23,7 @@ class PageController < BaseController
     redirect "#{page.pk}"
   end
 
-  get '/edit/:id' do |id|
+  get '/:id/edit' do |id|
     @page = Page[id]
     haml :edit
   end
@@ -32,7 +32,7 @@ class PageController < BaseController
   post '/:id' do |id|
     page = Page[id]
     page.update(title: params[:title], content: params[:content])
-    
+
     redirect "#{page.pk}"
   end
 end
