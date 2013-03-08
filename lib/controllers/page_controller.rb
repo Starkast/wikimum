@@ -13,7 +13,7 @@ class PageController < BaseController
     haml :new
   end
 
-  get '/:id' do |slug|
+  get '/:slug' do |slug|
     @page = Page[slug: slug]
     haml :show
   end
@@ -23,13 +23,13 @@ class PageController < BaseController
     redirect "#{page.slug}"
   end
 
-  get '/:id/edit' do |slug|
+  get '/:slug/edit' do |slug|
     @page = Page[slug: slug]
     haml :edit
   end
 
   # Borde vara put
-  post '/:id' do |slug: slug|
+  post '/:slug' do |slug|
     page = Page[slug: slug]
     page.update(title: params[:title], content: params[:content], markup: params[:markup])
 
