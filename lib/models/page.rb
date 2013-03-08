@@ -1,6 +1,6 @@
 class Page < Sequel::Model
   def before_create
-    self.slug = self.title.gsub(/[^\w\s\d]/, '').gsub(' ', '_')
+    self.slug = self.title.gsub(/[^\d\w\sÅÄÖåäö_:-]/i, '').gsub(' ', '_')
   end
 
   def before_save
