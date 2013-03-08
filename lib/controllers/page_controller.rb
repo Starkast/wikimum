@@ -5,7 +5,7 @@ class PageController < BaseController
   end
 
   get '/list' do
-    @pages = Page.all
+    @pages = Page.order(:title).all
     haml :index
   end
 
@@ -19,7 +19,7 @@ class PageController < BaseController
   end
 
   post '/new' do
-    page = Page.create(title: params[:title], content: params[:content], markup: params[:markup])
+    page = Page.create(title: params[:title], content: params[:content], markup: params[:markup], description: params[:description])
     redirect "#{page.slug}"
   end
 
@@ -31,7 +31,7 @@ class PageController < BaseController
   # Borde vara put
   post '/:slug' do |slug|
     page = Page[slug: slug]
-    page.update(title: params[:title], content: params[:content], markup: params[:markup])
+    page.update(title: params[:title], content: params[:content], markup: params[:markup], description: params[:description])
 
     redirect "#{page.slug}"
   end
