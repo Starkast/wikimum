@@ -1,1 +1,1 @@
-Dir["./lib/controllers/*.rb"].each { |file| require file }
+Dir["./lib/controllers/*.rb"].sort.each { |file| require file }
