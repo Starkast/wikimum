@@ -10,8 +10,8 @@ class Markup
     MARKUPS.keys
   end
 
-  def self.to_html(content, markup = :markdown)
-    fail "Unknown markup" unless MARKUPS.include?(markup)
+  def self.to_html(content, markup)
+    fail "Unknown markup #{markup}" unless MARKUPS.include?(markup)
     MARKUPS[markup].new(content).to_html
   end
 end
