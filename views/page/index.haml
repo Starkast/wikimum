@@ -1,4 +1,4 @@
 %ul
   - @pages.each do |page|
     %li
-      %a{ href: "#{page.pk}" }= page.title
+      %a{ href: "#{page.slug}" }= page.title

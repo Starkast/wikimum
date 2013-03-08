@@ -1,8 +1,8 @@
 %h1.title
   Ändrar
-  %a{ href: "/#{@page.pk}" }= @page.title
+  %a{ href: "/#{@page.slug}" }= @page.title
 
-%form{ action: "/#{@page.pk}", method: :post }
+%form{ action: "/#{@page.slug}", method: :post }
   %label.block{ for: 'title' } Titel
   %input#title{ type: :text, name: 'title', maxlength: 35, size: 35, value: @page.title }
 
@@ -15,7 +15,7 @@
   %p{ style: "margin-top: 1em;" }
     %button Spara
     eller
-    %a{ href: "/#{@page.pk}" } Avbryt
+    %a{ href: "/#{@page.slug}" } Avbryt
 
   %hr
 

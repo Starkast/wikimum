@@ -13,26 +13,26 @@ class PageController < BaseController
     haml :new
   end
 
-  get '/:id' do |id|
-    @page = Page[id]
+  get '/:id' do |slug|
+    @page = Page[slug: slug]
     haml :show
   end
 
   post '/new' do
     page = Page.create(title: params[:title], content: params[:content], markup: params[:markup])
-    redirect "#{page.pk}"
+    redirect "#{page.slug}"
   end
 
-  get '/:id/edit' do |id|
-    @page = Page[id]
+  get '/:id/edit' do |slug|
+    @page = Page[slug: slug]
     haml :edit
   end
 
   # Borde vara put
-  post '/:id' do |id|
-    page = Page[id]
+  post '/:id' do |slug: slug|
+    page = Page[slug: slug]
     page.update(title: params[:title], content: params[:content], markup: params[:markup])
 
-    redirect "#{page.pk}"
+    redirect "#{page.slug}"
   end
 end
