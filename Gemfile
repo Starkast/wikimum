@@ -8,6 +8,9 @@ gem 'sinatra-contrib'
 gem 'haml'
 gem 'thin'
 
+gem 'RedCloth'
+gem 'redcarpet'
+
 group :development do
   gem 'foreman'
   gem 'racksh'

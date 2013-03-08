@@ -24,3 +24,5 @@
 
   %label.block{ for: 'markup' } Formatering
   %select#markup{ name: 'markup' }
+    - Markup.markups.each do |markup|
+      %option{ value: markup, selected: @page.markup == markup.to_s }= markup.to_s.capitalize

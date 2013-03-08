@@ -19,7 +19,7 @@ class PageController < BaseController
   end
 
   post '/new' do
-    page = Page.create(title: params[:title], content: params[:content])
+    page = Page.create(title: params[:title], content: params[:content], markup: params[:markup])
     redirect "#{page.pk}"
   end
 
@@ -31,7 +31,7 @@ class PageController < BaseController
   # Borde vara put
   post '/:id' do |id|
     page = Page[id]
-    page.update(title: params[:title], content: params[:content])
+    page.update(title: params[:title], content: params[:content], markup: params[:markup])
 
     redirect "#{page.pk}"
   end
