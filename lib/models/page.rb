@@ -12,8 +12,7 @@ class Page < Sequel::Model
 
     return [] if terms.empty?
 
-    columns = [:title, :content, :description]
-
+    columns  = [:title, :content, :description]
     patterns = terms.map {|t| "%#{t}%" }
 
     self.dataset.grep(columns, patterns, case_insensitive: true, all_patterns: true)
