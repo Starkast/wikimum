@@ -11,6 +11,8 @@ GEM
       tilt
     pg (0.14.1)
     rack (1.5.2)
+    rack-flash3 (1.0.3)
+      rack
     rack-protection (1.4.0)
       rack
     rack-test (0.6.2)
@@ -46,6 +48,7 @@ DEPENDENCIES
   foreman
   haml
   pg
+  rack-flash3
   racksh
   redcarpet
   sequel

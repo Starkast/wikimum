@@ -1,0 +1,6 @@
+%h1 Sökresultat
+%ul
+  - @pages.each do |page|
+    %li
+      %a{ href: "#{page.slug}" }= page.title
+      %span.description= page.description
