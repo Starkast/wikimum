@@ -1,7 +1,10 @@
 #message
   - if flash[:error]
+    %img{ class: 'icon', src: '/images/stop.png' }
     %span.error= flash[:error]
   -if flash[:notice]
+    %img{ class: 'icon', src: '/images/information.png' }
     %span.notice= flash[:notice]
   - if flash[:confirm]
+    %img{ class: 'icon', src: '/images/accept.png' }
     %span.confirm= flash[:confirm]
