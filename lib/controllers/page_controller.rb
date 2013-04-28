@@ -30,7 +30,7 @@ class PageController < BaseController
   end
 
   get '/:slug' do |slug|
-    @page = Page[slug: slug]
+    @page = Page.where(Sequel.ilike(:slug, slug)).first
     haml :show
   end
 
@@ -40,13 +40,13 @@ class PageController < BaseController
   end
 
   get '/:slug/edit' do |slug|
-    @page = Page[slug: slug]
+    @page = Page.where(Sequel.ilike(:slug, slug)).first
     haml :edit
   end
 
   # Borde vara put
   post '/:slug' do |slug|
-    page = Page[slug: slug]
+    page = Page.where(Sequel.ilike(:slug, slug)).first
     page.update(title: params[:title], content: params[:content], markup: params[:markup], description: params[:description])
 
     redirect "#{page.slug}"
