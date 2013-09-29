@@ -7,8 +7,10 @@ require './lib/services'
 require './lib/models'
 require './lib/controllers'
 
-$stdout.sync = true
-$stderr.sync = true
+if ENV['RACK_ENV'] == 'development'
+  $stdout.sync = true
+  $stderr.sync = true
+end
 
 map '/' do
   use Rack::Static, {
