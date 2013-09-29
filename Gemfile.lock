@@ -48,6 +48,7 @@ PLATFORMS
 
 DEPENDENCIES
   RedCloth
+  dotenv
   foreman
   haml
   pg

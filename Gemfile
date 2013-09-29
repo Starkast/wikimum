@@ -15,4 +15,5 @@ gem 'redcarpet'
 group :development do
   gem 'foreman'
   gem 'racksh'
+  gem 'dotenv'
 end

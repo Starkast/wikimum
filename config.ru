@@ -2,15 +2,18 @@ require 'bundler'
 
 Bundler.require
 
+if ENV['RACK_ENV'] == 'development'
+  require 'dotenv'
+  Dotenv.load
+
+  $stdout.sync = true
+  $stderr.sync = true
+end
+
 require './config/environment'
 require './lib/services'
 require './lib/models'
 require './lib/controllers'
-
-if ENV['RACK_ENV'] == 'development'
-  $stdout.sync = true
-  $stderr.sync = true
-end
 
 map '/' do
   use Rack::Static, {
