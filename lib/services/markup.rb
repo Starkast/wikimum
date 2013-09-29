@@ -1,3 +1,4 @@
+require 'redcloth'
 require 'redcarpet/compat'
 
 # TODO

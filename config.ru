@@ -1,6 +1,4 @@
-require 'bundler'
-
-Bundler.require
+require 'bundler/setup'
 
 if ENV['RACK_ENV'] == 'development'
   require 'dotenv'
@@ -9,6 +7,8 @@ if ENV['RACK_ENV'] == 'development'
   $stdout.sync = true
   $stderr.sync = true
 end
+
+require 'sinatra/base'
 
 require './config/environment'
 require './lib/services'
