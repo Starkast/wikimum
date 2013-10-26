@@ -19,8 +19,3 @@
 
   %label.block{ for: 'description' } Sidbeskrivning
   %textarea#description{ name: 'description', cols: 50, rows: 3 }
-
-  %label.block{ for: 'markup' } Formatering
-  %select#markup{ name: 'markup' }
-    - Markup.markups.each do |markup|
-      %option{ value: markup }= markup.to_s.capitalize
