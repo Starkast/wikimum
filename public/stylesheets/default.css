@@ -1,0 +1,251 @@
+/*
+ *   Main StyleSheet for the 'Imum' theme
+ **/
+
+/* Reset and set some "defaults" */
+
+*    { font-size: 100.01%; margin: 0; padding: 0; }
+html { font-size: 62.5%; }
+body { 
+  margin: 2em 5em; 
+  font-family: Arial;
+  color: #333;
+  background: #FFF;
+  text-align: center;
+}
+
+/* Set sane values for the most used stuff */
+
+h1, h2, h3, h4, h5, h6 {
+  padding: 0.4em 0 0 0;
+  margin: 0.2em 0 0 0; 
+  color: #404040;
+}
+
+h1 { font-size: 3.6em; color: #333; }
+h2 { font-size: 2.4em; }
+h3 { font-size: 2.1em; }
+h4 { font-size: 1.8em; }
+h5 { font-size: 1.6em; }
+h6 { font-size: 1.4em; }
+
+table { margin: 0.75em 0 0.75em 0; }
+th { font-size: 2em; font-weight: bold; }
+
+p, pre, ul, ol, textarea, input {
+  font-size: 1.6em; 
+  line-height: 1.5em;
+  padding: 0.2em 0 0.25em 0;
+  margin: 0.2em 0 0.75em 0; 
+}
+
+ul li { list-style-type: square; }
+li ul, li ol { padding: 0 0 0 1.5em; }
+
+small, label, input { font-size: 1.4em; }
+option              { padding: 0 0.25em 0 0; }
+select              { font-size: 1.4em; }
+
+textarea, input {
+  padding: 0.2em;
+  margin: 0; 
+  border: 1px solid #c4c4c4;
+  background: #fafafa;
+  line-height: 1.2em; 
+  font-size: 1.6em;
+}
+
+textarea { font-family: Monospace; }
+
+input.submit {
+  background: #ededed;
+  margin: 0.3em 0 0 0; 
+  padding: 0.1em;
+  font-size: 1.4em;
+}
+
+input:focus, textarea:focus {
+  background: #FFF;
+  border: 1px solid #a6a6a6;
+}
+
+a                 { color: #000; text-decoration: underline; }
+a:hover, a:active { background: #FFC; }
+a img             { border: none; }
+
+em                { font-style: normal; background: #FFC; }
+td                { font-size: 1.6em; padding: 0 0.2em 0 0; }
+
+td *              { font-size: 1em; }
+td label          { font-size: 1em; } /* IE */
+td input          { font-size: 1em; } /* IE */
+td input.submit   { font-size: 1em; } /* IE */
+td select         { font-size: 1em; } /* IE */
+p *               { font-size: 1em; }
+p input           { font-size: 1em; } /* IE */
+p input.submit    { font-size: 1em; } /* IE */
+p label           { font-size: 1em; } /* IE */
+p select          { font-size: 1em; } /* IE */
+li *              { font-size: 1em; }
+li p              { font-size: 1em; } /* IE */
+
+blockquote {
+  font-style: italic;
+  padding-left: 1em;
+}
+
+hr { 
+  height: 0.1em;
+  background: #CCC;
+  color: #CCC;
+  border: none; 
+  margin: 1.5em 0 1.5em 0;
+  width: 40em;
+}
+
+/* Layout and structure */
+
+#busy           { display: inline; font-size: 1.6em; }
+#container      { width: 75em; margin: 4em auto 0 auto; text-align: left; }
+#login          { position: absolute; right: 1em; top: 1em; margin: 0.6em; }
+#administration { position: absolute; right: 1em; top: 4em; }
+#message        { margin: 1.5em 0 1em 0; font-size: 1.6em; }
+#sub-navigation { height: 1.5em; }
+#actions        { float: left; }
+#footer         { margin: 2em 0 0 0; }
+
+#status { 
+  padding: 0.2em 1em 0 1em; 
+  float: right;
+  text-align: right; 
+  font-size: 1.4em;
+  line-height: 1.2em;
+  color: #858585;
+}
+
+#navigation { 
+  height: 3.5em;
+  padding: 0.5em 0 0.4em 1em;
+  background: #ffeaea;
+}
+
+#search_input { 
+  display: inline; 
+  text-align: right; 
+  float: right; 
+  padding: 0 1em 0 0; 
+}
+
+#confirm_deletion {
+  z-index: 100;
+  position: absolute;
+  width: 25em;
+  border: 1px solid #d9d9d9;
+  background: #fafafa;
+}
+
+/* not in use */
+#page_edit {
+  z-index: 100;
+  position: absolute;
+  width: 30em; 
+  padding: 0.75em;
+  margin-top: -1.5em;
+  margin-left: 2em;
+  border: 2px solid #d9d9d9;
+  background: #fafafa;
+}
+
+#navigation ul     { margin: 0; padding: 0.25em 0 0 0; display: inline; text-align: left; float: left; }
+#login ul          { 
+	margin: 0; 
+	padding: 0.1em 0.5em 0 0.5em; 
+	display: block; 
+	text-align: left; 
+	font-size: 1.4em;
+	line-height: 1.2em;
+}
+#administration ul { margin: 0; padding: 0; font-size: 1.4em; line-height: 1.2em; }
+#actions ul        { margin: 0; padding: 0.2em 0 0 1em; font-size: 1.4em; line-height: 1.2em; }
+#footer ul         { margin: 0; padding: 0; }
+#list ul           { margin: 0.5em 0 0 0; }
+
+#navigation li     { display: inline; list-style-type: none; padding: 0 0.2em 0 0; }
+#login li          { display: inline; list-style-type: none; padding: 0 0.2em 0 0; }
+#sections li       { display: inline; list-style-type: none; }
+#administration li { display: inline; list-style-type: none; }
+#actions li        { display: inline; list-style-type: none; padding: 0 0.2em 0 0; }
+#latest li         { margin: 0.4em 0 0 0; }
+#footer li         { display: inline; list-style-type: none; padding: 0 0.2em 0 0; }
+ol.revision_history li { margin: 0.4em 0 0 0; }
+
+#sections li a { font-weight: bold; }
+#content label { margin: 0.8em 0 0.1em 0; }
+#page_edit label { margin: 0.8em 0 0.1em 0; }
+#login td      { padding: 0; margin: 0; }
+#footer hr     { margin-left: auto; margin-right: auto; }
+
+
+/* Extra */
+
+.latest_item_information, .description { 
+  color: #858585; 
+  font-size: 0.8em; 
+  line-height: 1.4em; 
+}
+
+p.extra-margin { margin: 0.5em; }
+p.less-margin  { margin: 0.025em; }
+
+.fieldWithErrors input { background: #ffd0d0; }
+.formError { font-size: 1.2em; }
+
+/* Headers */
+h1.logo    { font-size: 5.8em; margin: 0; padding: 0; display: inline; }
+h1.title   { margin-top: 0; padding-top: 0; }
+h1.title a { text-decoration: none; }
+
+/* Misc */
+h3 small {
+  font-size: 0.8em;
+  font-weight: normal;
+}
+img.icon    { margin-bottom: -2px; }
+
+/* Misc for forms */
+label.block { font-size: 1.8em; font-weight: bold; display: block; }
+span.label  { font-size: 1.2em; font-weight: bold; }
+span.abort  { font-size: 1.6em; }
+
+div.add_permission_link { font-size: 1.6em; margin: 0.5em 0 0.5em 0; }
+
+/* Messages */
+span.message { background: #FFC; }
+span.confirm { background: #e3ffb7; }
+span.notice  { background: #cbebff; }
+span.error   { background: #ffb0b0; }
+span.failure { background: #ffb0b0; }
+
+/* HTMLDiff */
+
+.diff_source {
+  border: 1px solid #808080;
+  background: #FFF;
+  padding: 10px;
+  margin: 0 10px 0 0;
+}
+
+del.diffmod {
+  color: #000;
+  text-decoration: none;
+  background-color: #ffa7a7;
+}
+
+ins.diffmod {
+  background-color: #cfc;
+  text-decoration: none;
+  color: #000;
+}
+
+del.diffdel { color: #f30; }
+ins.diffins { color: #090; }
