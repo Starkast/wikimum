@@ -4,7 +4,7 @@ class Page < Sequel::Model
   end
 
   def before_save
-    self.compiled_content = Markup.to_html(self.content, self.markup.to_sym)
+    self.compiled_content = Markup.to_html(self.content)
   end
 
   def self.search(query)
