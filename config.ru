@@ -10,10 +10,12 @@ end
 
 require 'sinatra/base'
 
+$:.unshift File.join(File.dirname(__FILE__), 'lib')
+
 require './config/environment'
-require './lib/services'
-require './lib/models'
-require './lib/controllers'
+require 'services'
+require 'models'
+require 'controllers'
 
 map '/' do
   use Rack::Static, {

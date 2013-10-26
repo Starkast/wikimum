@@ -1,1 +1,2 @@
-Dir["./lib/controllers/*.rb"].sort.each { |file| require file }
+require 'controllers/base_controller'
+require 'controllers/page_controller'
