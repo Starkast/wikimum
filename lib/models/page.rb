@@ -1,6 +1,7 @@
 class Page < Sequel::Model
+
   def before_create
-    self.slug = self.title.gsub(/[^\d\w\sÅÄÖåäö_:-]/i, '').gsub(' ', '_')
+    self.slug = Page.slugify_title(title)
   end
 
   def before_save
@@ -16,5 +17,12 @@ class Page < Sequel::Model
     patterns = terms.map {|t| "%#{t}%" }
 
     self.dataset.grep(columns, patterns, case_insensitive: true, all_patterns: true)
+  end
+
+  private
+
+  def self.slugify_title(title)
+    regexp = /[^\d\w\sÅÄÖåäö_:-]/i
+    title.gsub(regexp, '').gsub(' ', '_')
   end
 end
