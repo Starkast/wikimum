@@ -6,6 +6,14 @@ require 'redcarpet/compat'
 
 class Markup
   def self.to_html(content)
-    Markdown.new(content).to_html
+    wikified_content = self.wikify_content(content)
+    Markdown.new(wikified_content).to_html
+  end
+
+  # Snatched from old Wikimum codebase
+  def self.wikify_content(content)
+    content.gsub(/\[\[([\d\w\sÅÄÖåäö_:-]{1,35})\]\]/i) do
+      "[#{$1}](/#{$1})"
+    end
   end
 end
