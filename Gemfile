@@ -9,7 +9,6 @@ gem 'rack-flash3', require: 'rack-flash'
 gem 'haml'
 gem 'thin'
 
-gem 'RedCloth'
 gem 'redcarpet'
 
 group :development do
