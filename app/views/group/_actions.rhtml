@@ -1,6 +1,0 @@
-<%# Ugly, this should be abstracted down to the actions method %>
-<% if @current_user.admin? %>
-<ul>
-  <%= actions(@group).map { |p| "<li>#{p}</li>\n" } %>
-</ul>
-<% end %>

@@ -1,7 +1,0 @@
-/*
- *   Print stylesheet for the 'Imum' theme, depends on the normal
- *   stylesheet to work. Just overrides some values.
- **/
-
-/* Align text to the left, since there are no containers */
-body { text-align: left; }

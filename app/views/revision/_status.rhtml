@@ -1,1 +1,0 @@
-<%= link_to "Revision #{@revision.number}", revision_history_url(:id => @revision) %>, ändrad för <%= @revision.updated_on.age_in_swedish_words(:minutes => true) -%> sen av <%= user_show_link(@revision.updater) -%>

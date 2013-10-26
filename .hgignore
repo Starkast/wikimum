@@ -1,5 +1,0 @@
-syntax: glob
-log/*
-config/database.yml
-config/environment.rb
-config/wiki.yml
