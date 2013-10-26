@@ -19,9 +19,9 @@ require 'controllers'
 
 map '/' do
   use Rack::Static, {
-    :root => "public",
-    :urls => ["/stylesheets", "/images", "/javascripts", "/favicon.ico", "/robots.txt"],
-    :cache_control => "public,max-age=#{365 * 24 * 3600}"
+    root: "public",
+    urls: ["/stylesheets", "/images", "/javascripts", "/favicon.ico", "/robots.txt"],
+    cache_control: "public,max-age=#{365 * 24 * 3600}"
   }
 
   run PageController
