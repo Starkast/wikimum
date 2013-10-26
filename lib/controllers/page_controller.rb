@@ -9,10 +9,6 @@ class PageController < BaseController
     haml :index
   end
 
-  get '/new' do
-    haml :new
-  end
-
   get '/search' do
     @pages = Page.search(params[:q])
 
@@ -29,19 +25,31 @@ class PageController < BaseController
     end
   end
 
-  get '/:slug' do |slug|
-    @page = Page.where(Sequel.ilike(:slug, slug)).first
-    haml :show
-  end
-
   post '/new' do
     page = Page.create(title: params[:title], content: params[:content],description: params[:description])
     redirect "#{page.slug}"
   end
 
+  get '/new' do
+    @page = Page.new
+    haml :new
+  end
+
+  get '/new/:slug' do |slug|
+    @page = Page.new(title: slug)
+    flash.now[:notice] = "Det finns ingen sida för #{slug}, du får skapa den!"
+    haml :new
+  end
+
   get '/:slug/edit' do |slug|
     @page = Page.where(Sequel.ilike(:slug, slug)).first
     haml :edit
+  end
+
+  get '/:slug' do |slug|
+    @page = Page.where(Sequel.ilike(:slug, slug)).first
+    redirect "new/#{slug}" unless @page
+    haml :show
   end
 
   # Borde vara put
