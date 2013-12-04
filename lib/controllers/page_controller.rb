@@ -9,6 +9,11 @@ class PageController < BaseController
     haml :index
   end
 
+  get '/latest' do
+    @pages = Page.order(:updated_on).reverse
+    haml :latest
+  end
+
   get '/search' do
     @pages = Page.search(params[:q])
 
