@@ -30,7 +30,7 @@ class PageController < BaseController
     end
   end
 
-  post '/new' do
+  post '/new*' do
     page = Page.create(title: params[:title], content: params[:content],description: params[:description])
     redirect "#{page.slug}"
   end
