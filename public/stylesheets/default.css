@@ -58,6 +58,7 @@ textarea, input {
 textarea { font-family: Monospace; }
 
 input.submit {
+button, input.submit {
   background: #ededed;
   margin: 0.3em 0 0 0; 
   padding: 0.1em;
