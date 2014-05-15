@@ -2,7 +2,7 @@ namespace :db do
   desc 'Apply all migrations'
   task :migrate do |task|
     check_for_param('DATABASE_URL', task)
-    db_url = ENV['DATABASE_URL']
+    db_url = ENV.fetch('DATABASE_URL')
     run "sequel -E -m ./migrations #{db_url}"
   end
 
@@ -10,7 +10,7 @@ namespace :db do
     desc 'Migrate down all migrations'
     task :downall do |task|
       check_for_param('DATABASE_URL', task)
-      db_url = ENV['DATABASE_URL']
+      db_url = ENV.fetch('DATABASE_URL')
       run "sequel -E -m ./migrations -M 0 #{db_url}"
     end
 
@@ -18,8 +18,8 @@ namespace :db do
     task :down do |task|
       check_for_param('DATABASE_URL', task)
       check_for_param('version', task)
-      db_url = ENV['DATABASE_URL']
-      run "sequel -E -m ./migrations -M #{ENV['version']} #{db_url}"
+      db_url = ENV.fetch('DATABASE_URL')
+      run "sequel -E -m ./migrations -M #{ENV.fetch('version')} #{db_url}"
     end
   end
 end
@@ -33,7 +33,7 @@ def run(command)
 end
 
 def check_for_param(param, task)
-  if ENV[param].nil?
+  if ENV.fetch(param).nil?
     $stderr.puts <<-EOS
 
 You have to run this task with the parameter '#{param}' set.

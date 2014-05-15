@@ -1,6 +1,6 @@
 require 'bundler/setup'
 
-if ENV['RACK_ENV'] == 'development'
+if ENV.fetch('RACK_ENV') == 'development'
   require 'dotenv'
   Dotenv.load
 
