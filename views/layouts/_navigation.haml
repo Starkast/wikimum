@@ -10,5 +10,6 @@
       %a{ href: '/list' } Innehållsförteckning
     %li
       %a{ href: '/latest' } Senast ändrad
-    %li
-      %a{ href: '/new' } Skapa ny sida
+    - if session[:login]
+      %li
+        %a{ href: '/new' } Skapa ny sida

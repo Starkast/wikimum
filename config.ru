@@ -25,4 +25,8 @@ map '/' do
   }
 
   run PageController
+
+  map '/authorize' do
+    run AuthorizeController
+  end
 end

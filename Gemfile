@@ -11,6 +11,9 @@ gem 'thin'
 
 gem 'redcarpet'
 
+gem 'oauth2'
+gem 'rest-client'
+
 group :development do
   gem 'foreman'
   gem 'racksh'

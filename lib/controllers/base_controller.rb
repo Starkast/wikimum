@@ -11,4 +11,14 @@ class BaseController < Sinatra::Base
   configure :development do
     register Sinatra::Reloader
   end
+
+  before do
+    return if request.request_method == "GET"
+
+    unless session[:login]
+      flash[:error] = "Not authorized!"
+
+      redirect back
+    end
+  end
 end
