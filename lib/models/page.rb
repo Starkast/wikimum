@@ -6,7 +6,7 @@ class Page < Sequel::Model
   def before_save
     self.compiled_content = Markup.to_html(self.content)
     self.updated_on = Time.now
-    self.title_char = Page.new(title).first_char
+    self.title_char = Title.new(title).first_char
   end
 
   def self.search(query)
