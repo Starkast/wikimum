@@ -8,6 +8,7 @@ gem 'sinatra-contrib'
 gem 'rack-flash3', require: 'rack-flash'
 gem 'haml'
 gem 'thin'
+gem 'rack-ssl'
 
 gem 'redcarpet'
 

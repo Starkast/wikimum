@@ -1,6 +1,12 @@
+require 'rack/ssl'
+
 require_relative 'config/environment'
 
 map '/' do
+  unless ENV.fetch('RACK_ENV') == 'development'
+    use Rack::SSL
+  end
+
   use Rack::Static, {
     root: "public",
     urls: ["/stylesheets", "/images", "/javascripts", "/favicon.ico", "/robots.txt"],

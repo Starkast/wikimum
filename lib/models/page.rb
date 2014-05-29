@@ -1,4 +1,7 @@
 class Page < Sequel::Model
+
+  one_to_many :revisions
+
   def before_create
     self.slug = Title.new(self.title).slug
   end
@@ -7,6 +10,18 @@ class Page < Sequel::Model
     self.compiled_content = Markup.to_html(self.content)
     self.updated_on = Time.now
     self.title_char = Title.new(self.title).first_char
+  end
+
+  def revise!
+    new_revision = Revision.new
+    self.values.each do |key, value|
+      next if key == :id
+      new_revision[key] = value
+    end
+    new_revision.page_id = self.id
+    new_revision.save
+
+    self.revision += 1
   end
 
   def self.search(query)
