@@ -1,6 +1,7 @@
 class PageController < BaseController
   get '/' do
     @page = Page.order(:id).first
+    redirect "new" unless @page
     haml :show
   end
 
