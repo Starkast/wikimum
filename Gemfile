@@ -14,10 +14,11 @@ gem 'redcarpet'
 gem 'oauth2'
 gem 'rest-client'
 
+gem 'dotenv'
+
 group :development do
   gem 'foreman'
   gem 'racksh'
-  gem 'dotenv'
   gem 'rake'
   gem 'pry'
 end
