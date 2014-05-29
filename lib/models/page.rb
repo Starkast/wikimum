@@ -7,6 +7,7 @@ class Page < Sequel::Model
   def before_save
     self.compiled_content = Markup.to_html(self.content)
     self.updated_on = Time.now
+    self.title_char = Page.first_char(title)
   end
 
   def self.search(query)
@@ -25,5 +26,15 @@ class Page < Sequel::Model
   def self.slugify_title(title)
     regexp = /[^\d\w\sÅÄÖåäö_:-]/i
     title.gsub(regexp, '').gsub(' ', '_')
+  end
+
+  def self.first_char(title)
+    char = title[0]
+
+    if char =~ /[a-z]/i
+      char.upcase
+    else
+      '#'
+    end
   end
 end
