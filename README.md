@@ -7,7 +7,7 @@ Next Generation Wikimum!
 _This application is under active development and should not be used in production yet_
 
     bundle install
-    bundle exec rackup
+    bundle exec unicorn -c ./config/unicorn.rb
 
 ### Environment variables
 
