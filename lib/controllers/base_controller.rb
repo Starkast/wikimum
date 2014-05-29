@@ -1,5 +1,6 @@
 require 'rack-flash'
 require 'sinatra/reloader'
+require 'haml'
 
 class BaseController < Sinatra::Base
   set :views, -> { "views/#{self.name.downcase.sub('controller', '')}" }
