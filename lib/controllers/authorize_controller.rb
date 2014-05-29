@@ -12,9 +12,8 @@ class AuthorizeController < BaseController
     access_token = Authorize.access_token(session_code)
     user_info    = Authorize.user_info(access_token)
 
-    user_info.each do |key, value|
-      session[key] = value
-    end
+    session[:user_info] = user_info
+    session[:login] = user_info.fetch(:login)
 
     redirect '/'
   end

@@ -1,0 +1,8 @@
+%h1.title= User
+
+%table
+  - @user_info.each do |key, value|
+    %tr
+      %td= key
+      %td= value
+

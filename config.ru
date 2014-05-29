@@ -18,4 +18,8 @@ map '/' do
   map '/authorize' do
     run AuthorizeController
   end
+
+  map '/user' do
+    run UserController
+  end
 end

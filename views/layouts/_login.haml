@@ -1,5 +1,6 @@
 %h5
   - if session[:login]
-    %a{ href: '/authorize/reset' }= %Q(Logout #{session[:login]})
+    %a{ href: '/user' }= %Q(#{session[:login]})
+    %a{ href: '/authorize/reset' }= %q(Logout)
   - else
     %a{ href: '/authorize' } Authorize (GitHub)
