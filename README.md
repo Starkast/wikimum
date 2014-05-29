@@ -21,6 +21,18 @@ GITHUB_BASIC_SECRET_ID=
 
     bundle exec racksh
 
+### [Migrations][sequel-migrations]
+
+To migrate to the latest version, run:
+
+    rake db:migrate
+
+This Rake task takes an optional argument specifying the target version. To migrate to version 42, run:
+
+    rake db:migrate[42]
+
+[sequel-migrations]: http://sequel.jeremyevans.net/rdoc/files/doc/migration_rdoc.html
+
 ## History
 
 This wiki software was originally developed by [Johan Eckerström](http://github.com/jage) at IMUM HB back in 2005. When we killed the company the software was kept running at [Starkast](http://wiki.starkast.net/) but not much work was done on it. Originally a Rails (1.x) app, it's now a Sinatra based application.
