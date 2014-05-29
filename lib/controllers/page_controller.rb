@@ -63,7 +63,7 @@ class PageController < BaseController
   # Borde vara put
   post '/:slug' do |slug|
     page = Page.where(Sequel.ilike(:slug, slug)).first
-    page.update(title: params[:title], content: params[:content], description: params[:description])
+    page.update(title: params[:title], content: params[:content], description: params[:description], comment: params[:comment])
 
     redirect "#{page.slug}"
   end
