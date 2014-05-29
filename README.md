@@ -15,6 +15,7 @@ _This application is under active development and should not be used in producti
 DATABASE_URL=postgres://
 GITHUB_BASIC_CLIENT_ID=
 GITHUB_BASIC_SECRET_ID=
+SESSION_SECRET= # optional in development mode
 ```
 
 ### Console
