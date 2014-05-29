@@ -49,6 +49,9 @@ GEM
     rest-client (1.6.7)
       mime-types (>= 1.16)
     sequel (4.10.0)
+    sequel_pg (1.6.9)
+      pg (>= 0.8.0)
+      sequel (>= 3.39.0)
     sinatra (1.4.5)
       rack (~> 1.4)
       rack-protection (~> 1.4)
@@ -76,7 +79,6 @@ DEPENDENCIES
   foreman
   haml
   oauth2
-  pg
   pry
   rack-flash3
   rack-ssl
@@ -84,7 +86,7 @@ DEPENDENCIES
   rake
   redcarpet
   rest-client
-  sequel
+  sequel_pg
   sinatra
   sinatra-contrib
   thin

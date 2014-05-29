@@ -3,6 +3,7 @@ ruby '2.1.2'
 
 gem 'sequel'
 gem 'pg'
+gem 'sequel_pg'
 gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'rack-flash3', require: 'rack-flash'
