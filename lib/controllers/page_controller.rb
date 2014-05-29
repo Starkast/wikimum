@@ -2,6 +2,7 @@ class PageController < BaseController
   get '/' do
     @page = Page.order(:id).first
     redirect "new" unless @page
+    etag @page.sha1 unless session[:login]
     haml :show
   end
 
@@ -58,12 +59,14 @@ class PageController < BaseController
   get '/:slug' do |slug|
     @page = Page.where(slug: slug.downcase).first
     redirect "new/#{slug}" unless @page
+    etag @page.sha1 unless session[:login]
     haml :show
   end
 
   get '/:slug/:revision' do |slug, revision|
     @page = Revision.where(slug: slug.downcase, revision: revision).first
     redirect "#{slug}" unless @page
+    etag @page.sha1 unless session[:login]
     haml :show
   end
 
