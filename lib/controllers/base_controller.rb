@@ -23,10 +23,18 @@ class BaseController < Sinatra::Base
   end
 
   helpers do
+    def logged_in?
+      session[:login]
+    end
+
+    def current_user
+      session[:login]
+    end
+
     def prevent_unauthorized_modifications
       return if request.request_method == "GET"
 
-      unless session[:login]
+      unless logged_in?
         flash[:error] = "Not authorized!"
 
         redirect back

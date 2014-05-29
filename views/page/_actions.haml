@@ -1,6 +1,6 @@
 %ul
   %li
-    - if session[:login]
+    - if logged_in?
       %a{ href: "/#{@page.slug}/edit" } Ändra
     - unless @page.revisions.empty?
       %span
