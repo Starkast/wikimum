@@ -10,13 +10,11 @@ gem 'rack-flash3', require: 'rack-flash'
 gem 'haml'
 gem 'unicorn'
 gem 'rack-ssl'
-
 gem 'redcarpet'
-
 gem 'oauth2'
 gem 'rest-client'
-
 gem 'dotenv'
+gem 'newrelic_rpm'
 
 group :development do
   gem 'foreman'
