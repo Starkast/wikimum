@@ -19,6 +19,7 @@ class PageController < BaseController
 
   get '/search' do
     @pages = Page.search(params[:q])
+    @q = params[:q]
 
     case @pages.count
     when 0

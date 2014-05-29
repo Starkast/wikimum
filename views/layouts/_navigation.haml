@@ -1,6 +1,6 @@
 %form{ action: '/search', method: 'get' }
   #search_input
-    %input#q{ name: 'q', size: 11, type: 'text', value: '' }
+    %input#q{ name: 'q', size: 11, type: 'text', value: @q }
     %input{ type: 'submit', value: 'Sök' }
 #navigation_links
   %ul
