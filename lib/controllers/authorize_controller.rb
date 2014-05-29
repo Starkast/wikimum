@@ -1,34 +1,18 @@
 require 'uri'
-require 'rest-client'
-require 'json'
 
 class AuthorizeController < BaseController
-
-  GITHUB_OAUTH_AUTHORIZE_URL = %q(https://github.com/login/oauth/authorize)
-  GITHUB_OAUTH_TOKEN_URL =     %q(https://github.com/login/oauth/access_token)
-
   get '/' do
     parameters = %Q(?scope=user:email&client_id=#{ENV.fetch('GITHUB_BASIC_CLIENT_ID')})
 
-    redirect URI.join(GITHUB_OAUTH_AUTHORIZE_URL, parameters)
+    redirect URI.join(Authorize::GITHUB_OAUTH_AUTHORIZE_URL, parameters)
   end
 
   get '/callback' do
     session_code = request.env.fetch('rack.request.query_hash').fetch('code')
+    access_token = Authorize.access_token(session_code)
+    user_info    = Authorize.user_info(access_token)
 
-    oauth_result = RestClient.post(GITHUB_OAUTH_TOKEN_URL,
-                            { client_id: ENV.fetch('GITHUB_BASIC_CLIENT_ID'),
-                              client_secret: ENV.fetch('GITHUB_BASIC_SECRET_ID'),
-                              code: session_code},
-                              accept: :json )
-
-    access_token = JSON.parse(oauth_result).fetch('access_token')
-
-    user_response = RestClient.get('https://api.github.com/user',
-      { params: { access_token: access_token } })
-    user_result = JSON.parse(user_response, symbolize_names: true)
-
-    user_result.each do |key, value|
+    user_info.each do |key, value|
       session[key] = value
     end
 
