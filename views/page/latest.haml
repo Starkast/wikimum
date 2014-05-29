@@ -5,4 +5,7 @@
     - pages.each do |page|
       %li
         %a{ href: "#{page.slug}" }= page.title
-        %span.description= page.description
+        - unless page.comment.empty?
+          %span.latest_item_information
+            med kommentaren
+            = %Q("#{page.comment}")
