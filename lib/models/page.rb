@@ -10,6 +10,7 @@ class Page < Sequel::Model
     self.compiled_content = Markup.to_html(self.content)
     self.updated_on = Time.now
     self.title_char = Title.new(self.title).first_char
+    self.sha1 = self.calculate_sha1
   end
 
   def revise!
@@ -22,6 +23,10 @@ class Page < Sequel::Model
     new_revision.save
 
     self.revision += 1
+  end
+
+  def calculate_sha1
+    Digest::SHA1.hexdigest(self.to_hash.values.join)
   end
 
   def self.search(query)
