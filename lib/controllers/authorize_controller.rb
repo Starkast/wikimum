@@ -11,9 +11,11 @@ class AuthorizeController < BaseController
     session_code = request.env.fetch('rack.request.query_hash').fetch('code')
     access_token = Authorize.access_token(session_code)
     user_info    = Authorize.user_info(access_token)
+    user         = Authorize.create_or_update_user(user_info)
 
     session[:user_info] = user_info
-    session[:login] = user_info.fetch(:login)
+    session[:login]     = user_info.fetch(:login)
+    session[:user_id]   = user.id
 
     redirect '/'
   end

@@ -1,5 +1,15 @@
 %h1.title= User
 
+%h2 Wikimum info
+
+%table
+  - @user.values.each do |key, value|
+    %tr
+      %td= key
+      %td= value
+
+%h2 GitHub info
+
 %table
   - @user_info.each do |key, value|
     %tr
