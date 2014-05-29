@@ -2,6 +2,7 @@ GEM
   remote: http://rubygems.org/
   specs:
     backports (3.6.0)
+    coderay (1.1.0)
     daemons (1.1.9)
     dotenv (0.11.1)
       dotenv-deployment (~> 0.0.2)
@@ -12,8 +13,13 @@ GEM
       thor (>= 0.13.6)
     haml (4.0.5)
       tilt
+    method_source (0.8.2)
     multi_json (1.10.0)
     pg (0.17.1)
+    pry (0.9.12.6)
+      coderay (~> 1.0)
+      method_source (~> 0.8)
+      slop (~> 3.4)
     rack (1.5.2)
     rack-flash3 (1.0.5)
       rack
@@ -38,6 +44,7 @@ GEM
       rack-test
       sinatra (~> 1.4.0)
       tilt (~> 1.3)
+    slop (3.5.0)
     thin (1.6.2)
       daemons (>= 1.0.9)
       eventmachine (>= 1.0.0)
@@ -53,6 +60,7 @@ DEPENDENCIES
   foreman
   haml
   pg
+  pry
   rack-flash3
   racksh
   rake

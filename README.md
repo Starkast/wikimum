@@ -6,6 +6,13 @@ Next Generation Wikimum!
 
 _This application is under active development and should not be used in production yet_
 
+    bundle install
+    bundle exec rackup
+
+### Console
+
+    bundle exec racksh
+
 ### Todo
 
 * Add URL compability with the [old Wiki](https://github.com/jage/wikimum/tree/v1.0)
