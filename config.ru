@@ -1,21 +1,4 @@
-require 'bundler/setup'
-
-if ENV.fetch('RACK_ENV') == 'development'
-  require 'dotenv'
-  Dotenv.load
-
-  $stdout.sync = true
-  $stderr.sync = true
-end
-
-require 'sinatra/base'
-
-$:.unshift File.join(File.dirname(__FILE__), 'lib')
-
-require './config/environment'
-require 'services'
-require 'models'
-require 'controllers'
+require_relative 'config/environment'
 
 map '/' do
   use Rack::Static, {

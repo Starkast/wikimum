@@ -5,7 +5,7 @@ class PageController < BaseController
   end
 
   get '/list' do
-    @pages = Page.order(:title)
+    @page_groups = Page.order(:title_char, :title).to_hash_groups(:title_char)
     haml :index
   end
 

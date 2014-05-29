@@ -19,4 +19,5 @@ group :development do
   gem 'racksh'
   gem 'dotenv'
   gem 'rake'
+  gem 'pry'
 end

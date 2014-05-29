@@ -6,6 +6,9 @@ Next Generation Wikimum!
 
 _This application is under active development and should not be used in production yet_
 
+    bundle install
+    bundle exec rackup
+
 ### Environment variables
 
 ```
@@ -13,10 +16,9 @@ GITHUB_BASIC_CLIENT_ID=
 GITHUB_BASIC_SECRET_ID=
 ```
 
-### Todo
+### Console
 
-* Add URL compability with the [old Wiki](https://github.com/jage/wikimum/tree/v1.0)
-* Create migration for old content
+    bundle exec racksh
 
 ## History
 
