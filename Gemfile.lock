@@ -37,6 +37,7 @@ GEM
     racksh (1.0.0)
       rack (>= 1.0)
       rack-test (>= 0.5)
+    rake (10.3.1)
     redcarpet (3.1.2)
     rest-client (1.6.7)
       mime-types (>= 1.16)
@@ -70,6 +71,7 @@ DEPENDENCIES
   pg
   rack-flash3
   racksh
+  rake
   redcarpet
   rest-client
   sequel
