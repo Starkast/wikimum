@@ -1,10 +1,12 @@
-require 'bundler'
+require 'rake/testtask'
 
-Bundler.require
+Dir['tasks/*.rake'].each { |f| load f }
 
-Dir['./tasks/*.rake'].each { |f| load f }
+task default: [:test]
+task test: ['test:unit']
 
-task :environment do
-  require './config/environment'
-  require './lib/models'
+namespace(:test) do
+  Rake::TestTask.new(:unit) do |t|
+    t.pattern = "test/unit/*_test.rb"
+  end
 end

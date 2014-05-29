@@ -15,4 +15,5 @@ group :development do
   gem 'foreman'
   gem 'racksh'
   gem 'dotenv'
+  gem 'rake'
 end
