@@ -60,9 +60,16 @@ class PageController < BaseController
     haml :show
   end
 
+  get '/:slug/:revision' do |slug, revision|
+    @page = Revision.where(Sequel.ilike(:slug, slug), revision: revision).first
+    redirect "#{slug}" unless @page
+    haml :show
+  end
+
   # Borde vara put
   post '/:slug' do |slug|
     page = Page.where(Sequel.ilike(:slug, slug)).first
+    page.revise!
     page.update(title: params[:title], content: params[:content], description: params[:description], comment: params[:comment])
 
     redirect "#{page.slug}"

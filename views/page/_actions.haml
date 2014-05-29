@@ -1,4 +1,13 @@
-- if session[:login]
-  %ul
-    %li
+%ul
+  %li
+    - if session[:login]
       %a{ href: "/#{@page.slug}/edit" } Ändra
+    - unless @page.revisions.empty?
+      %span
+        (
+        - unless @page.revision == 1
+          %a{ href: "/#{@page.slug}/#{@page.revision - 1}"} -
+        = @page.revision.to_s.rjust(2, "0")
+        - unless @page.revision == (@page.revisions.count + 1)
+          %a{ href: "/#{@page.slug}/#{@page.revision + 1}"} +
+        )

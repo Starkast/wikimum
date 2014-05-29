@@ -5,4 +5,5 @@
     - pages.each do |page|
       %li
         %a{ href: "#{page.slug}" }= page.title
+        = "(#{page.revision})"
         %span.description= page.description
