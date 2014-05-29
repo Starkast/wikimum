@@ -1,6 +1,9 @@
 %h1 Senast ändrad
-%ul
-  - @pages.each do |page|
-    %li
-      %a{ href: "#{page.slug}" }= page.title
-      %span.description= page.description
+- @page_groups.each do |date, pages|
+  %h2= date
+  %ul
+    - pages.each do |page|
+      %li
+        %a{ href: "#{page.slug}" }= page.title
+        %span.description= page.description
+

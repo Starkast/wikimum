@@ -10,7 +10,9 @@ class PageController < BaseController
   end
 
   get '/latest' do
-    @pages = Page.order(:updated_on).reverse
+    @page_groups = Page.order(:updated_on).reverse.
+      select_append(Sequel.lit("DATE(updated_on)")).
+      to_hash_groups(:date)
     haml :latest
   end
 
