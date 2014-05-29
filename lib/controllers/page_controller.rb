@@ -1,6 +1,6 @@
 class PageController < BaseController
   get '/' do
-    @page = Page.first
+    @page = Page.order(:id).first
     haml :show
   end
 
