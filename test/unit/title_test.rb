@@ -21,4 +21,9 @@ class TitleTest < MiniTest::Unit::TestCase
     title = 'this is a sentence'
     assert_equal 'this_is_a_sentence', Title.new(title).slug
   end
+
+  def test_slug_should_downcase
+    title = 'Ape'
+    assert_equal 'ape', Title.new(title).slug
+  end
 end

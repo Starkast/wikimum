@@ -9,7 +9,7 @@ class Title
 
   def slug
     regexp = /[^\d\w\sÅÄÖåäö_:-]/i
-    @title.gsub(regexp, '').gsub(' ', '_')
+    @title.gsub(regexp, '').gsub(' ', '_').downcase
   end
 
   def first_char

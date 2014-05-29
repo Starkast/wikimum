@@ -50,25 +50,25 @@ class PageController < BaseController
   end
 
   get '/:slug/edit' do |slug|
-    @page = Page.where(Sequel.ilike(:slug, slug)).first
+    @page = Page.where(slug: slug.downcase).first
     haml :edit
   end
 
   get '/:slug' do |slug|
-    @page = Page.where(Sequel.ilike(:slug, slug)).first
+    @page = Page.where(slug: slug.downcase).first
     redirect "new/#{slug}" unless @page
     haml :show
   end
 
   get '/:slug/:revision' do |slug, revision|
-    @page = Revision.where(Sequel.ilike(:slug, slug), revision: revision).first
+    @page = Revision.where(slug: slug.downcase, revision: revision).first
     redirect "#{slug}" unless @page
     haml :show
   end
 
   # Borde vara put
   post '/:slug' do |slug|
-    page = Page.where(Sequel.ilike(:slug, slug)).first
+    page = Page.where(slug: slug.downcase).first
     page.revise!
     page.update(title: params[:title], content: params[:content], description: params[:description], comment: params[:comment])
 
