@@ -79,6 +79,7 @@ DEPENDENCIES
   foreman
   haml
   oauth2
+  pg
   pry
   rack-flash3
   rack-ssl
@@ -86,6 +87,7 @@ DEPENDENCIES
   rake
   redcarpet
   rest-client
+  sequel
   sequel_pg
   sinatra
   sinatra-contrib
