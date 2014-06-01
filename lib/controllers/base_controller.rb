@@ -28,7 +28,7 @@ class BaseController < Sinatra::Base
     end
 
     def current_user
-      session[:login]
+      User[session.fetch(:user_id)]
     end
 
     def prevent_unauthorized_modifications

@@ -36,7 +36,7 @@ class PageController < BaseController
   end
 
   post '/new*' do
-    page = Page.create(title: params[:title], content: params[:content],description: params[:description])
+    page = Page.create(title: params[:title], content: params[:content],description: params[:description], author: current_user)
     redirect "#{page.slug}"
   end
 
@@ -74,7 +74,7 @@ class PageController < BaseController
   post '/:slug' do |slug|
     page = Page.where(slug: slug.downcase).first
     page.revise!
-    page.update(title: params[:title], content: params[:content], description: params[:description], comment: params[:comment])
+    page.update(title: params[:title], content: params[:content], description: params[:description], comment: params[:comment], author: current_user)
 
     redirect "#{page.slug}"
   end
