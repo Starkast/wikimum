@@ -1,6 +1,8 @@
+require 'rack/utils'
+
 class Title
   def initialize(title)
-    @title = title
+    @title = Rack::Utils.unescape(title)
   end
 
   def to_s
