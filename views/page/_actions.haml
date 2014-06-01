@@ -11,3 +11,8 @@
         - unless @page.revision == (@page.revisions.count + 1)
           %a{ href: "/#{@page.slug}/#{@page.revision + 1}"} +
         )
+  %li
+    Senast ändrad
+    = @page.updated_on
+    av
+    = @page.author.login
