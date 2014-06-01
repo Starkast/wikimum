@@ -43,7 +43,10 @@ class PageController < BaseController
   end
 
   post '/new*' do
-    page = Page.create(title: params[:title], content: params[:content],description: params[:description], author: current_user)
+    page = Page.new
+    page.set_fields(params, %i(title content description comment))
+    page.author = current_user
+    page.save
     redirect "#{page.slug}"
   end
 
@@ -80,7 +83,9 @@ class PageController < BaseController
   post '/:slug' do
     page = Page.find(slug: slug)
     page.revise!
-    page.update(title: params[:title], content: params[:content], description: params[:description], comment: params[:comment], author: current_user)
+    page.set_fields(params, %i(title content description comment))
+    page.author = current_user
+    page.save
 
     redirect "#{page.slug}"
   end
