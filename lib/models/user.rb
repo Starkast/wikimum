@@ -7,4 +7,8 @@ class User < Sequel::Model
     self.created_on ||= Time.now
     super
   end
+
+  def to_s
+    self.login
+  end
 end
