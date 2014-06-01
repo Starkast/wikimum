@@ -27,6 +27,11 @@ class TitleTest < MiniTest::Unit::TestCase
     assert_equal 'ape', Title.new(title).slug
   end
 
+  def test_slug_with_umlaut
+    title = 'Historik för Starkast'
+    assert_equal 'historik_för_starkast', Title.new(title).slug
+  end
+
   def test_slug_with_escaped_space
     title = 'Historik%20för%20Starkast'
     assert_equal 'historik_för_starkast', Title.new(title).slug
