@@ -1,7 +1,7 @@
 - unless @page.new?
   %ul
-    %li
-      - if logged_in?
+    - if logged_in?
+      %li
         %a{ href: "/#{@page.slug}/edit" } Ändra
       - unless @page.revisions.empty?
         %span
