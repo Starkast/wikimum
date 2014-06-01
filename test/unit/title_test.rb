@@ -11,29 +11,4 @@ class TitleTest < MiniTest::Unit::TestCase
     title = 'ärta'
     assert_equal '#', Title.new(title).first_char
   end
-
-  def test_slug
-    title = 'ape'
-    assert_equal 'ape', Title.new(title).slug
-  end
-
-  def test_slug_with_sentence
-    title = 'this is a sentence'
-    assert_equal 'this_is_a_sentence', Title.new(title).slug
-  end
-
-  def test_slug_should_downcase
-    title = 'Ape'
-    assert_equal 'ape', Title.new(title).slug
-  end
-
-  def test_slug_with_umlaut
-    title = 'Historik för Starkast'
-    assert_equal 'historik_för_starkast', Title.new(title).slug
-  end
-
-  def test_slug_with_escaped_space
-    title = 'Historik%20för%20Starkast'
-    assert_equal 'historik_för_starkast', Title.new(title).slug
-  end
 end

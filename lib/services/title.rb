@@ -1,17 +1,10 @@
-require 'rack/utils'
-
 class Title
   def initialize(title)
-    @title = Rack::Utils.unescape(title)
+    @title = title
   end
 
   def to_s
     @title
-  end
-
-  def slug
-    regexp = /[^\d\w\sÅÄÖåäö_:-]/i
-    @title.gsub(regexp, '').gsub(' ', '_').downcase
   end
 
   def first_char

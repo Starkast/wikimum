@@ -4,7 +4,7 @@ class Page < Sequel::Model
   many_to_one :author, class: :User
 
   def before_create
-    self.slug = Title.new(self.title).slug
+    self.slug = Slug.slugify(self.title)
   end
 
   def before_save

@@ -1,4 +1,11 @@
 class PageController < BaseController
+
+  helpers do
+    def slug
+      Slug.slugify(params[:slug]) if params[:slug]
+    end
+  end
+
   get '/' do
     @page = Page.order(:id).first
     redirect "new" unless @page
@@ -45,34 +52,33 @@ class PageController < BaseController
     haml :new
   end
 
-  get '/new/:slug' do |slug|
+  get '/new/:slug' do
     @page = Page.new(title: slug)
     flash.now[:notice] = "Det finns ingen sida för #{slug}, du får skapa den!"
     haml :new
   end
 
-  get '/:slug/edit' do |slug|
-    @page = Page.where(slug: slug.downcase).first
+  get '/:slug/edit' do
+    @page = Page.find(slug: slug)
     haml :edit
   end
 
-  get '/:slug' do |slug|
-    @page = Page.where(slug: slug.downcase).first
+  get '/:slug' do
+    @page = Page.find(slug: slug)
     redirect "new/#{slug}" unless @page
     etag @page.sha1 unless logged_in?
     haml :show
   end
 
-  get '/:slug/:revision' do |slug, revision|
-    @page = Revision.where(slug: slug.downcase, revision: revision).first
+  get '/:slug/:revision' do |_, revision|
+    @page = Revision.where(slug: slug, revision: revision).first
     redirect "#{slug}" unless @page
     etag @page.sha1 unless logged_in?
     haml :show
   end
 
-  # Borde vara put
-  post '/:slug' do |slug|
-    page = Page.where(slug: slug.downcase).first
+  post '/:slug' do
+    page = Page.find(slug: slug)
     page.revise!
     page.update(title: params[:title], content: params[:content], description: params[:description], comment: params[:comment], author: current_user)
 
