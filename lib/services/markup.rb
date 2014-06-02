@@ -1,17 +1,19 @@
-require 'redcarpet/compat'
-
-# TODO
-# * HTML support, just sanitize it
-# * Just GitHub flavored Markdown
+require 'html/pipeline'
 
 class Markup
   def self.to_html(content)
-    wikified_content = self.wikify_content(content)
-    Markdown.new(wikified_content).to_html
+    pipeline = HTML::Pipeline.new [
+      WikiLinkFilter,
+      HTML::Pipeline::MarkdownFilter,
+    ]
+    result = pipeline.call(content)
+    result.fetch(:output).to_s
   end
+end
 
-  # Snatched from old Wikimum codebase
-  def self.wikify_content(content)
+class WikiLinkFilter < HTML::Pipeline::Filter
+  def call
+    content = doc.to_s
     content.gsub(/\[\[([\d\w\sÅÄÖåäö_:-]{1,35})\]\]/i) do
       "[#{$1}](/#{$1})"
     end
