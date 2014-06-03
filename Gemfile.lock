@@ -64,7 +64,7 @@ GEM
     rake (10.3.2)
     rest-client (1.6.7)
       mime-types (>= 1.16)
-    sequel (4.10.0)
+    sequel (4.11.0)
     sequel_pg (1.6.9)
       pg (>= 0.8.0)
       sequel (>= 3.39.0)
