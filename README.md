@@ -32,6 +32,10 @@ This Rake task takes an optional argument specifying the target version. To migr
 
     rake db:migrate[42]
 
+Manually:
+
+    sequel -E -m migrations -M <n> postgres://localhost/wikimum
+
 [sequel-migrations]: http://sequel.jeremyevans.net/rdoc/files/doc/migration_rdoc.html
 
 ## History
