@@ -36,6 +36,10 @@ Manually:
 
     sequel -E -m migrations -M <n> postgres://localhost/wikimum
 
+Pull database from Heroku:
+
+    heroku pg:pull DATABASE_URL wikimum
+
 [sequel-migrations]: http://sequel.jeremyevans.net/rdoc/files/doc/migration_rdoc.html
 
 ## History
