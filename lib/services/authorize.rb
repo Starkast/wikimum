@@ -4,7 +4,6 @@ require 'json'
 module Authorize
   module_function
 
-  GITHUB_OAUTH_AUTHORIZE_URL = %q(https://github.com/login/oauth/authorize)
   GITHUB_OAUTH_TOKEN_URL =     %q(https://github.com/login/oauth/access_token)
 
   def access_token(code)

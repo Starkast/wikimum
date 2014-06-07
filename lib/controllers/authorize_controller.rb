@@ -1,10 +1,12 @@
 require 'uri'
 
 class AuthorizeController < BaseController
+  GITHUB_OAUTH_AUTHORIZE_URL = %q(https://github.com/login/oauth/authorize)
+
   get '/' do
     parameters = %Q(?scope=user:email&client_id=#{ENV.fetch('GITHUB_BASIC_CLIENT_ID')})
 
-    redirect URI.join(Authorize::GITHUB_OAUTH_AUTHORIZE_URL, parameters)
+    redirect URI.join(GITHUB_OAUTH_AUTHORIZE_URL, parameters)
   end
 
   get '/callback' do
