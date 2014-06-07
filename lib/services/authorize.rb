@@ -32,7 +32,7 @@ module Authorize
   def create_or_update_user(user_info)
     user = User.find_or_create(github_id: user_info.fetch(:id))
     user.login = user_info.fetch(:login)
-    user.email = user_info.fetch(:email)
+    user.email = user_info.fetch(:email, nil)
     user.last_login = Time.now
     user.save
   end
