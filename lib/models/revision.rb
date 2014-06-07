@@ -7,4 +7,7 @@ class Revision < Sequel::Model
     self.page.revisions
   end
 
+  def concealed
+    self.page.concealed
+  end
 end
