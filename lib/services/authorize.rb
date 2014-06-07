@@ -18,17 +18,6 @@ module Authorize
     JSON.parse(oauth_result).fetch('access_token')
   end
 
-  def user_info(access_token)
-    user_response = RestClient.get('https://api.github.com/user',
-      {
-        params: {
-          access_token: access_token
-        }
-      }
-    )
-    JSON.parse(user_response, symbolize_names: true)
-  end
-
   def create_or_update_user(user_info)
     user = User.find_or_create(github_id: user_info.fetch(:id))
     user.login = user_info.fetch(:login)

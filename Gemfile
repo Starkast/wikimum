@@ -16,6 +16,7 @@ gem 'oauth2'
 gem 'rest-client'
 gem 'dotenv'
 gem 'newrelic_rpm'
+gem 'octokit'
 
 group :development do
   gem 'foreman'

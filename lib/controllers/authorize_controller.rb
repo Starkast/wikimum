@@ -12,11 +12,12 @@ class AuthorizeController < BaseController
   get '/callback' do
     session_code = request.env.fetch('rack.request.query_hash').fetch('code')
     access_token = Authorize.access_token(session_code)
-    user_info    = Authorize.user_info(access_token)
-    user         = Authorize.create_or_update_user(user_info)
+    authed_user  = AuthorizedUser.new(access_token)
+    user         = Authorize.create_or_update_user(authed_user.user_info)
 
-    session[:user_info] = user_info
-    session[:login]     = user_info.fetch(:login)
+    session[:user_info] = authed_user.user_info
+    session[:login]     = authed_user.login
+    session[:starkast]  = authed_user.starkast?
     session[:user_id]   = user.id
 
     redirect '/'
