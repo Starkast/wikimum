@@ -31,6 +31,10 @@ class BaseController < Sinatra::Base
       User[session.fetch(:user_id)]
     end
 
+    def starkast?
+      session[:starkast]
+    end
+
     def prevent_unauthorized_modifications
       return if request.request_method == "GET"
 

@@ -4,6 +4,15 @@ class PageController < BaseController
     def slug
       Slug.slugify(params[:slug]) if params[:slug]
     end
+
+    def restrict_concealed(page)
+      return if starkast?
+      if page.concealed
+        flash[:error] = "Not authorized!"
+
+        redirect back
+      end
+    end
   end
 
   get '/' do
@@ -63,12 +72,14 @@ class PageController < BaseController
 
   get '/:slug/edit' do
     @page = Page.find(slug: slug)
+    restrict_concealed(@page)
     haml :edit
   end
 
   get '/:slug' do
     @page = Page.find(slug: slug)
     redirect "new/#{slug}" unless @page
+    restrict_concealed(@page)
     etag @page.sha1 unless logged_in?
     haml :show
   end
@@ -76,16 +87,28 @@ class PageController < BaseController
   get '/:slug/:revision' do |_, revision|
     @page = Revision.where(slug: slug, revision: revision).first
     redirect "#{slug}" unless @page
+    restrict_concealed(@page)
     etag @page.sha1 unless logged_in?
     haml :show
   end
 
   post '/:slug' do
     page = Page.find(slug: slug)
+    restrict_concealed(page)
     page.revise!
     page.set_fields(params, %i(title content description comment))
     page.author = current_user
     page.save
+
+    redirect "#{page.slug}"
+  end
+
+  post '/:slug/conceal' do
+    page = Page.find(slug: slug)
+    restrict_concealed(page)
+
+    # intentionally avoid Page save hook
+    page.this.update(concealed: !page.concealed)
 
     redirect "#{page.slug}"
   end

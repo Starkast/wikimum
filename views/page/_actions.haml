@@ -3,6 +3,11 @@
     - if logged_in?
       %li
         %a{ href: "/#{@page.slug}/edit" } Ändra
+        - if starkast?
+          %form{ action: "/#{@page.slug}/conceal", method: :post }
+            %button
+              = @page.concealed ? 'Gör publik' : 'Gör privat'
+
       - unless @page.revisions.empty?
         %span
           (
