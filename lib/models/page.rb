@@ -17,7 +17,7 @@ class Page < Sequel::Model
   def revise!
     new_revision = Revision.new
     self.values.each do |key, value|
-      next if key == :id
+      next if %i(id concealed).include?(key)
       new_revision[key] = value
     end
     new_revision.page_id = self.id
