@@ -60,11 +60,13 @@ class PageController < BaseController
   end
 
   get '/new' do
+    redirect back unless logged_in?
     @page = Page.new
     haml :new
   end
 
   get '/new/:slug' do
+    redirect back unless logged_in?
     @page = Page.new(title: slug)
     flash.now[:notice] = "Det finns ingen sida för #{slug}, du får skapa den!"
     haml :new
