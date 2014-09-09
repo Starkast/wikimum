@@ -37,6 +37,6 @@ class Page < Sequel::Model
 
     columns  = %i(title content description)
 
-    self.dataset.full_text_search(columns, terms, rank: true).reverse.to_a
+    self.dataset.full_text_search(columns, terms, rank: true).to_a
   end
 end
