@@ -6,6 +6,10 @@ unless ENV.fetch('RACK_ENV') == 'development'
   use Rack::SSL
 end
 
+use Rack::Session::Cookie,
+  secret: ENV.fetch('SESSION_SECRET'),
+  expire_after: 60 * 60 * 24 * 365
+
 use Rack::Static, {
   root: "public",
   urls: ["/stylesheets", "/images", "/javascripts", "/favicon.ico", "/robots.txt"],
