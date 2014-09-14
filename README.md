@@ -2,11 +2,29 @@
 
 Next Generation Wikimum!
 
+_This application is under active development and should not be used in production yet_.
+
 ## Development
 
-_This application is under active development and should not be used in production yet_
+These instructions assume you are using OS X.
 
+Install prerequisites
+
+    brew install postgresql
     bundle install
+
+### Database setup
+
+Make sure PostgreSQL is running
+
+    postgres
+
+Get a copy of the production database
+
+    heroku pg:pull DATABASE_URL wikimum
+
+### Start the app
+
     bundle exec unicorn -c ./config/unicorn.rb
 
 ### Environment variables
