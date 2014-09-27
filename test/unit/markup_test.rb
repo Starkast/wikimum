@@ -1,7 +1,7 @@
 require 'minitest/autorun'
 require_relative '../../lib/services/markup'
 
-class MarkupTest < MiniTest::Unit::TestCase
+class MarkupTest < Minitest::Test
   def test_wiki_link_filter
     content     = %([[Server]])
     html_output = %(<a href="/Server">Server</a>)

@@ -1,7 +1,7 @@
 require 'minitest/autorun'
 require_relative '../../lib/services/slug'
 
-class SlugTest < MiniTest::Unit::TestCase
+class SlugTest < Minitest::Test
   def test_slug
     title = 'ape'
     assert_equal 'ape', Slug.slugify(title)

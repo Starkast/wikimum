@@ -1,7 +1,7 @@
 require 'minitest/autorun'
 require_relative '../../lib/services/title'
 
-class TitleTest < MiniTest::Unit::TestCase
+class TitleTest < Minitest::Test
   def test_first_char_with_english_word
     title = 'ape'
     assert_equal 'A', Title.new(title).first_char
