@@ -4,6 +4,7 @@ class Markup
   def self.to_html(content)
     pipeline = HTML::Pipeline.new [
       HTML::Pipeline::MarkdownFilter,
+      HTML::Pipeline::SyntaxHighlightFilter,
       WikiLinkFilter,
     ]
     result = pipeline.call(content)

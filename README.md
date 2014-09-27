@@ -10,7 +10,7 @@ These instructions assume you are using OS X.
 
 Install prerequisites
 
-    brew install postgresql
+    brew install postgresql icu4c
     bundle install
 
 ### Database setup
