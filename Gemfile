@@ -17,6 +17,7 @@ gem 'rest-client'
 gem 'dotenv'
 gem 'newrelic_rpm'
 gem 'octokit'
+gem 'addressable'
 
 group :development do
   gem 'foreman'

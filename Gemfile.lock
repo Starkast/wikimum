@@ -102,6 +102,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  addressable
   dotenv
   foreman
   github-markdown
