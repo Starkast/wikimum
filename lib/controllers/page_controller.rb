@@ -28,6 +28,7 @@ class PageController < BaseController
 
   get '/latest' do
     @page_groups = Page.order(:updated_on).reverse.
+      eager_graph(:author).
       select_append(Sequel.lit("DATE(updated_on)")).
       to_hash_groups(:date)
     haml :latest

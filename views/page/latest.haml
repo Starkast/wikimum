@@ -4,9 +4,12 @@
   %ul
     - pages.each do |page|
       %li
-        %a{ href: "#{page.slug}" }= page.title
-        = "(#{page.revision})"
-        - unless page.comment.to_s.empty?
+        %a{ href: "#{page.fetch(:slug)}" }= page.fetch(:title)
+        = "(#{page.fetch(:revision)})"
+        %span.latest_item_information
+          = "av #{page.fetch(:login)}"
+
+        - unless page.fetch(:comment).to_s.empty?
           %span.latest_item_information
             med kommentaren
-            = %Q("#{page.comment}")
+            = %Q("#{page.fetch(:comment)}")
