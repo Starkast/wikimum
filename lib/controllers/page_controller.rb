@@ -18,7 +18,6 @@ class PageController < BaseController
   get '/' do
     @page = Page.order(:id).first
     redirect "new" unless @page
-    etag @page.sha1 unless logged_in?
     haml :show
   end
 
@@ -82,7 +81,6 @@ class PageController < BaseController
     @page = Page.find(slug: slug)
     redirect "new/#{slug}" unless @page
     restrict_concealed(@page)
-    etag @page.sha1 unless logged_in?
     haml :show
   end
 
@@ -90,7 +88,6 @@ class PageController < BaseController
     @page = Revision.where(slug: slug, revision: revision).first
     redirect "#{slug}" unless @page
     restrict_concealed(@page)
-    etag @page.sha1 unless logged_in?
     haml :show
   end
 
