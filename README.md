@@ -34,6 +34,9 @@ DATABASE_URL=postgres://
 GITHUB_BASIC_CLIENT_ID=
 GITHUB_BASIC_SECRET_ID=
 SESSION_SECRET= # optional in development mode
+OPBEAT_ORGANIZATION_ID # optional in development mode
+OPBEAT_APP_ID # optional in development mode
+OPBEAT_SECRET_TOKEN # optional in development mode
 ```
 
 ### Console

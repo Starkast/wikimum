@@ -21,6 +21,7 @@ GEM
     github-markdown (0.6.7)
     haml (4.0.5)
       tilt
+    hashie (2.1.2)
     html-pipeline (1.11.0)
       activesupport (>= 2)
       nokogiri (~> 1.4)
@@ -47,6 +48,11 @@ GEM
       rack (~> 1.2)
     octokit (3.3.1)
       sawyer (~> 0.5.3)
+    opbeat (0.9.1)
+      faraday (>= 0.8, < 0.10)
+      hashie (~> 2.1.1)
+      multi_json (~> 1.0)
+      uuidtools (~> 2.1.4)
     pg (0.17.1)
     pry (0.10.1)
       coderay (~> 1.1.0)
@@ -97,6 +103,7 @@ GEM
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
+    uuidtools (2.1.5)
 
 PLATFORMS
   ruby
@@ -111,6 +118,7 @@ DEPENDENCIES
   newrelic_rpm
   oauth2
   octokit
+  opbeat
   pg
   pry
   rack-flash3

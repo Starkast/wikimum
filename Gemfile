@@ -18,6 +18,7 @@ gem 'dotenv'
 gem 'newrelic_rpm'
 gem 'octokit'
 gem 'addressable'
+gem 'opbeat'
 
 group :development do
   gem 'foreman'
