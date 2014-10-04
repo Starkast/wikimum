@@ -1,5 +1,7 @@
 # Wikimum
 
+[![Build Status](https://travis-ci.org/Starkast/wikimum.svg?branch=master)](https://travis-ci.org/Starkast/wikimum)
+
 Next Generation Wikimum!
 
 _This application is under active development and should not be used in production yet_.
