@@ -1,7 +1,4 @@
-require 'dotenv'
 require 'rake/testtask'
-
-Dotenv.load
 
 Dir['tasks/*.rake'].each { |f| load f }
 

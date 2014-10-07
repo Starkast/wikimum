@@ -27,33 +27,39 @@ Get a copy of the production database
 
 ### Start the app
 
-    bundle exec unicorn -c ./config/unicorn.rb
+    foreman start
 
 ### Environment variables
 
 ```
+# Development and production
 DATABASE_URL=postgres://
 GITHUB_BASIC_CLIENT_ID=
 GITHUB_BASIC_SECRET_ID=
-SESSION_SECRET= # optional in development mode
-OPBEAT_ORGANIZATION_ID # optional in development mode
-OPBEAT_APP_ID # optional in development mode
-OPBEAT_SECRET_TOKEN # optional in development mode
+# Production
+SESSION_SECRET=
+OPBEAT_ORGANIZATION_ID=
+OPBEAT_APP_ID=
+OPBEAT_SECRET_TOKEN=
 ```
 
 ### Console
 
-    bundle exec racksh
+    foreman run bundle exec racksh
+
+### Tests
+
+    bundle exec rake
 
 ### [Migrations][sequel-migrations]
 
 To migrate to the latest version, run:
 
-    rake db:migrate
+    foreman run rake db:migrate
 
 This Rake task takes an optional argument specifying the target version. To migrate to version 42, run:
 
-    rake db:migrate[42]
+    foreman run rake db:migrate[42]
 
 Manually:
 

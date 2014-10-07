@@ -2,9 +2,6 @@ require 'sinatra/base'
 require 'sequel'
 
 if ENV.fetch('RACK_ENV') == 'development'
-  require 'dotenv'
-  Dotenv.load
-
   ENV['SESSION_SECRET'] ||= 'secret'
 
   $stdout.sync = true
