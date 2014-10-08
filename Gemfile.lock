@@ -110,7 +110,6 @@ PLATFORMS
 
 DEPENDENCIES
   addressable
-  dotenv
   foreman
   github-markdown
   haml
