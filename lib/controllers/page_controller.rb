@@ -18,15 +18,18 @@ class PageController < BaseController
   get '/' do
     @page = Page.order(:id).first
     redirect "new" unless @page
+    @page_title = @page.title
     haml :show
   end
 
   get '/list' do
+    @page_title = "Innehållsförteckning"
     @page_groups = Page.order(:title_char, :title).to_hash_groups(:title_char)
     haml :index
   end
 
   get '/latest' do
+    @page_title = "Senast ändrad"
     @page_groups = Page.order(:updated_on).reverse.
       eager_graph(:author).
       select_append(Sequel.lit("DATE(updated_on)")).
@@ -35,6 +38,7 @@ class PageController < BaseController
   end
 
   get '/search' do
+    @page_title = "Sökresultat"
     @pages = Page.search(params[:q])
     @q = params[:q]
 
@@ -61,12 +65,14 @@ class PageController < BaseController
 
   get '/new' do
     redirect back unless logged_in?
+    @page_title = "Skapa ny sida"
     @page = Page.new
     haml :new
   end
 
   get '/new/:slug' do
     redirect back unless logged_in?
+    @page_title = "Skapa ny sida"
     @page = Page.new(title: slug)
     flash.now[:notice] = "Det finns ingen sida för #{slug}, du får skapa den!"
     haml :new
@@ -74,6 +80,7 @@ class PageController < BaseController
 
   get '/:slug/edit' do
     @page = Page.find(slug: slug)
+    @page_title = "Ändrar #{@page.title}"
     restrict_concealed(@page)
     haml :edit
   end
@@ -81,6 +88,7 @@ class PageController < BaseController
   get '/:slug' do
     @page = Page.find(slug: slug)
     redirect "new/#{slug}" unless @page
+    @page_title = @page.title
     restrict_concealed(@page)
     haml :show
   end
@@ -88,6 +96,7 @@ class PageController < BaseController
   get '/:slug/:revision' do |_, revision|
     @page = Revision.where(slug: slug, revision: revision).first
     redirect "#{slug}" unless @page
+    @page_title = "#{@page.title} (#{revision})"
     restrict_concealed(@page)
     haml :show
   end
