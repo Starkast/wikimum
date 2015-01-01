@@ -98,7 +98,7 @@ class PageController < BaseController
   end
 
   get '/:slug/:revision' do |_, revision|
-    @page = Revision.where(slug: slug, revision: revision).first
+    @page = Revision.where(slug: slug, revision: revision.to_i).first
     redirect "#{slug}" unless @page
     @page_title = "#{@page.title} (#{revision})"
     restrict_concealed(@page)
