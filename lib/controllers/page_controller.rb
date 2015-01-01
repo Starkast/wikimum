@@ -85,6 +85,10 @@ class PageController < BaseController
     haml :edit
   end
 
+  get '/:slug/' do
+    redirect "/#{slug}"
+  end
+
   get '/:slug' do
     @page = Page.find(slug: slug)
     redirect "new/#{slug}" unless @page
