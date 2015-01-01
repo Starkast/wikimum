@@ -40,3 +40,19 @@
 
         ga('create', 'UA-7734426-12', 'starkast.net');
         ga('send', 'pageview');
+
+:javascript
+  Mousetrap.bind('/', function() {
+    var searchInput = document.getElementById('q');
+    searchInput.focus();
+    searchInput.select();
+    return false;
+  });
+
+  Mousetrap.bindGlobal('escape', function() {
+    var searchInput = document.getElementById('q');
+    if (document.activeElement == searchInput) {
+      searchInput.blur();
+    }
+    return false;
+  });
