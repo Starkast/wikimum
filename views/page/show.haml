@@ -1,3 +1,9 @@
 %h1.title= @page.title
 
 !~ @page.compiled_content
+
+:javascript
+  Mousetrap.bind('e', function() {
+    window.location = "#{@page.slug}/edit";
+    return false;
+  });
