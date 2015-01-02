@@ -78,4 +78,4 @@ This wiki software was originally developed by [Johan Eckerström](http://github
 
 ## License
 
-MIT License, see [LICENSE](LICENSE)
+MIT License, see [LICENSE](LICENSE).
