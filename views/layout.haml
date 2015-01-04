@@ -32,7 +32,7 @@
       != haml :'../layouts/_footer', layout: false
 
 :javascript
-  Mousetrap.bind('/', function() {
+  Mousetrap.bind(['/', 's'], function() {
     var searchInput = document.getElementById('q');
     searchInput.focus();
     searchInput.select();
