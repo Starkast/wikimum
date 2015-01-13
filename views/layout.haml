@@ -39,6 +39,26 @@
     return false;
   });
 
+  Mousetrap.bind('h', function() {
+    window.location = "/";
+    return false;
+  });
+
+  Mousetrap.bind('i', function() {
+    window.location = "/list";
+    return false;
+  });
+
+  Mousetrap.bind('l', function() {
+    window.location = "/latest";
+    return false;
+  });
+
+  Mousetrap.bind('n', function() {
+    window.location = "/new";
+    return false;
+  });
+
   Mousetrap.bindGlobal('escape', function() {
     var searchInput = document.getElementById('q');
     if (document.activeElement == searchInput) {
