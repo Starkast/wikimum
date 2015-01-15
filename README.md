@@ -68,7 +68,7 @@ Manually:
 
 Pull database from Heroku:
 
-    heroku pg:pull DATABASE_URL wikimum
+    dotenv rake db:pull
 
 [sequel-migrations]: http://sequel.jeremyevans.net/rdoc/files/doc/migration_rdoc.html
 
