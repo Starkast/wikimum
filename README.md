@@ -1,6 +1,7 @@
 # Wikimum
 
 [![Build Status](https://travis-ci.org/Starkast/wikimum.svg?branch=master)](https://travis-ci.org/Starkast/wikimum)
+[![Code Climate](https://codeclimate.com/github/Starkast/wikimum/badges/gpa.svg)](https://codeclimate.com/github/Starkast/wikimum)
 
 Next Generation Wikimum!
 
@@ -23,7 +24,7 @@ Make sure PostgreSQL is running
 
 Get a copy of the production database
 
-    heroku pg:pull DATABASE_URL wikimum
+    dotenv rake db:pull
 
 ### Start the app
 
@@ -65,12 +66,12 @@ Manually:
 
     sequel -E -m migrations -M <n> postgres://localhost/wikimum
 
-Pull database from Heroku:
-
-    heroku pg:pull DATABASE_URL wikimum
-
 [sequel-migrations]: http://sequel.jeremyevans.net/rdoc/files/doc/migration_rdoc.html
 
 ## History
 
 This wiki software was originally developed by [Johan Eckerström](http://github.com/jage) at IMUM HB back in 2005. When we killed the company the software was kept running at [Starkast](http://wiki.starkast.net/) but not much work was done on it. Originally a Rails (1.x) app, it's now a Sinatra based application.
+
+## License
+
+MIT License, see [LICENSE](LICENSE).

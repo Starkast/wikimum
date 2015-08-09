@@ -8,6 +8,7 @@ Opbeat.configure do |config|
   config.app_id          = ENV['OPBEAT_APP_ID']
   config.secret_token    = ENV['OPBEAT_SECRET_TOKEN']
   config.environments    = %(production)
+  config.excluded_exceptions = ['Sinatra::NotFound']
 end
 
 require_relative 'config/environment'

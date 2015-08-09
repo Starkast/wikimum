@@ -4,6 +4,8 @@ class AuthorizeController < BaseController
   GITHUB_OAUTH_AUTHORIZE_URL = %q(https://github.com/login/oauth/authorize)
 
   get '/' do
+    halt 400, "No referrer" unless request.referrer
+
     redirect_uri = Authorize.construct_redirect_uri(request.referrer)
     parameters = %Q(?scope=user:email&client_id=#{ENV.fetch('GITHUB_BASIC_CLIENT_ID')}&redirect_uri=#{redirect_uri})
 
