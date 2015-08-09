@@ -57,7 +57,7 @@ class PageController < BaseController
 
   post '/new*' do
     page = Page.new
-    page.set_fields(params, %i(title content description comment))
+    page.set_fields(params, %i(title content description concealed comment))
     page.author = current_user
     page.save
     redirect "#{page.slug}"
