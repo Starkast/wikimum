@@ -24,7 +24,7 @@ Make sure PostgreSQL is running
 
 Get a copy of the production database
 
-    heroku pg:pull DATABASE_URL wikimum
+    dotenv rake db:pull
 
 ### Start the app
 
@@ -65,10 +65,6 @@ This Rake task takes an optional argument specifying the target version. To migr
 Manually:
 
     sequel -E -m migrations -M <n> postgres://localhost/wikimum
-
-Pull database from Heroku:
-
-    heroku pg:pull DATABASE_URL wikimum
 
 [sequel-migrations]: http://sequel.jeremyevans.net/rdoc/files/doc/migration_rdoc.html
 

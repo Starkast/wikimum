@@ -2,7 +2,7 @@
 
 %form{ method: :post }
   %label.block{ for: 'title' } Titel
-  %input#title{ type: :text, name: 'title', maxlength: 35, size: 35, value: @page.title }
+  %input#title{ type: :text, name: 'title', maxlength: 35, size: 35, value: @page.title, autofocus: true }
 
   %label.block{ for: 'content' } Innehåll
   %textarea#content{ name: 'content', cols: 84, rows: 20 }
