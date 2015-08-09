@@ -2,5 +2,55 @@
 %ul
   - @pages.each do |page|
     %li
-      %a{ href: "#{page.slug}" }= page.title
+      %a.page-link{ href: "#{page.slug}" }= page.title
       %span.description= page.description
+
+:javascript
+  (function(){
+    function getSelectedElement() {
+      return document.getElementById('navigation-selected');
+    }
+    function selectElement(element) {
+      element.id = "navigation-selected";
+      return true;
+    }
+    function deselectElement(element) {
+      element.id = "";
+      return true;
+    }
+
+    var pageLinks = document.getElementsByClassName('page-link');
+    selectElement(pageLinks[0]);
+
+    Mousetrap.bind('enter', function() {
+      getSelectedElement().click();
+      return false;
+    });
+
+    Mousetrap.bind(['j', 'down'], function() {
+      var selectedLink = getSelectedElement();
+      for (var i = 0; i < pageLinks.length; i++) {
+        var page = pageLinks[i];
+        if (page == selectedLink && i < (pageLinks.length - 1)) {
+          selectElement(pageLinks[i + 1])
+          deselectElement(pageLinks[i]);
+          break;
+        }
+      }
+      return false;
+    });
+
+    Mousetrap.bind(['k', 'up'], function() {
+      var selectedLink = getSelectedElement();
+      for (var i = 0; i < pageLinks.length; i++) {
+        var page = pageLinks[i];
+        if (page == selectedLink && i > 0) {
+          selectElement(pageLinks[i - 1])
+          deselectElement(pageLinks[i]);
+          break;
+        }
+      }
+      return false;
+    });
+  })();
+

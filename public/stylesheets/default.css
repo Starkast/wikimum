@@ -201,6 +201,9 @@ p.less-margin  { margin: 0.025em; }
 .fieldWithErrors input { background: #ffd0d0; }
 .formError { font-size: 1.2em; }
 
+/* keyboard navigation visualisation */
+a.page-link#navigation-selected { background: #FFC; }
+
 /* Headers */
 h1.logo    { font-size: 5.8em; margin: 0; padding: 0; display: inline; }
 h1.title   { margin-top: 0; padding-top: 0; }
