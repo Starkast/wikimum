@@ -22,7 +22,7 @@
     var pageLinks = document.getElementsByClassName('page-link');
     selectElement(pageLinks[0]);
 
-    Mousetrap.bind('enter', function() {
+    Mousetrap.bind(['o', 'enter'], function() {
       getSelectedElement().click();
       return false;
     });
