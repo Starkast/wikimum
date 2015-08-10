@@ -24,4 +24,5 @@ group :development do
   gem 'racksh'
   gem 'rake'
   gem 'pry'
+  gem 'tool', github: 'rkh/tool'
 end

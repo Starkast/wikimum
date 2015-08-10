@@ -1,3 +1,9 @@
+GIT
+  remote: git://github.com/rkh/tool.git
+  revision: 9a84fc6a60ecdf51cf17e90ae1331b4550d5d677
+  specs:
+    tool (0.2.3)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -125,3 +131,7 @@ DEPENDENCIES
   sequel_pg
   sinatra
   sinatra-contrib
+  tool!
+
+BUNDLED WITH
+   1.10.5
