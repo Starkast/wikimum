@@ -3,17 +3,21 @@ require 'opbeat'
 
 use Opbeat::Rack
 
+def development?
+  ENV.fetch('RACK_ENV') == 'development'
+end
+
 Opbeat.configure do |config|
-  config.organization_id = ENV['OPBEAT_ORGANIZATION_ID']
-  config.app_id          = ENV['OPBEAT_APP_ID']
-  config.secret_token    = ENV['OPBEAT_SECRET_TOKEN']
+  config.organization_id = ENV.fetch('OPBEAT_ORGANIZATION_ID') { "fake" if development? }
+  config.app_id          = ENV.fetch('OPBEAT_APP_ID')          { "fake" if development? }
+  config.secret_token    = ENV.fetch('OPBEAT_SECRET_TOKEN')    { "fake" if development? }
   config.environments    = %(production)
   config.excluded_exceptions = ['Sinatra::NotFound']
 end
 
 require_relative 'config/environment'
 
-unless ENV.fetch('RACK_ENV') == 'development'
+unless development?
   use Rack::SSL
 end
 
