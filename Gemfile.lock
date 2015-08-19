@@ -5,7 +5,7 @@ GIT
     tool (0.2.3)
 
 GEM
-  remote: http://rubygems.org/
+  remote: https://rubygems.org/
   specs:
     activesupport (4.2.3)
       i18n (~> 0.7)
@@ -134,4 +134,4 @@ DEPENDENCIES
   tool!
 
 BUNDLED WITH
-   1.10.5
+   1.10.6
