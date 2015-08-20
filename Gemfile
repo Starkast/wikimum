@@ -18,10 +18,10 @@ gem 'newrelic_rpm'
 gem 'octokit'
 gem 'addressable'
 gem 'opbeat'
+gem 'racksh'
 
 group :development do
   gem 'foreman'
-  gem 'racksh'
   gem 'rake'
   gem 'pry'
   gem 'tool', github: 'rkh/tool'
