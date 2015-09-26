@@ -13,7 +13,7 @@ end
 
 class WikiLinkFilter < HTML::Pipeline::Filter
 
-  WIKI_LINK_REGEXP = /\[\[(?<link>[\d\w\sÅÄÖåäö_:-]{1,35})\]\]/i
+  WIKI_LINK_REGEXP = /\[\[(?<link>[\d\w\sÅÄÖåäö:-]{1,35})\]\]/i
 
   def call
     content = doc.to_s

@@ -2,7 +2,7 @@ require 'rack/utils'
 
 class Slug
 
-  REGEXP = /[^\d\w\sÅÄÖåäö_:-]/i
+  REGEXP = /[^\d\w\sÅÄÖåäö:-]/i
 
   def self.slugify(string)
     slug(Rack::Utils.unescape(string))
