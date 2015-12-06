@@ -14,7 +14,7 @@ gem 'html-pipeline'
 gem 'github-markdown'
 gem 'oauth2'
 gem 'rest-client'
-gem 'newrelic_rpm'
+gem 'newrelic_rpm', require: false
 gem 'octokit'
 gem 'addressable'
 gem 'opbeat'

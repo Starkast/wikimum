@@ -9,4 +9,7 @@ environment ENV['RACK_ENV'] || 'development'
 
 on_worker_boot do
   DB.disconnect
+
+  require "newrelic_rpm"
+  NewRelic::Agent.manual_start
 end

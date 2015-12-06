@@ -13,10 +13,6 @@ class BaseController < Sinatra::Base
     register Sinatra::Reloader
   end
 
-  configure :production do
-    require 'newrelic_rpm'
-  end
-
   before do
     prevent_unauthorized_modifications
   end
