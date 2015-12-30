@@ -1,4 +1,8 @@
 %hr
 %ul
   %li
-    %a{ href: '/cookies' } Om cookies
+    %a{ href: "/cookies" } Om cookies
+  %li
+    = AppMetadata.release_version
+    != surround "(", ")" do
+      %a{ href: "https://github.com/Starkast/wikimum/commit/#{AppMetadata.commit}" }= AppMetadata.short_commit
