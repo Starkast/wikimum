@@ -30,7 +30,6 @@ h5 { font-size: 1.6em; }
 h6 { font-size: 1.4em; }
 
 table { margin: 0.75em 0 0.75em 0; }
-th { font-size: 2em; font-weight: bold; }
 
 p, pre, ul, ol, textarea, input {
   font-size: 1.6em;
@@ -74,7 +73,6 @@ a:hover, a:active { background: #FFC; }
 a img             { border: none; }
 
 em                { font-style: normal; background: #FFC; }
-td                { font-size: 1.6em; padding: 0 0.2em 0 0; }
 
 td *              { font-size: 1em; }
 td label          { font-size: 1em; } /* IE */
@@ -229,6 +227,32 @@ span.confirm { background: #e3ffb7; }
 span.notice  { background: #cbebff; }
 span.error   { background: #ffb0b0; }
 span.failure { background: #ffb0b0; }
+
+/* Nice looking tables */
+
+table {
+  display: block;
+  width: 100%;
+  overflow: auto;
+  border-collapse: collapse;
+}
+
+table td, table th {
+  font-size: 1.6em;
+  padding: 5px 7px;
+  border: 1px solid #ddd;
+}
+
+table th {
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Zebra striping */
+tbody tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
 
 /* HTMLDiff */
 
