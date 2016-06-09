@@ -16,6 +16,8 @@ Install prerequisites
     brew install postgresql
     bundle install
 
+Ruby gems are vendored into `vendor/cache`, you should always check in the gems when changing gems. The caching is set up with [`bundle package --all`](http://bundler.io/bundle_package.html).
+
 ### Database setup
 
 Make sure PostgreSQL is running
