@@ -133,5 +133,8 @@ DEPENDENCIES
   sinatra-contrib
   tool!
 
+RUBY VERSION
+   ruby 2.3.3p222
+
 BUNDLED WITH
-   1.10.6
+   1.13.6
