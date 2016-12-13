@@ -1,5 +1,5 @@
 GIT
-  remote: git://github.com/rkh/tool.git
+  remote: https://github.com/rkh/tool.git
   revision: 9a84fc6a60ecdf51cf17e90ae1331b4550d5d677
   specs:
     tool (0.2.3)

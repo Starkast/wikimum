@@ -24,5 +24,5 @@ group :development do
   gem 'foreman'
   gem 'rake'
   gem 'pry'
-  gem 'tool', github: 'rkh/tool'
+  gem 'tool', git: 'https://github.com/rkh/tool.git'
 end
