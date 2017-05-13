@@ -3,7 +3,7 @@ ruby File.read('.ruby-version').chomp
 
 gem 'sequel'
 gem 'pg'
-gem 'sequel_pg'
+gem 'sequel_pg', require: 'sequel'
 gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'rack-flash3', require: 'rack-flash'
