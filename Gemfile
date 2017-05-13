@@ -26,3 +26,7 @@ group :development do
   gem 'pry'
   gem 'tool', git: 'https://github.com/rkh/tool.git'
 end
+
+group :test do
+  gem 'minitest'
+end

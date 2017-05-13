@@ -113,6 +113,7 @@ DEPENDENCIES
   github-markdown
   haml
   html-pipeline
+  minitest
   newrelic_rpm
   oauth2
   octokit
