@@ -31,14 +31,14 @@ class MarkupTest < Minitest::Test
 
   def test_wikified_with_markdown
     content     = %([[Server]])
-    html_output = %(<p><a href="/Server">Server</a></p>)
+    html_output = %(<p><a href="/Server">Server</a></p>\n)
 
     assert_equal html_output, Markup.to_html(content)
   end
 
   def test_markdown_blockquote
     content     = %(> test)
-    html_output = %(<blockquote>\n<p>test</p>\n</blockquote>)
+    html_output = %(<blockquote>\n<p>test</p>\n</blockquote>\n)
 
     assert_equal html_output, Markup.to_html(content)
   end

@@ -1,13 +1,20 @@
 require 'html/pipeline'
+require 'github/markup'
 
 class Markup
   def self.to_html(content)
     pipeline = HTML::Pipeline.new [
-      HTML::Pipeline::MarkdownFilter,
+      MarkdownFilter,
       WikiLinkFilter,
     ]
     result = pipeline.call(content)
     result.fetch(:output).to_s
+  end
+end
+
+class MarkdownFilter < HTML::Pipeline::TextFilter
+  def call
+    GitHub::Markup.render_s(GitHub::Markups::MARKUP_MARKDOWN, text)
   end
 end
 
