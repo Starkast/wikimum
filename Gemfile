@@ -12,7 +12,6 @@ gem 'puma'
 gem 'rack-ssl'
 gem 'html-pipeline'
 gem 'github-markdown'
-gem 'oauth2'
 gem 'rest-client'
 gem 'newrelic_rpm', require: false
 gem 'octokit'
