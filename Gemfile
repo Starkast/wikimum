@@ -17,7 +17,7 @@ gem 'rest-client'
 gem 'newrelic_rpm', require: false
 gem 'octokit'
 gem 'addressable'
-gem 'opbeat'
+gem 'sentry-raven'
 gem 'racksh'
 
 group :development do

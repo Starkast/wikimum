@@ -1,18 +1,11 @@
-require 'rack/ssl'
-require 'opbeat'
+require_relative 'config/sentry'
 
-use Opbeat::Rack
+require 'rack/ssl'
+
+use Raven::Rack
 
 def development?
   ENV.fetch('RACK_ENV') == 'development'
-end
-
-Opbeat.configure do |config|
-  config.organization_id = ENV.fetch('OPBEAT_ORGANIZATION_ID') { "fake" if development? }
-  config.app_id          = ENV.fetch('OPBEAT_APP_ID')          { "fake" if development? }
-  config.secret_token    = ENV.fetch('OPBEAT_SECRET_TOKEN')    { "fake" if development? }
-  config.environments    = %(production)
-  config.excluded_exceptions = ['Sinatra::NotFound']
 end
 
 require_relative 'config/environment'
