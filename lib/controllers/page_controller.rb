@@ -85,6 +85,14 @@ class PageController < BaseController
     haml :edit
   end
 
+  post '/:slug/preview' do
+    @page = Page.new
+    @page.set_fields(params, %i(title content))
+    @page_title = "Förhandsvisar #{@page.title}"
+    @page.compiled_content = Markup.to_html(@page.content)
+    haml :preview
+  end
+
   get '/:slug/' do
     redirect "/#{slug}"
   end
