@@ -1,1 +1,10 @@
 sudo: false
+
+# we need a more recent cmake than travis/linux provides (at least 2.8.9):
+# taken from https://github.com/gjtorikian/commonmarker/blob/v0.16.0/.travis.yml
+addons:
+  apt:
+    sources:
+      - kalakris-cmake
+    packages:
+      - cmake
