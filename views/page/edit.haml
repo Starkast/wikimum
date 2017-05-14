@@ -2,7 +2,14 @@
   Ändrar
   %a{ href: "/#{@page.slug}" }= @page.title
 
-%form{ action: "/#{@page.slug}", method: :post }
+%form{ name: :preview, action: "/#{@page.slug}/preview", method: :post, target: :_blank }
+  %input{ type: :hidden, name: :title }
+  %input{ type: :hidden, name: :content }
+
+  %p{ style: "margin-top: 1em;" }
+    %button Förhandsvisning
+
+%form{ name: :create, action: "/#{@page.slug}", method: :post }
   %label.block{ for: 'title' } Titel
   %input#title{ type: :text, name: 'title', maxlength: 35, size: 35, value: @page.title }
 
@@ -21,3 +28,18 @@
 
   %label.block{ for: 'description' } Sidbeskrivning
   %textarea#description{ name: 'description', cols: 50, rows: 3 }= @page.description
+
+:javascript
+  var titleInput      = document.querySelector('form[name=create] input[name=title]');
+  var contentTextArea = document.querySelector('form[name=create] textarea[name=content]');
+
+  var previewTitle   = document.querySelector('form[name=preview] input[name=title]');
+  var previewContent = document.querySelector('form[name=preview] input[name=content]');
+  var previewButton  = document.querySelector('form[name=preview] button');
+
+  previewButton.addEventListener("click", function() {
+    previewContent.value = contentTextArea.value;
+    previewTitle.value   = titleInput.value;
+
+    document.querySelector('form[name=preview]').submit();
+  });
