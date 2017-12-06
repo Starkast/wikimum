@@ -11,7 +11,7 @@
 
 %form{ name: :create, action: "/#{@page.slug}", method: :post }
   %label.block{ for: 'title' } Titel
-  %input#title{ type: :text, name: 'title', maxlength: 35, size: 35, value: @page.title }
+  %input#title{ type: :text, name: 'title', maxlength: 74, size: 50, value: @page.title }
 
   %label.block{ for: 'content' } Innehåll
   %textarea#content{ name: 'content', cols: 84, rows: 20 }= @page.content
