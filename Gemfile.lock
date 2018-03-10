@@ -118,6 +118,7 @@ DEPENDENCIES
   puma
   rack-flash3
   rack-ssl
+  rack-test
   racksh
   rake
   rest-client
