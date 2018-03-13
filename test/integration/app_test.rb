@@ -30,4 +30,14 @@ class AppTest < Minitest::Test
     get "/"
     assert last_response.ok?
   end
+
+  def test_latest
+    get "/latest"
+    assert last_response.ok?
+  end
+
+  def test_list
+    get "/list"
+    assert last_response.ok?
+  end
 end
