@@ -8,3 +8,9 @@ addons:
       - kalakris-cmake
     packages:
       - cmake
+
+services:
+  - postgresql
+
+before_script:
+  - psql -c 'create database wikimum_test;' -U postgres
