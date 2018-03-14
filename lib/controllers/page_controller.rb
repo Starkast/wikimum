@@ -32,7 +32,7 @@ class PageController < BaseController
     @page_title = "Senast ändrad"
     @page_groups = Page.order(:updated_on).reverse.
       eager_graph(:author).
-      select_append(Sequel.lit("DATE(updated_on)")).
+      add_graph_aliases(date: [:pages, :date, Sequel.lit("DATE(updated_on)")]).
       to_hash_groups(:date)
     haml :latest
   end

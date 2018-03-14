@@ -33,6 +33,7 @@ class AppTest < Minitest::Test
 
   def test_latest
     get "/latest"
+    assert last_response.body.include?("<h2>#{Time.now.to_date}</h2>")
     assert last_response.ok?
   end
 
