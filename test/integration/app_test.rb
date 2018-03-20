@@ -41,4 +41,11 @@ class AppTest < Minitest::Test
     get "/list"
     assert last_response.ok?
   end
+
+  def test_user
+    get "/user"
+    follow_redirect!
+    assert_equal "http://example.org/", last_request.url
+    assert last_response.ok?
+  end
 end
