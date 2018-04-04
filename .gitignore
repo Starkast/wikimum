@@ -18,6 +18,3 @@ tmp
 _yardoc
 doc/
 .DS_Store
-
-# Newrelic agent log
-log

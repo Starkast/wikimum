@@ -42,7 +42,6 @@ GEM
     multipart-post (2.0.0)
     mustermann (1.0.2)
     netrc (0.10.3)
-    newrelic_rpm (3.13.1.300)
     nokogiri (1.8.2)
       mini_portile2 (~> 2.3.0)
     octokit (4.1.1)
@@ -115,7 +114,6 @@ DEPENDENCIES
   haml
   html-pipeline
   minitest
-  newrelic_rpm
   octokit
   pg
   pry
