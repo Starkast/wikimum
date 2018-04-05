@@ -14,7 +14,6 @@ gem 'html-pipeline'
 gem 'github-markup'
 gem 'commonmarker'
 gem 'rest-client'
-gem 'newrelic_rpm', require: false
 gem 'octokit'
 gem 'addressable'
 gem 'sentry-raven'
