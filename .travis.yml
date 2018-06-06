@@ -12,10 +12,14 @@ addons:
 services:
   - postgresql
 
-
 before_install:
   - travis_retry gem update --system
   - travis_retry gem install bundler
 
 before_script:
   - psql -c 'create database wikimum_test;' -U postgres
+
+notifications:
+  email:
+    on_success: never
+    on_failure: change
