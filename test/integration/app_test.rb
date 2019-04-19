@@ -10,11 +10,13 @@ class AppTest < Minitest::Test
   end
 
   def setup
-    Page.create(title: "Test", author: User.create)
+    user = User.create(email: "test@test")
+    Page.create(title: "Test", author: user)
   end
 
   def teardown
     Page[title: "Test"].destroy
+    User[email: "test@test"].destroy
   end
 
   def test_root
@@ -37,6 +39,12 @@ class AppTest < Minitest::Test
     get "/user"
     follow_redirect!
     assert_equal "http://example.org/", last_request.url
+    assert last_response.ok?
+  end
+
+  def test_user_logged_in
+    env "rack.session", { login: "not used", user_id: rand(100) }
+    get "/user"
     assert last_response.ok?
   end
 end
