@@ -16,8 +16,12 @@ class PageController < BaseController
   end
 
   get '/' do
-    @page = Page.order(:id).first
-    redirect "new" unless @page
+    @page = Page.order(:id).first || Page.new(title: "Förstasidan")
+
+    if @page.new? && logged_in?
+      redirect "new"
+    end
+
     @page_title = @page.title
     haml :show
   end
