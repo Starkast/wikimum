@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # See Heroku Labs: Dyno Metadata for more information
 # https://devcenter.heroku.com/articles/dyno-metadata
 

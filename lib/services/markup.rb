@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'html/pipeline'
 require 'github/markup'
 
@@ -20,7 +22,7 @@ end
 
 class WikiLinkFilter < HTML::Pipeline::Filter
 
-  WIKI_LINK_REGEXP = /\[\[(?<link>[\d\w\sÅÄÖåäö:-]{1,35})\]\]/i
+  WIKI_LINK_REGEXP = /\[\[(?<link>[\d\w\sÅÄÖåäö:-]{1,35})\]\]/i.freeze
 
   def call
     content = doc.to_s

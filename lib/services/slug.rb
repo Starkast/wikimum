@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'rack/utils'
 
 class Slug
 
-  REGEXP = /[^\d\w\sÅÄÖåäö:-]/i
+  REGEXP = /[^\d\w\sÅÄÖåäö:-]/i.freeze
 
   def self.slugify(string)
     slug(Rack::Utils.unescape(string))

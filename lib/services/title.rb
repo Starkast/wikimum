@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Title
   def initialize(title)
     @title = title
