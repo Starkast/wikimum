@@ -24,6 +24,7 @@ gem 'racksh'
 group :development do
   gem 'foreman'
   gem 'rake'
+  gem 'rubocop', '~> 0.71.0', require: false
   gem 'pry'
   gem 'tool', git: 'https://github.com/rkh/tool.git'
 end

@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 
 require 'rake/testtask'
+require 'rubocop/rake_task'
 
 Dir['tasks/*.rake'].each { |f| load f }
 
 task default: [:test]
-task test: ['test:unit', 'test:integration']
+task test: ['test:unit', 'test:integration', 'rubocop']
+
+RuboCop::RakeTask.new
 
 namespace(:test) do
   Rake::TestTask.new(:integration) do |t|
