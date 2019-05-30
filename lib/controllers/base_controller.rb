@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rack-flash'
 require 'sinatra/reloader'
 require 'tilt/haml'

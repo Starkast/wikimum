@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'services/markup'
 require 'services/title'
 require 'services/authorize'

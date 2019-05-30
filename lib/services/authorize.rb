@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'addressable/uri'
 require 'rest-client'
 require 'json'
@@ -5,8 +7,8 @@ require 'json'
 module Authorize
   module_function
 
-  GITHUB_OAUTH_TOKEN_URL = %q(https://github.com/login/oauth/access_token)
-  REDIRECT_URI_BASE_PATH = %q(/authorize/callback)
+  GITHUB_OAUTH_TOKEN_URL = %q(https://github.com/login/oauth/access_token).freeze
+  REDIRECT_URI_BASE_PATH = %q(/authorize/callback).freeze
 
   def access_token(code)
     oauth_result = RestClient.post(GITHUB_OAUTH_TOKEN_URL,

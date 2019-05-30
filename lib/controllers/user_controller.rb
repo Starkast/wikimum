@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UserController < BaseController
   before do
     redirect '/' unless logged_in?

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rake/testtask'
 
 Dir['tasks/*.rake'].each { |f| load f }

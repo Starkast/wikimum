@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Revision < Sequel::Model
 
   many_to_one :page

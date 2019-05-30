@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'uri'
 
 class AuthorizeController < BaseController
-  GITHUB_OAUTH_AUTHORIZE_URL = %q(https://github.com/login/oauth/authorize)
+  GITHUB_OAUTH_AUTHORIZE_URL = %q(https://github.com/login/oauth/authorize).freeze
 
   get '/' do
     halt 400, "No referrer" unless request.referrer
