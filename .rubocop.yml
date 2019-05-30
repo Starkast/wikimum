@@ -1,0 +1,7 @@
+AllCops:
+  DisabledByDefault: true
+
+Style/FrozenStringLiteralComment:
+  Enabled: true
+Style/MutableConstant:
+  Enabled: true
