@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "minitest/autorun"
+require_relative '../test_helper'
 require_relative "../../lib/services/app_metadata"
 
 class AppMetadataTest < Minitest::Test

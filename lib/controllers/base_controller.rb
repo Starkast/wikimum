@@ -17,6 +17,11 @@ class BaseController < Sinatra::Base
 
   before do
     prevent_unauthorized_modifications
+
+    # Initialize instance variables
+    @q          = nil
+    @page       = nil
+    @page_title = nil
   end
 
   helpers do

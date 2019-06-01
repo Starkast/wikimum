@@ -15,9 +15,9 @@ DB = Sequel.connect(ENV.fetch('DATABASE_URL'))
 if ENV.fetch('RACK_ENV') == 'development'
   require 'logger'
   DB.logger = Logger.new($stdout)
-
-  # Enable warnings, but not for gems
-  require 'tool/warning_filter'
+ 
+  # Enable filtered warnings
+  require_relative 'filtered_warnings'
 end
 
 $LOAD_PATH.unshift File.join(File.dirname(__FILE__), '..', 'lib')
