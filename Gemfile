@@ -20,13 +20,13 @@ gem 'octokit'
 gem 'addressable'
 gem 'sentry-raven'
 gem 'racksh'
+gem 'warning'
 
 group :development do
   gem 'foreman'
   gem 'rake'
   gem 'rubocop', '~> 0.71.0', require: false
   gem 'pry'
-  gem 'tool', git: 'https://github.com/rkh/tool.git'
 end
 
 group :test do
