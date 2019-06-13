@@ -33,6 +33,8 @@ Get a copy of the production database
 
     foreman start
 
+Go to [http://wikimum.127.0.0.1.nip.io:8080](http://wikimum.127.0.0.1.nip.io:8080) (the GitHub app for development is configured with this address).
+
 ### Environment variables
 
 ```
