@@ -277,3 +277,63 @@ ins.diffmod {
 
 del.diffdel { color: #f30; }
 ins.diffins { color: #090; }
+
+
+/* Dark Mode */
+
+@media (prefers-color-scheme:dark) {
+  body {
+    background-color: #323232;
+    color: rgba(255,255,255,.75);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: rgba(255,255,255,.75);
+  }
+
+  a                 { color: rgba(255,255,255,.75); }
+  a:hover, a:active { color: #fff; background: Gray; }
+  em                { background: #404040; }
+
+  textarea, input {
+    color: #fff;
+    background: #212121;
+    border-color: #555;
+  }
+
+  input:focus, textarea:focus {
+    color: #fff;
+    background: #212121;
+    /*border-color: #555;*/
+  }
+
+  button, input.submit {
+    color: #fff;
+    background: Grey;
+    border-color: #555;
+  }
+
+  table td, table th {
+    border-color: #555;
+  }
+
+  /* Zebra striping */
+  tbody tr:nth-child(2n) {
+    background-color: #212121;
+  }
+
+  #navigation {
+    background: #555;
+  }
+
+  #navigation input {
+    border-color: #808080;
+  }
+
+  /* Messages */
+  span.message { background: #404040; }
+  span.confirm { color: #000; }
+  span.notice  { color: #000; }
+  span.error   { background: Maroon; }
+  span.failure { background: Maroon; }
+}
