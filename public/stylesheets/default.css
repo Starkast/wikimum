@@ -330,6 +330,9 @@ ins.diffins { color: #090; }
     border-color: #808080;
   }
 
+  /* keyboard navigation visualisation */
+  a.page-link#navigation-selected { background: Gray; }
+
   /* Messages */
   span.message { background: #404040; }
   span.confirm { color: #000; }
