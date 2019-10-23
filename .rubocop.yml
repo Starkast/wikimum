@@ -1,6 +1,9 @@
 AllCops:
   DisabledByDefault: true
 
+  Exclude:
+    - 'tmp/**/*'
+
 Style/FrozenStringLiteralComment:
   Enabled: true
 Style/MutableConstant:
