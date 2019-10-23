@@ -60,11 +60,11 @@ SENTRY_DSN=
 
 To migrate to the latest version, run:
 
-    foreman run rake db:migrate
+    bin/dev_db_bootstrap
 
 This Rake task takes an optional argument specifying the target version. To migrate to version 42, run:
 
-    foreman run rake db:migrate[42]
+    bundle exec rake db:migrate[42]
 
 Manually:
 

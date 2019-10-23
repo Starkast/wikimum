@@ -24,7 +24,7 @@ namespace(:db) do
   desc "Replace local database with production database"
   task :pull do |t|
     require "uri"
-    uri = URI.parse(ENV.fetch("DATABASE_URL"))
+    uri = URI.parse(ENV.fetch("DATABASE_URL", "postgres://localhost/wikimum"))
     local_database = uri.path[1..-1]
 
     trap("INT") { exit }
@@ -40,7 +40,7 @@ namespace(:db) do
   task :migrate, [:version] do |t, args|
     require 'sequel'
     Sequel.extension(:migration)
-    db = Sequel.connect(ENV.fetch('DATABASE_URL'))
+    db = Sequel.connect(ENV.fetch('DATABASE_URL', 'postgres://localhost/wikimum'))
     if args[:version]
       puts "Migrating to version #{args[:version]}"
       Sequel::Migrator.run(db, 'migrations', target: args[:version].to_i)

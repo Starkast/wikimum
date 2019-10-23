@@ -10,12 +10,12 @@ if ENV.fetch('RACK_ENV') == 'development'
   $stderr.sync = true
 end
 
-DB = Sequel.connect(ENV.fetch('DATABASE_URL'))
+DB = Sequel.connect(ENV.fetch('DATABASE_URL', 'postgres://localhost/wikimum'))
 
 if ENV.fetch('RACK_ENV') == 'development'
   require 'logger'
   DB.logger = Logger.new($stdout)
- 
+
   # Enable filtered warnings
   require_relative 'filtered_warnings'
 end
