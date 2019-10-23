@@ -53,7 +53,6 @@ SENTRY_DSN=
 
 ### Tests
 
-    createdb wikimum_test
     bundle exec rake
 
 ### [Migrations][sequel-migrations]

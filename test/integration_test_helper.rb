@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 
 require "rack/test"
+require_relative "test_database"
 
-ENV["DATABASE_URL"] = "postgres://localhost/wikimum_test"
+ENV["DATABASE_URL"] = TestDatabase.create("wikimum_test")
 ENV["RACK_ENV"] = "test"
 ENV["SESSION_SECRET"] = "test"
 
-require "sequel"
-Sequel.extension :migration
-Sequel::Migrator.run(Sequel.connect(ENV.fetch("DATABASE_URL")), "migrations")
+TestDatabase.migrate
+
+Minitest.after_run do
+  TestDatabase.disconnect_and_drop
+end

@@ -17,7 +17,7 @@ before_install:
   - travis_retry gem install bundler
 
 before_script:
-  - psql -c 'create database wikimum_test;' -U postgres
+  - psql --version
 
 notifications:
   email:
