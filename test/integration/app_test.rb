@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "../test_helper"
+require_relative "../integration_test_helper"
 
 class AppTest < Minitest::Test
   include Rack::Test::Methods

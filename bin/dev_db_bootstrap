@@ -1,0 +1,8 @@
+#!/bin/sh
+
+set -e
+set -u
+
+psql -d wikimum -c '\d' > /dev/null 2>&1 || createdb wikimum
+
+bundle exec rake db:migrate
