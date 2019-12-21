@@ -54,7 +54,7 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
     public_suffix (3.1.0)
-    puma (3.12.1)
+    puma (3.12.2)
     rack (2.0.8)
     rack-flash3 (1.0.5)
       rack
@@ -114,6 +114,7 @@ GEM
       unf_ext
     unf_ext (0.0.7.6)
     unicode-display_width (1.6.0)
+    wait_for_it (0.2.0)
     warning (0.10.1)
 
 PLATFORMS
@@ -130,7 +131,7 @@ DEPENDENCIES
   octokit
   pg
   pry
-  puma
+  puma (< 4)
   rack-flash3
   rack-ssl
   rack-test
@@ -143,6 +144,7 @@ DEPENDENCIES
   sequel_pg
   sinatra
   sinatra-contrib
+  wait_for_it
   warning
 
 RUBY VERSION

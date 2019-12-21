@@ -10,7 +10,7 @@ gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'rack-flash3', require: 'rack-flash'
 gem 'haml'
-gem 'puma'
+gem 'puma', '< 4'
 gem 'rack-ssl'
 gem 'html-pipeline'
 gem 'github-markup'
@@ -32,4 +32,5 @@ end
 group :test do
   gem 'minitest'
   gem 'rack-test'
+  gem 'wait_for_it'
 end
