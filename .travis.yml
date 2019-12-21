@@ -14,7 +14,7 @@ services:
 
 before_install:
   - travis_retry gem update --system
-  - travis_retry gem install bundler
+  - travis_retry gem install --force bundler --version '< 2'
 
 before_script:
   - psql --version
