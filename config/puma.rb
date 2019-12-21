@@ -14,7 +14,7 @@ lowlevel_error_handler do |ex, env|
     ex,
     :message => ex.message,
     :extra => { :puma => env },
-    :culprit => "Puma"
+    :transaction => "Puma"
   )
   [500, {}, ["An error has occurred, and engineers have been informed.\n"]]
 end
