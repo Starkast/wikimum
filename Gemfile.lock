@@ -42,6 +42,7 @@ GEM
     multipart-post (2.1.1)
     mustermann (1.0.3)
     netrc (0.11.0)
+    nio4r (2.5.2)
     nokogiri (1.10.4)
       mini_portile2 (~> 2.4.0)
     octokit (4.14.0)
@@ -54,7 +55,8 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
     public_suffix (3.1.0)
-    puma (3.12.2)
+    puma (4.3.1)
+      nio4r (~> 2.0)
     rack (2.0.8)
     rack-flash3 (1.0.5)
       rack
@@ -131,7 +133,7 @@ DEPENDENCIES
   octokit
   pg
   pry
-  puma (< 4)
+  puma
   rack-flash3
   rack-ssl
   rack-test
