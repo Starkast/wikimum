@@ -32,4 +32,5 @@ end
 group :test do
   gem 'minitest'
   gem 'rack-test'
+  gem 'wait_for_it'
 end
