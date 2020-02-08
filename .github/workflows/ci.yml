@@ -26,6 +26,8 @@ jobs:
     - uses: actions/checkout@v2
     - uses: ruby/setup-ruby@v1
     - run: ruby -v
+    - run: sudo apt update
+    - run: sudo apt install -y libpq-dev
     - run: bundle install --jobs 4 --retry 3
     - run: bundle exec rake
       env:
