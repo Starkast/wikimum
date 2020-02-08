@@ -7,6 +7,8 @@ module TestDatabase
   module_function
 
   def create(prefix)
+    return ENV["TEST_DATABASE_URL"] if ENV["TEST_DATABASE_URL"]
+
     database_name = "#{prefix}_#{SecureRandom.hex}"
 
     system("createdb #{database_name}")
