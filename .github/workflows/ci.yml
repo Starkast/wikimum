@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+  schedule:
+    - cron:  "0 6 * * 6" # 06:00 every Saturday
+
+jobs:
+  build:
+    services:
+      postgres:
+        image: postgres:11
+        env:
+          # https://github.com/docker-library/docs/blob/master/postgres/README.md#environment-variables
+          POSTGRES_PASSWORD: postgres
+        ports:
+        # will assign a random free host port
+        - 5432/tcp
+        options: >-
+          --health-cmd "pg_isready"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/cache@v1
+      with:
+        key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+        path: vendor/bundle
+    - uses: ruby/setup-ruby@v1
+    - run: ruby -v
+    - run: sudo apt update
+    - run: sudo apt install -y libpq-dev
+    - run: bundle config path vendor/bundle
+    - run: bundle install --jobs 4 --retry 3
+    - run: bundle exec rake
+      env:
+        # use localhost for the host here because we are running the job on the VM
+        # get randomly assigned published port
+        TEST_DATABASE_URL: "postgres://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/postgres"

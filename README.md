@@ -1,6 +1,7 @@
 # Wikimum
 
 [![Build Status](https://travis-ci.org/Starkast/wikimum.svg?branch=master)](https://travis-ci.org/Starkast/wikimum)
+[![GitHub Build Status](https://github.com/Starkast/wikimum/workflows/CI/badge.svg)](https://github.com/Starkast/wikimum/actions)
 [![Code Climate](https://codeclimate.com/github/Starkast/wikimum/badges/gpa.svg)](https://codeclimate.com/github/Starkast/wikimum)
 
 Next Generation Wikimum!
