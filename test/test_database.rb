@@ -13,15 +13,7 @@ module TestDatabase
 
     system("createdb #{database_name}")
 
-    "postgres://#{user}@#{server}/#{database_name}"
-  end
-
-  def user
-    ENV.fetch("TRAVIS", false) ? "postgres" : ""
-  end
-
-  def server
-    ENV.fetch("PGHOST", "localhost")
+    "postgres://localhost/#{database_name}"
   end
 
   def migrate
