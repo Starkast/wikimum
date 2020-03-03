@@ -1,0 +1,29 @@
+name: Help Dependabot with vendoring
+
+on:
+  push:
+    branches:
+      - 'dependabot/bundler/**'
+    paths:
+      - 'Gemfile.lock'
+
+jobs:
+  bundle-install:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+
+      - run: sudo apt update
+      - run: sudo apt install -y libpq-dev
+
+      - run: bundle install
+      - name: Commit and push
+        run: |
+          git config --local user.email `git show -s --format='%ae'`
+          git config --local user.name ${GITHUB_ACTOR}
+          git remote add github "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git"
+          git add .
+          git commit -m "`git log --oneline --format=%B -n 1 HEAD | head -n 1` (update vendor/cache)"
+          git push github HEAD:${GITHUB_REF}
