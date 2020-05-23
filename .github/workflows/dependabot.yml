@@ -15,9 +15,6 @@ jobs:
       - uses: actions/checkout@v2
       - uses: ruby/setup-ruby@v1
 
-      - run: sudo apt update
-      - run: sudo apt install -y libpq-dev
-
       - run: bundle install
       - name: Commit and push
         run: |
