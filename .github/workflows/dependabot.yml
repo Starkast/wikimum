@@ -20,9 +20,10 @@ jobs:
       - run: bundle install
       - name: Commit and push
         run: |
+          git config --global credential.helper store
           git config --local user.email `git show -s --format='%ae'`
           git config --local user.name ${GITHUB_ACTOR}
-          git remote add github "https://${{ secrets.NEKOT_BUHTIG }}@github.com/$GITHUB_REPOSITORY.git"
+          echo https://${{ secrets.NEKOT_BUHTIG }}:x-oauth-basic@github.com >> ~/.git-credentials
           git add .
           git commit -m "`git log --oneline --format=%B -n 1 HEAD | head -n 1` (update vendor/cache)" || true
-          git push github HEAD:${GITHUB_REF}
+          git push https://github.com/$GITHUB_REPOSITORY.git HEAD:${GITHUB_REF}
