@@ -27,7 +27,7 @@ Make sure PostgreSQL is running
 
 Get a copy of the production database
 
-    dotenv rake db:pull
+    rake db:pull
 
 ### Start the app
 
