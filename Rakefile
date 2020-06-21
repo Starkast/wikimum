@@ -33,7 +33,7 @@ namespace(:db) do
     STDIN.gets
 
     system "dropdb #{local_database}"
-    system "heroku pg:pull DATABASE_URL #{local_database}"
+    system "heroku pg:pull --app wikimum DATABASE_URL #{local_database}"
   end
 
   desc "Run migrations"
