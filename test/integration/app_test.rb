@@ -14,11 +14,11 @@ class AppTest < Minitest::Test
 
   def setup
     user = User.create(email: "test@test")
-    Page.create(title: "Test", author: user)
+    Page.create(title: "Test åäö", author: user)
   end
 
   def teardown
-    Page[title: "Test"].destroy
+    Page[title: "Test åäö"].destroy
     User[email: "test@test"].destroy
   end
 
