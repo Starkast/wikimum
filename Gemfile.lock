@@ -116,7 +116,7 @@ GEM
     unf_ext (0.0.7.6)
     unicode-display_width (1.6.0)
     wait_for_it (0.2.1)
-    warning (1.0.0)
+    warning (1.1.0)
     zeitwerk (2.3.0)
 
 PLATFORMS
