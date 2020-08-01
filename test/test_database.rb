@@ -28,7 +28,7 @@ module TestDatabase
 
     DB.disconnect
 
-    system("dropdb #{database_name}")
+    system("dropdb #{database_name}") unless ENV["TEST_DATABASE_URL"]
   end
 end
 
