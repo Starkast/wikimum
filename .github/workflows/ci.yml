@@ -16,7 +16,9 @@ jobs:
         ports:
         # will assign a random free host port
         - 5432/tcp
+        # tmpfs makes DB faster by using RAM
         options: >-
+          --mount type=tmpfs,destination=/var/lib/postgresql/data
           --health-cmd "pg_isready"
           --health-interval 10s
           --health-timeout 5s
