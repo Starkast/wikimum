@@ -97,7 +97,7 @@ GEM
     sentry-raven (2.9.0)
       faraday (>= 0.7.6, < 1.0)
     sequel (5.36.0)
-    sequel_pg (1.13.0)
+    sequel_pg (1.14.0)
       pg (>= 0.18.0, != 1.2.0)
       sequel (>= 4.38.0)
     sinatra (2.1.0)
