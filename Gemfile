@@ -25,7 +25,7 @@ gem 'warning'
 group :development do
   gem 'foreman'
   gem 'rake'
-  gem 'rubocop', '~> 0.91.0', require: false
+  gem 'rubocop', '~> 0.91.1', require: false
   gem 'pry'
 end
 
