@@ -7,30 +7,13 @@ on:
 
 jobs:
   build:
-    services:
-      postgres:
-        image: postgres:11
-        env:
-          # https://github.com/docker-library/docs/blob/master/postgres/README.md#environment-variables
-          POSTGRES_PASSWORD: postgres
-        ports:
-        # will assign a random free host port
-        - 5432/tcp
-        # tmpfs makes DB faster by using RAM
-        options: >-
-          --mount type=tmpfs,destination=/var/lib/postgresql/data
-          --health-cmd "pg_isready"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - uses: dentarg/postgres@v1
     - uses: ruby/setup-ruby@v1
       with:
         bundler-cache: true
     - run: bundle exec rake
       env:
-        # use localhost for the host here because we are running the job on the VM
-        # get randomly assigned published port
-        TEST_DATABASE_URL: "postgres://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/postgres"
+        TEST_DATABASE_URL: "${{ env.POSTGRES_URL }}"
