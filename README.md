@@ -14,7 +14,6 @@ These instructions assume you are using OS X.
 Install prerequisites
 
     brew install postgresql
-    brew install cmake
     bundle install
 
 Ruby gems are vendored into `vendor/cache`, you should always check in the gems when changing gems. The caching is set up with [`bundle package --all`](https://bundler.io/man/bundle-package.1.html).
