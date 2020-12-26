@@ -20,7 +20,7 @@ GEM
       multipart-post (>= 1.2, < 3)
     foreman (0.87.2)
     github-markup (3.0.5)
-    haml (5.1.2)
+    haml (5.2.0)
       temple (>= 0.8.0)
       tilt
     html-pipeline (2.14.0)
