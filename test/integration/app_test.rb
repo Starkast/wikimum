@@ -50,4 +50,26 @@ class AppTest < Minitest::Test
     get "/user"
     assert last_response.ok?
   end
+
+  def test_authorize
+    client_id = "fake_client_id"
+    referer   = "http://fake/referer"
+
+    ClimateControl.modify(GITHUB_BASIC_CLIENT_ID: client_id) do
+      header "Referer", referer
+      get "/authorize"
+    end
+
+    redirect_location = last_response['Location']
+
+    assert_equal 302, last_response.status
+    assert redirect_location.include?(client_id)
+    assert redirect_location.include?(URI(referer).path)
+  end
+
+  def test_authorize_without_referer
+    get "/authorize"
+
+    assert_equal 400, last_response.status
+  end
 end
