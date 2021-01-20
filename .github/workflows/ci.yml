@@ -8,6 +8,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-18.04
+    env:
+      BUNDLE_LOCAL: 1
     steps:
     - uses: actions/checkout@v2
     - uses: dentarg/postgres@v1
