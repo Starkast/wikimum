@@ -21,10 +21,10 @@ gem 'addressable'
 gem 'sentry-raven'
 gem 'racksh'
 gem 'warning'
+gem 'rake'
 
 group :development do
   gem 'foreman'
-  gem 'rake'
   gem 'rubocop', '~> 1.8.1', require: false
   gem 'pry'
 end
