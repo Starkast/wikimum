@@ -14,7 +14,7 @@ def test?
   ENV.fetch('RACK_ENV') == 'test'
 end
 
-require_relative 'config/environment'
+require_relative 'config/app'
 
 unless development? || test?
   use Rack::SSL
