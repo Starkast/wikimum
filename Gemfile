@@ -22,11 +22,11 @@ gem 'sentry-raven'
 gem 'racksh'
 gem 'warning'
 gem 'rake'
+gem 'rubocop', '~> 1.8.1', require: false
+gem 'pry'
 
 group :development do
   gem 'foreman'
-  gem 'rubocop', '~> 1.8.1', require: false
-  gem 'pry'
 end
 
 group :test do
