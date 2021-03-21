@@ -4,6 +4,7 @@ inherit_mode:
 
 AllCops:
   DisabledByDefault: true
+  SuggestExtensions: false
 
   Exclude:
     - 'tmp/**/*'
