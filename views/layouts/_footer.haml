@@ -6,3 +6,5 @@
     = AppMetadata.release_version
     != surround "(", ")" do
       %a{ href: "https://github.com/Starkast/wikimum/commit/#{AppMetadata.commit}" }= AppMetadata.short_commit
+  %li
+    %img{ src: "/favicon.ico", alt: "Starkast" }
