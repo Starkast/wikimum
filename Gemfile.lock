@@ -18,7 +18,7 @@ GEM
       rexml
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
-    faraday (0.17.3)
+    faraday (0.17.4)
       multipart-post (>= 1.2, < 3)
     foreman (0.87.2)
     github-markup (4.0.0)
@@ -49,7 +49,7 @@ GEM
     nokogiri (1.11.5)
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
-    octokit (4.20.0)
+    octokit (4.21.0)
       faraday (>= 0.9)
       sawyer (~> 0.8.0, >= 0.5.3)
     parallel (1.20.1)
