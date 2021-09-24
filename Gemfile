@@ -27,6 +27,7 @@ gem 'pry'
 
 group :development do
   gem 'foreman'
+  gem 'localhost'
 end
 
 group :test do

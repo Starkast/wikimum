@@ -25,4 +25,18 @@ class AppBootTest < Minitest::Test
     WaitForIt.new(command_from_procfile, options) do |spawn|
     end
   end
+
+  def test_app_development_boot
+    options = {
+      timeout: 5,
+      wait_for: /Worker.+booted/,
+    }
+
+    ClimateControl.modify(RACK_ENV: "development", PORT: "5000") do
+      command = command_from_procfile(worker: "development")
+
+      WaitForIt.new(command, options) do |spawn|
+      end
+    end
+  end
 end

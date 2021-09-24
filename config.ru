@@ -16,8 +16,21 @@ end
 
 require_relative 'config/app'
 
-unless development? || test?
-  use Rack::SSL
+# SSL/TLS in development on port $PORT-1000 (port $PORT will redirect there)
+# https://github.com/socketry/localhost
+require 'localhost' if development?
+
+unless test?
+  options = if development?
+    # Subtract 100 because of foreman offset bug:
+    #   https://github.com/ddollar/foreman/issues/714
+    #   https://github.com/ddollar/foreman/issues/418
+    { host: "localhost:#{ENV.fetch('PORT').to_i - 100 - 1000}" }
+  else
+    {}
+  end
+
+  use Rack::SSL, options
 end
 
 use Rack::Session::Cookie,

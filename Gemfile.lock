@@ -34,6 +34,7 @@ GEM
       domain_name (~> 0.5)
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
+    localhost (1.1.9)
     method_source (1.0.0)
     mime-types (3.3.1)
       mime-types-data (~> 3.2015)
@@ -145,6 +146,7 @@ DEPENDENCIES
   github-markup
   haml
   html-pipeline
+  localhost
   minitest
   octokit
   pg
@@ -170,4 +172,4 @@ RUBY VERSION
    ruby 2.6.8p205
 
 BUNDLED WITH
-   2.2.23
+   2.2.25
