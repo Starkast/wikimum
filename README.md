@@ -30,7 +30,7 @@ Get a copy of the production database
 
 ### Start the app
 
-    foreman start
+    foreman start development
 
 Go to [http://wikimum.127.0.0.1.nip.io:8080](http://wikimum.127.0.0.1.nip.io:8080) (the GitHub app for development is configured with this address).
 
@@ -53,6 +53,10 @@ SENTRY_DSN=
 ### Tests
 
     bundle exec rake
+
+Run single test with [`m`](https://github.com/qrush/m):
+
+    bundle exec m test/integration/app_boot_test.rb:29
 
 ### [Migrations][sequel-migrations]
 

@@ -35,6 +35,9 @@ GEM
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
     localhost (1.1.9)
+    m (1.6.0)
+      method_source (>= 0.6.7)
+      rake (>= 0.9.2.2)
     method_source (1.0.0)
     mime-types (3.3.1)
       mime-types-data (~> 3.2015)
@@ -147,6 +150,7 @@ DEPENDENCIES
   haml
   html-pipeline
   localhost
+  m
   minitest
   octokit
   pg

@@ -32,6 +32,7 @@ end
 
 group :test do
   gem 'climate_control'
+  gem 'm'
   gem 'minitest'
   gem 'rack-test'
   gem 'wait_for_it'

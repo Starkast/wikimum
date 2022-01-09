@@ -10,5 +10,5 @@ ENV["SESSION_SECRET"] = "test"
 TestDatabase.migrate
 
 Minitest.after_run do
-  TestDatabase.disconnect_and_drop
+  TestDatabase.disconnect_and_drop("wikimum_test")
 end
