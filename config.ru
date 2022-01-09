@@ -18,11 +18,15 @@ def test?
   ENV.fetch('RACK_ENV') == 'test'
 end
 
+def production_test?
+  ENV.fetch('RACK_ENV') == 'testprod'
+end
+
 require_relative 'config/app'
 
 # SSL/TLS in development on port $PORT-1000 (port $PORT will redirect there)
 # https://github.com/socketry/localhost
-require 'localhost' if development?
+require 'localhost' if development? || production_test?
 
 unless test?
   options = if development?
