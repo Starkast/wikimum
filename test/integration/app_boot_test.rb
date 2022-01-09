@@ -59,6 +59,7 @@ class AppBootTest < Minitest::Test
         actual_port = (port.to_i - 100) # because we workaround foreman issue in Procfile
 
         res = Net::HTTP.get_response(URI("http://localhost:#{actual_port}"))
+        assert_equal ["https://localhost:#{actual_port - 1000}/"], res.get_fields("location")
         assert_equal "301", res.code
 
         https_res = nil

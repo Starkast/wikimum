@@ -72,8 +72,6 @@ GEM
       rack
     rack-protection (2.1.0)
       rack
-    rack-ssl (1.4.1)
-      rack
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     racksh (1.0.0)
@@ -121,6 +119,7 @@ GEM
       rack-protection (= 2.1.0)
       sinatra (= 2.1.0)
       tilt (~> 2.0)
+    spinels-rack-ssl-enforcer (0.3.0)
     temple (0.8.2)
     thread_safe (0.3.6)
     tilt (2.0.10)
@@ -157,7 +156,6 @@ DEPENDENCIES
   pry
   puma
   rack-flash3
-  rack-ssl
   rack-test
   racksh
   rake
@@ -168,6 +166,7 @@ DEPENDENCIES
   sequel_pg
   sinatra
   sinatra-contrib
+  spinels-rack-ssl-enforcer
   wait_for_it
   warning
   webmock

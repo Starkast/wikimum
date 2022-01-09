@@ -2,7 +2,7 @@
 
 require_relative 'config/sentry'
 
-require 'rack/ssl'
+require 'rack/ssl-enforcer'
 
 use Raven::Rack
 
@@ -33,12 +33,12 @@ unless test?
     # Subtract 100 because of foreman offset bug:
     #   https://github.com/ddollar/foreman/issues/714
     #   https://github.com/ddollar/foreman/issues/418
-    { host: "localhost:#{ENV.fetch('PORT').to_i - 100 - 1000}", hsts: false }
+    { https_port: ENV.fetch('PORT').to_i - 100 - 1000, hsts: false }
   else
-    {}
+    { hsts: { subdomains: false } }
   end
 
-  use Rack::SSL, options
+  use Rack::SslEnforcer, options
 end
 
 use Rack::Session::Cookie,
