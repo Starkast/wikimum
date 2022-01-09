@@ -6,6 +6,10 @@ require 'rack/ssl'
 
 use Raven::Rack
 
+def production?
+  ENV.fetch('RACK_ENV') == 'production'
+end
+
 def development?
   ENV.fetch('RACK_ENV') == 'development'
 end
@@ -25,7 +29,7 @@ unless test?
     # Subtract 100 because of foreman offset bug:
     #   https://github.com/ddollar/foreman/issues/714
     #   https://github.com/ddollar/foreman/issues/418
-    { host: "localhost:#{ENV.fetch('PORT').to_i - 100 - 1000}" }
+    { host: "localhost:#{ENV.fetch('PORT').to_i - 100 - 1000}", hsts: false }
   else
     {}
   end
