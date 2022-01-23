@@ -18,17 +18,25 @@ def test?
   ENV.fetch('RACK_ENV') == 'test'
 end
 
-def production_test?
-  ENV.fetch('RACK_ENV') == 'testprod'
+def load_localhost_ssl?
+  return true if development?
+
+  ENV.key?("LOAD_LOCALHOST_SSL") # to force load when "simulating" production
+end
+
+def redirect_to_https?
+  return true if production?
+
+  %w(1 true).include?(ENV["REDIRECT_TO_HTTPS"])
 end
 
 require_relative 'config/app'
 
 # SSL/TLS in development on port $PORT-1000 (port $PORT will redirect there)
 # https://github.com/socketry/localhost
-require 'localhost' if development? || production_test?
+require 'localhost' if load_localhost_ssl?
 
-unless test?
+if redirect_to_https?
   options = if development?
     # Subtract 100 because of foreman offset bug:
     #   https://github.com/ddollar/foreman/issues/714
