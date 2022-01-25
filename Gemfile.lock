@@ -77,7 +77,7 @@ GEM
     racksh (1.0.0)
       rack (>= 1.0)
       rack-test (>= 0.5)
-    rainbow (3.0.0)
+    rainbow (3.1.1)
     rake (13.0.6)
     regexp_parser (2.2.0)
     rest-client (2.1.0)
@@ -86,9 +86,9 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     rexml (3.2.5)
-    rubocop (1.24.1)
+    rubocop (1.25.0)
       parallel (~> 1.10)
-      parser (>= 3.0.0.0)
+      parser (>= 3.1.0.0)
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 1.8, < 3.0)
       rexml
@@ -160,7 +160,7 @@ DEPENDENCIES
   racksh
   rake
   rest-client
-  rubocop (~> 1.24.1)
+  rubocop (~> 1.25.0)
   sentry-raven
   sequel
   sequel_pg
