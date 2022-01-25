@@ -1,2 +1,2 @@
-formation: development=1
+formation: ssl=1
 port: 8080

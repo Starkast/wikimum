@@ -49,18 +49,21 @@ class AppBootTest < Minitest::Test
     options = {
       timeout: 5,
       wait_for: /Worker.+booted/,
+      env: {
+        REDIRECT_TO_HTTPS: true,
+      },
     }
 
     ClimateControl.modify(RACK_ENV: "development", PORT: port) do
-      command = command_from_procfile(worker: "development")
+      command = command_from_procfile(worker: "ssl")
 
       WaitForIt.new(command, options) do |spawn|
         puts spawn.log.read if ENV.key?("DEBUG")
         actual_port = (port.to_i - 100) # because we workaround foreman issue in Procfile
 
-        res = Net::HTTP.get_response(URI("http://localhost:#{actual_port}"))
-        assert_equal ["https://localhost:#{actual_port - 1000}/"], res.get_fields("location")
-        assert_equal "301", res.code
+        http_res = Net::HTTP.get_response(URI("http://localhost:#{actual_port}"))
+        assert_equal ["https://localhost:#{actual_port - 1000}/"], http_res.get_fields("location")
+        assert_equal "301", http_res.code
 
         https_res = nil
         https_port = actual_port - 1000
@@ -83,18 +86,27 @@ class AppBootTest < Minitest::Test
     options = {
       timeout: 5,
       wait_for: /Worker.+booted/,
+      env: {
+        LOAD_LOCALHOST_SSL: true,
+      },
     }
 
-    ClimateControl.modify(RACK_ENV: "testprod", PORT: port) do
-      command = command_from_procfile(worker: "testprod")
+    ClimateControl.modify(RACK_ENV: "production", PORT: port) do
+      # Need Puma to bind TLS/SSL port to simulate production
+      command = command_from_procfile(worker: "ssl")
 
+      # command can not be prefixed with ENV variables due to use of "exec" in wait_for_it
+      # https://github.com/zombocom/wait_for_it/blob/v0.2.1/lib/wait_for_it.rb#L179-L180
       WaitForIt.new(command, options) do |spawn|
         puts spawn.log.read if ENV.key?("DEBUG")
         actual_port = (port.to_i - 100) # because we workaround foreman issue in Procfile
 
-        res = Net::HTTP.get_response(URI("http://localhost:#{actual_port}"))
-        assert_equal "301", res.code
+        # Test HTTP respone, should redirect without any port in production
+        http_res = Net::HTTP.get_response(URI("http://localhost:#{actual_port}"))
+        assert_equal "301", http_res.code
+        assert_equal ["https://localhost/"], http_res.get_fields("location")
 
+        # Test HTTPS respone
         https_res = nil
         https_port = actual_port - 1000
         ssl_opts = {

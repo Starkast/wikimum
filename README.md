@@ -30,7 +30,7 @@ Get a copy of the production database
 
 ### Start the app
 
-    foreman start development
+    foreman start
 
 Go to [http://wikimum.127.0.0.1.nip.io:8080](http://wikimum.127.0.0.1.nip.io:8080) (the GitHub app for development is configured with this address).
 
@@ -44,6 +44,8 @@ GITHUB_BASIC_SECRET_ID=
 # Production
 SESSION_SECRET=
 SENTRY_DSN=
+# Development
+REDIRECT_TO_HTTPS=1 # redirect http:// to https://
 # Tests
 DEBUG=1 # enable debug output from tests that have it
 ```
