@@ -8,6 +8,8 @@ use Raven::Rack
 
 require_relative 'config/app'
 
+use BrokenApp if App.test_lowlevel_error_handler?
+
 if App.redirect_to_https?
   options = if App.development?
     { https_port: App.ssl_port, hsts: false }

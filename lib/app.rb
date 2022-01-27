@@ -26,6 +26,10 @@ class App
       env == "test"
     end
 
+    def test_lowlevel_error_handler?
+      ENV.key?("TEST_LOWLEVEL_ERROR_HANDLER")
+    end
+
     def localhost_ssl?
       return true if development?
 
@@ -38,5 +42,15 @@ class App
 
       %w(1 true).include?(ENV["REDIRECT_TO_HTTPS"])
     end
+  end
+end
+
+class BrokenApp
+  def initialize(app)
+    @app = app
+  end
+
+  def call(env)
+    [200, nil, []]
   end
 end

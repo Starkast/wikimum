@@ -26,13 +26,16 @@ class AppBootTest < Minitest::Test
     server&.close
   end
 
+  def get_http_response(host: "localhost", port:)
+    Net::HTTP.get_response(URI("http://#{host}:#{port}"))
+  end
+
   def get_https_response(host: "localhost", port:)
     response = nil
     ssl_opts = {
       use_ssl: true,
       verify_mode: OpenSSL::SSL::VERIFY_NONE,
     }
-
 
     Net::HTTP.start(host, port, ssl_opts) do |https|
       response = https.get("/")
@@ -49,13 +52,25 @@ class AppBootTest < Minitest::Test
     WebMock.disable_net_connect!
   end
 
-  def test_app_boot
+  def test_app_lowlevel_error_handler
+    port = random_free_port
     options = {
       timeout: 5,
       wait_for: /Worker.+booted/,
+      env: {
+        PORT: port,
+        RACK_ENV: "development",
+        TEST_LOWLEVEL_ERROR_HANDLER: true, # adds broken middleware
+      },
     }
 
     WaitForIt.new(command_from_procfile, options) do |spawn|
+      puts spawn.log.read if ENV.key?("DEBUG")
+
+      get_http_response(port: port)
+
+      assert spawn.wait("DEBUG -- sentry: ** [Raven]")
+      assert spawn.wait("excluded from capture: DSN not set")
     end
   end
 
@@ -74,7 +89,7 @@ class AppBootTest < Minitest::Test
     WaitForIt.new(command_from_procfile, options) do |spawn|
       puts spawn.log.read if ENV.key?("DEBUG")
 
-      http_res   = Net::HTTP.get_response(URI("http://localhost:#{port}"))
+      http_res   = get_http_response(port: port)
       https_port = port - 1000
       https_res  = get_https_response(port: https_port)
 
@@ -106,7 +121,7 @@ class AppBootTest < Minitest::Test
     WaitForIt.new(command_from_procfile, options) do |spawn|
       puts spawn.log.read if ENV.key?("DEBUG")
 
-      http_res   = Net::HTTP.get_response(URI("http://localhost:#{port}"))
+      http_res   = get_http_response(port: port)
       https_port = port - 1000
       https_res  = get_https_response(port: https_port)
 
