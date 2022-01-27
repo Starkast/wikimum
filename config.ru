@@ -6,42 +6,11 @@ require 'rack/ssl-enforcer'
 
 use Raven::Rack
 
-def production?
-  ENV.fetch('RACK_ENV') == 'production'
-end
-
-def development?
-  ENV.fetch('RACK_ENV') == 'development'
-end
-
-def test?
-  ENV.fetch('RACK_ENV') == 'test'
-end
-
-def load_localhost_ssl?
-  return true if development?
-
-  ENV.key?("LOAD_LOCALHOST_SSL") # to force load when "simulating" production
-end
-
-def redirect_to_https?
-  return true if production?
-
-  %w(1 true).include?(ENV["REDIRECT_TO_HTTPS"])
-end
-
 require_relative 'config/app'
 
-# SSL/TLS in development on port $PORT-1000 (port $PORT will redirect there)
-# https://github.com/socketry/localhost
-require 'localhost' if load_localhost_ssl?
-
-if redirect_to_https?
-  options = if development?
-    # Subtract 100 because of foreman offset bug:
-    #   https://github.com/ddollar/foreman/issues/714
-    #   https://github.com/ddollar/foreman/issues/418
-    { https_port: ENV.fetch('PORT').to_i - 100 - 1000, hsts: false }
+if App.redirect_to_https?
+  options = if App.development?
+    { https_port: App.ssl_port, hsts: false }
   else
     { hsts: { subdomains: false } }
   end

@@ -1,2 +1,2 @@
-formation: ssl=1
+formation: web=1
 port: 8080

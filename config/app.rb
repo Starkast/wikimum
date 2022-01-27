@@ -3,7 +3,9 @@
 require 'sinatra/base'
 require 'sequel'
 
-if ENV.fetch('RACK_ENV') == 'development'
+require_relative '../lib/app'
+
+if App.development?
   ENV['SESSION_SECRET'] ||= 'secret'
 
   $stdout.sync = true
@@ -12,7 +14,7 @@ end
 
 DB = Sequel.connect(ENV.fetch('DATABASE_URL', 'postgres://localhost/wikimum'))
 
-if ENV.fetch('RACK_ENV') == 'development'
+if App.development?
   require 'logger'
   DB.logger = Logger.new($stdout)
 
