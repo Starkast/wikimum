@@ -184,6 +184,21 @@ ol.revision_history li { margin: 0.4em 0 0 0; }
 #footer hr     { margin-left: auto; margin-right: auto; }
 #actions form  { display: inline; }
 
+/*
+ *   Scale images to fit inside layout
+     Modified version of https://stackoverflow.com/a/14425500/525616
+ **/
+
+#content img {
+  /* CSS Hack will make it width 100% and height 100% */
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  /* Maintain aspect ratio */
+  max-height: 100%;
+  max-width: 100%;
+}
 
 /* Extra */
 
