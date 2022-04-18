@@ -5,7 +5,7 @@ class Page < Sequel::Model
   one_to_many :revisions
   many_to_one :author, class: :User
 
-  SEARCH_IN_COLUMNS = %i(title content description)
+  SEARCH_IN_COLUMNS = %i(title content description).freeze
 
   dataset_module do
     def with_concealed_if(allowed_to_see_concealed)
