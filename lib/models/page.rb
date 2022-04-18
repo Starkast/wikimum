@@ -9,11 +9,9 @@ class Page < Sequel::Model
 
   dataset_module do
     def with_concealed_if(allowed_to_see_concealed)
-      if allowed_to_see_concealed
-        self
-      else
-        self.exclude(concealed: true)
-      end
+      return self if allowed_to_see_concealed
+
+      self.exclude(concealed: true)
     end
 
     def search(query)
