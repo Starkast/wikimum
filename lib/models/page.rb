@@ -5,6 +5,26 @@ class Page < Sequel::Model
   one_to_many :revisions
   many_to_one :author, class: :User
 
+  SEARCH_IN_COLUMNS = %i(title content description)
+
+  dataset_module do
+    def with_concealed_if(allowed_to_see_concealed)
+      if allowed_to_see_concealed
+        self
+      else
+        self.exclude(concealed: true)
+      end
+    end
+
+    def search(query)
+      terms = query.to_s.strip.split
+
+      return self.where { false } if terms.empty?
+
+      self.full_text_search(SEARCH_IN_COLUMNS, terms, rank: true)
+    end
+  end
+
   def before_create
     self.slug = Slug.slugify(self.title)
   end
@@ -30,15 +50,5 @@ class Page < Sequel::Model
 
   def calculate_sha1
     Digest::SHA1.hexdigest(self.to_hash.values.join)
-  end
-
-  def self.search(query)
-    terms = query.to_s.strip.split
-
-    return [] if terms.empty?
-
-    columns  = %i(title content description)
-
-    self.dataset.full_text_search(columns, terms, rank: true).to_a
   end
 end

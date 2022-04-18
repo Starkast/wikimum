@@ -5,6 +5,8 @@
     - pages.each do |page|
       %li
         %a{ href: "#{page.slug}" }= page.title
+        - if page.concealed
+          🔐
         = "(#{page.revision})"
         %span.latest_item_information
           = "av #{page.author.login}"

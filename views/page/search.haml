@@ -3,6 +3,8 @@
   - @pages.each do |page|
     %li
       %a.page-link{ href: "#{page.slug}" }= page.title
+      - if page.concealed
+        🔐
       %span.description= page.description
 
 :javascript
