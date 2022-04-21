@@ -13,3 +13,5 @@ Style/FrozenStringLiteralComment:
   Enabled: true
 Style/MutableConstant:
   Enabled: true
+Layout/DotPosition:
+  Enabled: true
