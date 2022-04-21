@@ -30,22 +30,25 @@ class PageController < BaseController
 
   get '/list' do
     @page_title = "Innehållsförteckning"
-    @page_groups = Page.order(:title_char, :title).to_hash_groups(:title_char)
+    @page_groups = Page.order(:title_char, :title)
+      .with_concealed_if(starkast?)
+      .to_hash_groups(:title_char)
     haml :index
   end
 
   get '/latest' do
     @page_title = "Senast ändrad"
-    @page_groups = Page.order(:updated_on).reverse.
-      eager_graph(:author).
-      add_graph_aliases(date: [:pages, :date, Sequel.lit("DATE(updated_on)")]).
-      to_hash_groups(:date)
+    @page_groups = Page.order(:updated_on).reverse
+      .with_concealed_if(starkast?)
+      .eager_graph(:author)
+      .add_graph_aliases(date: [:pages, :date, Sequel.lit("DATE(updated_on)")])
+      .to_hash_groups(:date)
     haml :latest
   end
 
   get '/search' do
     @page_title = "Sökresultat"
-    @pages = Page.search(params[:q])
+    @pages = Page.with_concealed_if(starkast?).search(params[:q])
     @q = params[:q]
 
     case @pages.count
@@ -85,7 +88,7 @@ class PageController < BaseController
   end
 
   get '/:slug/edit' do
-    @page = Page.find(slug: slug)
+    @page = Page.with_concealed_if(starkast?).find(slug: slug)
     @page_title = "Ändrar #{@page.title}"
     restrict_concealed(@page)
     haml :edit
