@@ -88,7 +88,7 @@ class PageController < BaseController
   end
 
   get '/:slug/edit' do
-    @page = Page.with_concealed_if(starkast?).find(slug: slug)
+    @page = Page.find(slug: slug)
     @page_title = "Ändrar #{@page.title}"
     restrict_concealed(@page)
     haml :edit
