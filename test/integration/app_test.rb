@@ -29,13 +29,13 @@ class AppTest < Minitest::Test
   end
 
   def test_page
-    get "/#{URI.encode(@page.slug)}"
+    get "/#{URI.encode_www_form_component(@page.slug)}"
     assert last_response.body.include?(@page_title)
     assert last_response.ok?
   end
 
   def test_page_edit_view
-    get "/#{URI.encode(@page.slug)}/edit"
+    get "/#{URI.encode_www_form_component(@page.slug)}/edit"
     assert last_response.body.include?(@page_title)
     assert last_response.ok?
   end
