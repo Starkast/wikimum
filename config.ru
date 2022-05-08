@@ -4,7 +4,7 @@ require_relative 'config/sentry'
 
 require 'rack/ssl-enforcer'
 
-use Raven::Rack
+use Sentry::Rack::CaptureExceptions
 
 require_relative 'config/app'
 

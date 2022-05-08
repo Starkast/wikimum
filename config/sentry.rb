@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require "raven"
+require "sentry-ruby"
 require "logger"
 
-Raven.configure do |config|
+Sentry.init do |config|
   config.logger.level = Logger::DEBUG
-  config.processors -= [Raven::Processor::PostData] # send POST data
-  config.processors -= [Raven::Processor::Cookies]  # send cookies
+  # config.processors -= [Raven::Processor::PostData] # send POST data
+  # config.processors -= [Raven::Processor::Cookies]  # send cookies
 end

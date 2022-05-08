@@ -17,7 +17,7 @@ if App.localhost_ssl?
 end
 
 lowlevel_error_handler do |ex, env|
-  Raven.capture_exception(
+  Sentry.capture_exception(
     ex,
     :message => ex.message,
     :extra => { :puma => env },
