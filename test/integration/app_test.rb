@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "cgi"
+
 require_relative "../test_helper"
 require_relative "../integration_test_helper"
 
@@ -13,17 +15,30 @@ class AppTest < Minitest::Test
   end
 
   def setup
-    user = User.create(email: "test@test")
-    Page.create(title: "Test åäö", author: user)
+    @page_title = "Test åäö"
+    @user = User.create(email: "test@test")
+    @page = Page.create(title: @page_title, author: @user)
   end
 
   def teardown
-    Page[title: "Test åäö"].destroy
-    User[email: "test@test"].destroy
+    @page.destroy
+    @user.destroy
   end
 
   def test_root
     get "/"
+    assert last_response.ok?
+  end
+
+  def test_page
+    get "/#{CGI.escape(@page.slug)}"
+    assert last_response.body.include?(@page_title)
+    assert last_response.ok?
+  end
+
+  def test_page_edit_view
+    get "/#{CGI.escape(@page.slug)}/edit"
+    assert last_response.body.include?(@page_title)
     assert last_response.ok?
   end
 

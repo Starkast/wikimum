@@ -13,13 +13,13 @@ class AppConcealedPagesTest < Minitest::Test
   end
 
   def setup
-    user = User.create(email: "test@test")
-    Page.create(title: "Concealed", author: user, concealed: true)
+    @user = User.create(email: "test@test")
+    @page = Page.create(title: "Concealed", author: @user, concealed: true)
   end
 
   def teardown
-    Page[title: "Concealed"].destroy
-    User[email: "test@test"].destroy
+    @page.destroy
+    @user.destroy
   end
 
   def login_as_starkast
@@ -36,6 +36,12 @@ class AppConcealedPagesTest < Minitest::Test
   def test_concealed_logged_in_as_starkast
     login_as_starkast
     get "/Concealed"
+    assert last_response.ok?
+  end
+
+  def test_concealed_edit_view_logged_in_as_starkast
+    login_as_starkast
+    get "/Concealed/edit"
     assert last_response.ok?
   end
 
