@@ -1,0 +1,46 @@
+# This workflow integrates Brakeman with GitHub's Code Scanning feature
+# Brakeman is a static analysis security vulnerability scanner for Ruby on Rails applications
+
+name: Brakeman Scan
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron:  "0 6 * * 0" # 06:00 every Sunday
+
+permissions:
+  contents: read
+
+jobs:
+  brakeman-scan:
+    permissions:
+      contents: read # for actions/checkout to fetch code
+      security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
+    name: Brakeman Scan
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        bundler-cache: true
+
+    - name: Setup Brakeman
+      # SARIF support is provided in Brakeman version 4.10+
+      run: |
+        gem install brakeman
+
+    # Execute Brakeman CLI and generate a SARIF output with the security issues identified during the analysis
+    - name: Scan
+      continue-on-error: true
+      run: |
+        brakeman --force -f sarif -o output.sarif.json .
+
+    # Upload the SARIF file generated in the previous step
+    - name: Upload SARIF
+      uses: github/codeql-action/upload-sarif@v2
+      with:
+        sarif_file: output.sarif.json
