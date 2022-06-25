@@ -1,0 +1,17 @@
+name: Gem Compare
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+    branches:
+      - 'dependabot/bundler/**'
+
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: dentarg/gem-compare@main
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
