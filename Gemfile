@@ -22,7 +22,7 @@ gem 'sentry-raven'
 gem 'racksh'
 gem 'warning'
 gem 'rake'
-gem 'rubocop', '~> 1.30.1', require: false
+gem 'rubocop', '~> 1.31.1', require: false
 gem 'pry'
 
 group :development do
