@@ -13,7 +13,7 @@ class AppConcealedPagesTest < Minitest::Test
   end
 
   def setup
-    @user = User.create(email: "test@test")
+    @user = User.create(email: "test@test", login: "test")
     @page = Page.create(title: "Concealed", author: @user, concealed: true)
   end
 
@@ -23,7 +23,7 @@ class AppConcealedPagesTest < Minitest::Test
   end
 
   def login_as_starkast
-    env "rack.session", { login: "not used", user_id: rand(100), starkast: true }
+    env "rack.session", { login: @user.login, user_id: @user.id, starkast: true }
   end
 
   def test_concealed

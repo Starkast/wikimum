@@ -16,7 +16,7 @@ class AppTest < Minitest::Test
 
   def setup
     @page_title = "Test åäö"
-    @user = User.create(email: "test@test")
+    @user = User.create(email: "test@test", login: "test")
     @page = Page.create(title: @page_title, author: @user)
   end
 
@@ -61,7 +61,7 @@ class AppTest < Minitest::Test
   end
 
   def test_user_logged_in
-    env "rack.session", { login: "not used", user_id: rand(100) }
+    env "rack.session", { login: @user.login, user_id: @user.id }
     get "/user"
     assert last_response.ok?
   end
