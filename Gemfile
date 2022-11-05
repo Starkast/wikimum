@@ -24,6 +24,7 @@ gem 'warning'
 gem 'rake'
 gem 'rubocop', '~> 1.36.0', require: false
 gem 'pry'
+gem 'dyno_metadata'
 
 group :development do
   gem 'foreman'

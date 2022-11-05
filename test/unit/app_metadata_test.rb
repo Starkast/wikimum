@@ -13,8 +13,8 @@ class AppMetadataTest < Minitest::Test
   end
 
   def test_short_commit
-    ENV["HEROKU_SLUG_COMMIT"] = "bad0a554069af49b3de35b8e8c26765c1dba9ff02"
-
-    assert_equal "bad0a55", AppMetadata.short_commit
+    ClimateControl.modify(HEROKU_SLUG_COMMIT: "bad0a554069af49b3de35b8e8c26765c1dba9ff02") do
+      assert_equal "bad0a55", AppMetadata.short_commit
+    end
   end
 end

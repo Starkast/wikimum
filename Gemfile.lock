@@ -17,6 +17,7 @@ GEM
       rexml
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
+    dyno_metadata (0.0.4)
     faraday (0.17.3)
       multipart-post (>= 1.2, < 3)
     foreman (0.87.2)
@@ -145,6 +146,7 @@ DEPENDENCIES
   addressable
   climate_control
   commonmarker
+  dyno_metadata
   foreman
   github-markup
   haml
@@ -176,4 +178,4 @@ RUBY VERSION
    ruby 2.7.6p219
 
 BUNDLED WITH
-   2.3.14
+   2.3.21
