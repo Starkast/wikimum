@@ -40,7 +40,7 @@ class AppBackupTest < Minitest::Test
       MSG
 
       assert last_response.ok?
-      assert_match /#{@page_title}/, body, match_failed_message
+      assert_match(/#{@page_title}/, body, match_failed_message)
     end
   end
 
@@ -64,7 +64,7 @@ class AppBackupTest < Minitest::Test
       basic_authorize "foo", "bar"
       post "/.backup"
 
-      assert_match /key not found: "BACKUP_USER"/, raised_error.message
+      assert_match(/key not found: "BACKUP_USER"/, raised_error.message)
     end
   end
 end
