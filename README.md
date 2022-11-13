@@ -41,6 +41,8 @@ Go to [http://wikimum.127.0.0.1.nip.io:8080](http://wikimum.127.0.0.1.nip.io:808
 DATABASE_URL=postgres://
 GITHUB_BASIC_CLIENT_ID=
 GITHUB_BASIC_SECRET_ID=
+BACKUP_USER=
+BACKUP_PASSWORD=
 # Production
 SESSION_SECRET=
 SENTRY_DSN=

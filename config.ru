@@ -30,6 +30,14 @@ use Rack::Static, {
   cache_control: "public,max-age=#{365 * 24 * 3600}"
 }
 
+map '/.backup' do
+  use Rack::Auth::Basic do |username, password|
+    App.backup_access?(username, password)
+  end
+
+  run BackupController
+end
+
 map '/' do
   run PageController
 end

@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require "logger"
+require "rack/utils"
+
 class App
   class << self
     def port
@@ -24,6 +27,19 @@ class App
 
     def test?
       env == "test"
+    end
+
+    def null_logger
+      Logger.new(File.open(File::NULL, "w"))
+    end
+
+    def backup_access?(username, password)
+      backup_user = ENV.fetch("BACKUP_USER")
+      backup_pass = ENV.fetch("BACKUP_PASSWORD")
+      username_ok = Rack::Utils.secure_compare(backup_user, username)
+      password_ok = Rack::Utils.secure_compare(backup_pass, password)
+
+      username_ok && password_ok
     end
 
     def test_lowlevel_error_handler?
