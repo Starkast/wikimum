@@ -90,7 +90,7 @@ gem install brakeman
 brakeman --force --format json .
 ```
 
-
+Don't forget to add a `note` attribute to the JSON object when ignoring.
 
 [sequel-migrations]: http://sequel.jeremyevans.net/rdoc/files/doc/migration_rdoc.html
 
