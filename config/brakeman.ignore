@@ -1,0 +1,26 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "File Access",
+      "warning_code": 16,
+      "fingerprint": "b934e8f7994ab19feab782b372192a1ff20d6f70544c0ede1ad7b25ce24f0653",
+      "check_name": "SendFile",
+      "message": "Parameter value used in file name",
+      "file": "lib/controllers/backup_controller.rb",
+      "line": 37,
+      "link": "https://brakemanscanner.org/docs/warning_types/file_access/",
+      "code": "send_file(File.join(backup_tmpdir, Base64.urlsafe_decode64(params.fetch(\"encoded_path\"))), :type => \"text/plain\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "BackupController",
+        "method": null
+      },
+      "user_input": "params.fetch(\"encoded_path\")",
+      "confidence": "Weak",
+      "cwe_id": [
+        22
+      ]
+    }
+  ]
+}

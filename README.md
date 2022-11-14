@@ -78,6 +78,20 @@ Manually:
 
     sequel -E -m migrations -M <n> postgres://localhost/wikimum
 
+### Code Scanning
+
+GitHub Actions scan the code using [Brakeman](https://github.com/presidentbeef/brakeman).
+
+If you need to ignore a weakness reported, update `config/brakeman.ignore`. You can get the JSON needed by running Brakeman like this:
+
+```bash
+docker run -it --rm -v $(pwd):/app -w /app ruby:2.7.6 bash
+gem install brakeman
+brakeman --force --format json .
+```
+
+
+
 [sequel-migrations]: http://sequel.jeremyevans.net/rdoc/files/doc/migration_rdoc.html
 
 ## History
