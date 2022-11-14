@@ -1,6 +1,7 @@
 {
   "ignored_warnings": [
     {
+      "note": "The file access is limited to a temporary directory we create.",
       "warning_type": "File Access",
       "warning_code": 16,
       "fingerprint": "b934e8f7994ab19feab782b372192a1ff20d6f70544c0ede1ad7b25ce24f0653",
