@@ -39,7 +39,7 @@ class AppBackupTest < Minitest::Test
         did not find @page_title=#{@page_title.inspect} in the SQL dump
       MSG
 
-      assert last_response.ok?
+      assert_equal 200, last_response.status
       assert_match(/#{@page_title}/, body, match_failed_message)
     end
   end

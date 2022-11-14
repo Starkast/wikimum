@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
 require "base64"
+require "fileutils"
 require "tempfile"
 
 class BackupController < Sinatra::Base
   post "/" do
-    dump_path    = create_sql_tempfile("wiki_backup").path
-    encoded_path = Base64.urlsafe_encode64(dump_path)
+    dump_path    = create_sql_tempfile("dump").path
+    rel_path     = dump_path.split(backup_tmpdir).last
+    encoded_path = Base64.urlsafe_encode64(rel_path)
 
     dump_command = [
       "pg_dump",
@@ -29,14 +31,21 @@ class BackupController < Sinatra::Base
   end
 
   post "/download/:encoded_path" do
-    dump_path = Base64.urlsafe_decode64(params.fetch("encoded_path"))
+    rel_path  = Base64.urlsafe_decode64(params.fetch("encoded_path"))
+    dump_path = File.join(backup_tmpdir, rel_path)
 
     send_file dump_path, type: "text/plain"
   end
 
   helpers do
+    def backup_tmpdir
+      File.join(Dir.tmpdir, "wiki_backup")
+    end
+
     def create_sql_tempfile(filename)
-      Tempfile.new([filename, ".sql"])
+      tmpdir = FileUtils.mkdir_p(backup_tmpdir).first
+
+      Tempfile.new([filename, ".sql"], tmpdir)
     end
   end
 end
