@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 require "base64"
+require "tempfile"
 
 class BackupController < Sinatra::Base
   post "/" do
-    dump_path    = create_tempfile("wiki_backup.sql").path
+    dump_path    = create_sql_tempfile("wiki_backup").path
     encoded_path = Base64.urlsafe_encode64(dump_path)
 
     dump_command = [
@@ -34,8 +35,8 @@ class BackupController < Sinatra::Base
   end
 
   helpers do
-    def create_tempfile(filename)
-      File.new(File.join(Dir.mktmpdir, filename), "w+")
+    def create_sql_tempfile(filename)
+      Tempfile.new([filename, ".sql"])
     end
   end
 end
