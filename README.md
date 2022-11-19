@@ -50,6 +50,8 @@ SENTRY_DSN=
 REDIRECT_TO_HTTPS=1 # redirect http:// to https://
 # Tests
 DEBUG=1 # enable debug output from tests that have it
+# Set app in maintenance mode
+MAINTENANCE_MODE=true
 ```
 
 ### Console

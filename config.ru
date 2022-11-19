@@ -6,9 +6,20 @@ require 'rack/ssl-enforcer'
 
 use Raven::Rack
 
+if App.maintenance_mode?
+  require_relative "lib/maintenance_mode_app"
+
+  use MaintenanceModeApp
+end
+
+# Connects to the database
 require_relative 'config/app'
 
-use BrokenApp if App.test_lowlevel_error_handler?
+if App.test_lowlevel_error_handler?
+  require_relative "lib/broken_app"
+
+  use BrokenApp
+end
 
 if App.redirect_to_https?
   options = if App.development?

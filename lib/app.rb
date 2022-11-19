@@ -42,6 +42,10 @@ class App
       username_ok && password_ok
     end
 
+    def maintenance_mode?
+      ENV["MAINTENANCE_MODE"] == "true"
+    end
+
     def test_lowlevel_error_handler?
       ENV.key?("TEST_LOWLEVEL_ERROR_HANDLER")
     end
@@ -58,15 +62,5 @@ class App
 
       %w(1 true).include?(ENV["REDIRECT_TO_HTTPS"])
     end
-  end
-end
-
-class BrokenApp
-  def initialize(app)
-    @app = app
-  end
-
-  def call(env)
-    [200, nil, []]
   end
 end
