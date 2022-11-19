@@ -6,16 +6,21 @@ require_relative "../integration_test_helper"
 class AppBackupTest < Minitest::Test
   include Rack::Test::Methods
 
-  OUTER_APP = Rack::Builder.parse_file("config.ru").first
-
   def app
-    OUTER_APP
+    Rack::Builder.parse_file("config.ru").first
+  end
+
+  def with_app_loaded
+    app
+    yield
   end
 
   def setup
-    @page_title = "Test åäö"
-    @user = User.create(email: "test@test", login: "test")
-    @page = Page.create(title: @page_title, author: @user)
+    with_app_loaded do
+      @page_title = "Test åäö"
+      @user = User.create(email: "test@test", login: "test")
+      @page = Page.create(title: @page_title, author: @user)
+    end
   end
 
   def teardown
@@ -23,10 +28,15 @@ class AppBackupTest < Minitest::Test
     @user.destroy
   end
 
-  def test_backup
+  def assert_backup(maintenance_mode: false)
     username, password = ["user", "pass"]
+    env_hash = {
+      BACKUP_USER: username,
+      BACKUP_PASSWORD: password,
+      MAINTENANCE_MODE: maintenance_mode.to_s,
+    }
 
-    ClimateControl.modify(BACKUP_USER: username, BACKUP_PASSWORD: password) do
+    ClimateControl.modify(env_hash) do
       basic_authorize username, password
       post "/.backup"
 
@@ -42,6 +52,14 @@ class AppBackupTest < Minitest::Test
       assert_equal 200, last_response.status
       assert_match(/#{@page_title}/, body, match_failed_message)
     end
+  end
+
+  def test_backup
+    assert_backup
+  end
+
+  def test_backup_in_maintenance_mode
+    assert_backup(maintenance_mode: true)
   end
 
   def test_backup_without_auth

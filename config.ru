@@ -6,12 +6,6 @@ require 'rack/ssl-enforcer'
 
 use Raven::Rack
 
-if App.maintenance_mode?
-  require_relative "lib/maintenance_mode_app"
-
-  use MaintenanceModeApp
-end
-
 # Connects to the database
 require_relative 'config/app'
 
@@ -41,7 +35,7 @@ use Rack::Static, {
   cache_control: "public,max-age=#{365 * 24 * 3600}"
 }
 
-map '/.backup' do
+map "/.backup" do
   use Rack::Auth::Basic do |username, password|
     App.backup_access?(username, password)
   end
@@ -49,14 +43,18 @@ map '/.backup' do
   run BackupController
 end
 
-map '/' do
-  run PageController
+if App.maintenance_mode?
+  require_relative "lib/maintenance_mode_app"
+
+  use MaintenanceModeApp
 end
 
-map '/authorize' do
+map "/authorize" do
   run AuthorizeController
 end
 
-map '/user' do
+map "/user" do
   run UserController
 end
+
+run PageController

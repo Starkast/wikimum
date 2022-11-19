@@ -6,10 +6,8 @@ require_relative "../integration_test_helper"
 class MaintenanceModeTest < Minitest::Test
   include Rack::Test::Methods
 
-  OUTER_APP = ->() { Rack::Builder.parse_file("config.ru").first }
-
   def app
-    OUTER_APP.call
+    Rack::Builder.parse_file("config.ru").first
   end
 
   def assert_maintenance_mode
@@ -35,14 +33,18 @@ class MaintenanceModeTest < Minitest::Test
   end
 
   def test_latest
-    assert_maintenance_mode do
-      get "/latest"
-    end
+    assert_maintenance_mode { get "/latest" }
   end
 
   def test_list
-    assert_maintenance_mode do
-      get "/list"
-    end
+    assert_maintenance_mode { get "/list" }
+  end
+
+  def test_authorize
+    assert_maintenance_mode { get "/authorize" }
+  end
+
+  def test_user
+    assert_maintenance_mode { get "/user" }
   end
 end
