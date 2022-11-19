@@ -41,6 +41,8 @@ Go to [http://wikimum.127.0.0.1.nip.io:8080](http://wikimum.127.0.0.1.nip.io:808
 DATABASE_URL=postgres://
 GITHUB_BASIC_CLIENT_ID=
 GITHUB_BASIC_SECRET_ID=
+BACKUP_USER=
+BACKUP_PASSWORD=
 # Production
 SESSION_SECRET=
 SENTRY_DSN=
@@ -75,6 +77,20 @@ This Rake task takes an optional argument specifying the target version. To migr
 Manually:
 
     sequel -E -m migrations -M <n> postgres://localhost/wikimum
+
+### Code Scanning
+
+GitHub Actions scan the code using [Brakeman](https://github.com/presidentbeef/brakeman).
+
+If you need to ignore a weakness reported, update `config/brakeman.ignore`. You can get the JSON needed by running Brakeman like this:
+
+```bash
+docker run -it --rm -v $(pwd):/app -w /app ruby:2.7.6 bash
+gem install brakeman
+brakeman --force --format json .
+```
+
+Don't forget to add a `note` attribute to the JSON object when ignoring.
 
 [sequel-migrations]: http://sequel.jeremyevans.net/rdoc/files/doc/migration_rdoc.html
 
