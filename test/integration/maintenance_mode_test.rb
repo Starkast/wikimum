@@ -7,7 +7,7 @@ class MaintenanceModeTest < Minitest::Test
   include Rack::Test::Methods
 
   def app
-    Rack::Builder.parse_file("config.ru").first
+    DYNAMIC_APP.call
   end
 
   def assert_maintenance_mode

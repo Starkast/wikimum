@@ -7,7 +7,7 @@ class AppBackupTest < Minitest::Test
   include Rack::Test::Methods
 
   def app
-    Rack::Builder.parse_file("config.ru").first
+    DYNAMIC_APP.call
   end
 
   def with_app_loaded

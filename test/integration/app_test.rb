@@ -8,10 +8,8 @@ require_relative "../integration_test_helper"
 class AppTest < Minitest::Test
   include Rack::Test::Methods
 
-  OUTER_APP = Rack::Builder.parse_file("config.ru").first
-
   def app
-    OUTER_APP
+    STATIC_APP
   end
 
   def setup
