@@ -15,7 +15,9 @@ class AuthorizeController < BaseController
   end
 
   get '/callback*' do
-    session_code = request.env.fetch('rack.request.query_hash').fetch('code')
+    session_code = request.env.fetch('rack.request.query_hash').fetch('code') do
+      halt 404, "No code"
+    end
     access_token = Authorize.access_token(session_code)
     authed_user  = AuthorizedUser.new(access_token)
     user         = Authorize.create_or_update_user(authed_user.user_info)

@@ -85,4 +85,44 @@ class AppTest < Minitest::Test
 
     assert_equal 400, last_response.status
   end
+
+  def test_authorize_callback
+    access_token = "fake_access_token"
+    user = "fake_user"
+
+    github_api_headers = {
+      "Authorization" => "token #{access_token}",
+      "Content-Type" =>"application/json",
+    }
+
+    stub_request(:post, Authorize::GITHUB_OAUTH_TOKEN_URL)
+      .to_return(body: { access_token: access_token }.to_json)
+
+    stub_request(:get, "https://api.github.com/user")
+      .with(headers: github_api_headers)
+      .to_return_json(body: { id: 123, login: user })
+
+    stub_request(:get, "https://api.github.com/orgs/starkast/members/#{user}")
+      .with(headers: github_api_headers)
+      .to_return_json(body: {})
+
+    github_api_credentials = {
+      GITHUB_BASIC_CLIENT_ID: "fake_github_client_id",
+      GITHUB_BASIC_SECRET_ID: "fake_github_secret",
+    }
+
+    ClimateControl.modify(github_api_credentials) do
+      get "/authorize/callback?code=fake_code"
+    end
+
+    assert_equal 302, last_response.status
+    assert_equal "http://#{current_session.default_host}/", last_response["Location"]
+  end
+
+  def test_authorize_callback_no_code
+    get "/authorize/callback"
+
+    assert_equal 404, last_response.status
+    assert_equal "No code", last_response.body
+  end
 end
