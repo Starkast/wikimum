@@ -23,7 +23,6 @@ gem 'racksh'
 gem 'warning'
 gem 'rake'
 gem 'rubocop', '~> 1.43.0', require: false
-gem 'pry'
 gem 'dyno_metadata'
 
 group :development do
