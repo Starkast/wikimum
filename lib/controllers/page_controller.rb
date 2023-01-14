@@ -89,6 +89,7 @@ class PageController < BaseController
 
   get '/:slug/edit' do
     @page = Page.find(slug: slug)
+    redirect "new/#{slug}" unless @page
     @page_title = "Ändrar #{@page.title}"
     restrict_concealed(@page)
     haml :edit
