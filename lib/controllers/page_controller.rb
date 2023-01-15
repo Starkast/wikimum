@@ -124,6 +124,8 @@ class PageController < BaseController
   end
 
   post '/:slug' do
+    halt 400, "Missing title" if params[:title].to_s.empty?
+
     page = Page.find(slug: slug)
     restrict_concealed(page)
     page.revise!

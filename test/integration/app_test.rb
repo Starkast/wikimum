@@ -67,6 +67,7 @@ class AppTest < Minitest::Test
 
   def test_list
     get "/list"
+    assert last_response.body.include?(">#{@page.title}</a>")
     assert last_response.ok?
   end
 
