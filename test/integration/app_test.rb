@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "cgi"
+require "securerandom"
 
 require_relative "../test_helper"
 require_relative "../integration_test_helper"
@@ -34,10 +35,28 @@ class AppTest < Minitest::Test
     assert last_response.ok?
   end
 
+  def test_nonexistent_page
+    random_slug = SecureRandom.hex
+    get "/#{random_slug}"
+
+    redirect_location = last_response["Location"]
+    assert_equal 302, last_response.status
+    assert_equal "/new/#{random_slug}", URI(redirect_location).path
+  end
+
   def test_page_edit_view
     get "/#{CGI.escape(@page.slug)}/edit"
     assert last_response.body.include?(@page_title)
     assert last_response.ok?
+  end
+
+  def test_nonexistent_page_edit_view
+    random_slug = SecureRandom.hex
+    get "/#{random_slug}/edit"
+
+    redirect_location = last_response["Location"]
+    assert_equal 302, last_response.status
+    assert_equal "/new/#{random_slug}", URI(redirect_location).path
   end
 
   def test_latest
@@ -48,6 +67,7 @@ class AppTest < Minitest::Test
 
   def test_list
     get "/list"
+    assert last_response.body.include?(">#{@page.title}</a>")
     assert last_response.ok?
   end
 

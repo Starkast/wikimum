@@ -89,6 +89,7 @@ class PageController < BaseController
 
   get '/:slug/edit' do
     @page = Page.find(slug: slug)
+    redirect "new/#{slug}" unless @page
     @page_title = "Ändrar #{@page.title}"
     restrict_concealed(@page)
     haml :edit
@@ -123,6 +124,8 @@ class PageController < BaseController
   end
 
   post '/:slug' do
+    halt 400, "Missing title" if params[:title].to_s.empty?
+
     page = Page.find(slug: slug)
     restrict_concealed(page)
     page.revise!
