@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/dentarg/sinatra.git
-  revision: 86267cf4f250a10d460b73e3b323a07ffebe96e4
+  revision: dace9f54555b538fd7417d3cd3b15ef948401606
   branch: rack-3
   specs:
     rack-protection (3.0.5)
