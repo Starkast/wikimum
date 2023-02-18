@@ -43,8 +43,8 @@ GITHUB_BASIC_CLIENT_ID=
 GITHUB_BASIC_SECRET_ID=
 BACKUP_USER=
 BACKUP_PASSWORD=
+SESSION_SECRET= # generate with: ruby -rsecurerandom -e 'p SecureRandom.hex(32)'
 # Production
-SESSION_SECRET=
 SENTRY_DSN=
 # Development
 REDIRECT_TO_HTTPS=1 # redirect http:// to https://

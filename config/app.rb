@@ -5,13 +5,6 @@ require 'sequel'
 
 require_relative '../lib/app'
 
-if App.development?
-  ENV['SESSION_SECRET'] ||= 'secret'
-
-  $stdout.sync = true
-  $stderr.sync = true
-end
-
 DB = Sequel.connect(ENV.fetch('DATABASE_URL', 'postgres://localhost/wikimum'))
 
 # https://github.com/Starkast/wikimum/issues/412
