@@ -1,22 +1,22 @@
 GIT
   remote: https://github.com/dentarg/sinatra.git
-  revision: dace9f54555b538fd7417d3cd3b15ef948401606
+  revision: a7227d4d4cf172593f42d80d9ca6ccc5fd74c5b4
   branch: rack-3
   specs:
-    rack-protection (3.0.5)
+    rack-protection (3.0.6)
       rack
-    sinatra (3.0.5)
+    sinatra (3.0.6)
       mustermann (~> 3.0)
       rack (>= 3.0.0.beta1, < 4)
-      rack-protection (= 3.0.5)
-      rack-session (>= 0.3.0, < 1)
-      rackup (>= 0.2.3, < 1)
+      rack-protection (= 3.0.6)
+      rack-session (>= 2.0.0, < 3)
+      rackup (>= 2.0.0, < 3)
       tilt (~> 2.0)
-    sinatra-contrib (3.0.5)
+    sinatra-contrib (3.0.6)
       multi_json
       mustermann (~> 3.0)
-      rack-protection (= 3.0.5)
-      sinatra (= 3.0.5)
+      rack-protection (= 3.0.6)
+      sinatra (= 3.0.6)
       tilt (~> 2.0)
 
 GEM
@@ -100,9 +100,9 @@ GEM
     racksh (1.0.1)
       rack (>= 1.0)
       rack-test (>= 0.5)
-    rackup (0.2.3)
-      rack (>= 3.0.0.beta1)
-      webrick
+    rackup (2.1.0)
+      rack (>= 3)
+      webrick (~> 1.8)
     rainbow (3.1.1)
     rake (13.0.6)
     regexp_parser (2.8.1)
