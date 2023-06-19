@@ -36,7 +36,7 @@ jobs:
     - name: Setup Brakeman
       # SARIF support is provided in Brakeman version 4.10+
       run: |
-        gem install brakeman
+        gem install --version '< 6' brakeman
 
     # Execute Brakeman CLI and generate a SARIF output with the security issues identified during the analysis
     - name: Scan
