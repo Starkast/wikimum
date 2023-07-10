@@ -69,8 +69,8 @@ class AppBootTest < Minitest::Test
 
       get_http_response(port: port)
 
-      assert spawn.wait("DEBUG -- sentry: ** [Raven]")
-      assert spawn.wait("excluded from capture: DSN not set")
+      assert spawn.wait("DEBUG -- sentry: ** [Sentry] Initializing the background worker")
+      assert spawn.wait("puma lowlevel_error_handler ran")
     end
   end
 
