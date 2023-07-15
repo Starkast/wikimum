@@ -12,6 +12,7 @@ app = "wikimum"
   RACK_ENV = "production"
 
 [[services]]
+  processes = ["web"]
   internal_port = 8080
   protocol = "tcp"
 
