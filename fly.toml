@@ -3,9 +3,6 @@ app = "wikimum"
 [build]
   builder = "heroku/buildpacks:20"
 
-[deploy]
-  release_command = "bin/fly_release_command"
-
 [env]
   PRIMARY_REGION = "ams"
   PORT = "8080"
