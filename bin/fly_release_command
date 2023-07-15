@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# https://fly.io/docs/laravel/the-basics/customizing-deployments/#release-command
+# https://fly.io/docs/reference/configuration/#run-one-off-commands-before-releasing-a-deployment
+
+set -e
+set -u
+
+bundle exec rake db:migrate
