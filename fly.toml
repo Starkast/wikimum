@@ -3,8 +3,8 @@ app = "wikimum"
 [build]
   builder = "heroku/buildpacks:20"
 
-[deploy]
-  release_command = "bin/fly_release_command"
+[processes]
+  web = "/bin/sh -c 'bin/db_migrate && bin/web_start'"
 
 [env]
   PRIMARY_REGION = "ams"
