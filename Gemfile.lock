@@ -26,7 +26,7 @@ GEM
       faraday (~> 2.0)
     foreman (0.87.2)
     github-markup (4.0.1)
-    haml (6.1.1)
+    haml (6.1.2)
       temple (>= 0.8.2)
       thor
       tilt
@@ -127,8 +127,8 @@ GEM
       sinatra (= 3.1.0)
       tilt (~> 2.0)
     spinels-rack-ssl-enforcer (0.3.0)
-    temple (0.9.1)
-    thor (1.2.1)
+    temple (0.10.2)
+    thor (1.2.2)
     tilt (2.2.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
