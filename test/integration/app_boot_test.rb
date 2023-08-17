@@ -44,6 +44,13 @@ class AppBootTest < Minitest::Test
     response
   end
 
+  def mandatory_env(port:)
+    {
+      PGGSSENCMODE: "disable",
+      PORT: port,
+    }
+  end
+
   def setup
     WebMock.disable_net_connect!(allow_localhost: true)
   end
@@ -58,10 +65,9 @@ class AppBootTest < Minitest::Test
       timeout: 5,
       wait_for: /Worker.+booted/,
       env: {
-        PORT: port,
         RACK_ENV: "development",
         TEST_LOWLEVEL_ERROR_HANDLER: true, # adds broken middleware
-      },
+      }.merge(mandatory_env(port:)),
     }
 
     WaitForIt.new(command_from_procfile, options) do |spawn|
@@ -80,10 +86,9 @@ class AppBootTest < Minitest::Test
       timeout: 5,
       wait_for: /Worker.+booted/,
       env: {
-        PORT: port,
         RACK_ENV: "development",
         REDIRECT_TO_HTTPS: true,
-      },
+      }.merge(mandatory_env(port:)),
     }
 
     WaitForIt.new(command_from_procfile, options) do |spawn|
@@ -109,10 +114,9 @@ class AppBootTest < Minitest::Test
       timeout: 5,
       wait_for: /Worker.+booted/,
       env: {
-        PORT: port,
         RACK_ENV: "production",
         LOAD_LOCALHOST_SSL: true, # Tell Puma to bind TLS/SSL port, to simulate production
-      },
+      }.merge(mandatory_env(port:)),
     }
 
     # Good to know:

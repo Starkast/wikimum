@@ -45,6 +45,7 @@ GITHUB_BASIC_CLIENT_ID=
 GITHUB_BASIC_SECRET_ID=
 BACKUP_USER=
 BACKUP_PASSWORD=
+PGGSSENCMODE=disable # https://github.com/ged/ruby-pg/issues/311#issuecomment-1609970533
 # Production
 SESSION_SECRET=
 SENTRY_DSN=
