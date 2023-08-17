@@ -30,7 +30,9 @@ Get a copy of the production database
 
 ### Start the app
 
-    foreman start
+In production, the script `bin/web_start` ([background](https://github.com/Starkast/wikimum/commit/acf57ec06ddb9ff3403acf56ababaa58f8cd3f43)) is used, but we avoid using that in the `Procfile` because the integration tests reads that command and needs to get the PID of Puma, not the script, in order to cleanly shutdown Puma.
+
+    overman start
 
 Go to [http://wikimum.127.0.0.1.nip.io:8080](http://wikimum.127.0.0.1.nip.io:8080) (the GitHub app for development is configured with this address).
 

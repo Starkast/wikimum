@@ -27,7 +27,7 @@ gem 'rubocop', '~> 1.56.0', require: false
 gem 'dyno_metadata'
 
 group :development do
-  gem 'foreman'
+  gem 'overman'
   gem 'localhost'
 end
 

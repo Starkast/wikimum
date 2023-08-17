@@ -24,7 +24,6 @@ GEM
     faraday-net_http (3.0.2)
     faraday-retry (2.2.0)
       faraday (~> 2.0)
-    foreman (0.87.2)
     github-markup (4.0.1)
     haml (6.1.2)
       temple (>= 0.8.2)
@@ -62,6 +61,7 @@ GEM
     octokit (7.0.0)
       faraday (>= 1, < 3)
       sawyer (~> 0.9)
+    overman (0.87.3)
     parallel (1.23.0)
     parser (3.2.2.3)
       ast (~> 2.4.1)
@@ -152,7 +152,6 @@ DEPENDENCIES
   commonmarker
   dyno_metadata
   faraday-retry
-  foreman
   github-markup
   haml
   html-pipeline
@@ -160,6 +159,7 @@ DEPENDENCIES
   m
   minitest
   octokit
+  overman
   pg
   puma
   rack-flash3
