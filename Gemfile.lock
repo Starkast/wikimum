@@ -26,7 +26,7 @@ GEM
     faraday-net_http (3.0.2)
     faraday-retry (2.2.0)
       faraday (~> 2.0)
-    github-markup (4.0.1)
+    github-markup (4.0.2)
     haml (6.2.3)
       temple (>= 0.8.2)
       thor
