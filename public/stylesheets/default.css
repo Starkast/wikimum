@@ -112,6 +112,10 @@ hr {
 #actions        { float: left; }
 #footer         { margin: 2em 0 0 0; }
 
+#preview {
+  background: lightgrey;
+}
+
 #status {
   padding: 0.2em 1em 0 1em;
   float: right;
@@ -335,6 +339,10 @@ ins.diffins { color: #090; }
   /* Zebra striping */
   tbody tr:nth-child(2n) {
     background-color: #212121;
+  }
+
+  #preview {
+    background: #434343;
   }
 
   #navigation {
