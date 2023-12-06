@@ -35,4 +35,13 @@ class AuthorizeController < BaseController
 
     redirect back
   end
+
+  get '/dev' do
+    halt 404 unless App.development?
+
+    session[:login] = "development"
+    session[:user_id] = -1
+
+    redirect "/"
+  end
 end

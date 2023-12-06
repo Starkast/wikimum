@@ -4,3 +4,6 @@
     %a{ href: '/authorize/reset' }= %q(Logout)
   - else
     %a{ href: '/authorize' } Authorize (GitHub)
+    %br
+    - if App.development?
+      %a{ href: '/authorize/dev' } Authorize (Dev)

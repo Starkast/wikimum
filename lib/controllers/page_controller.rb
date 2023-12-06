@@ -92,6 +92,7 @@ class PageController < BaseController
     redirect "new/#{slug}" unless @page
     @page_title = "Ändrar #{@page.title}"
     restrict_concealed(@page)
+    @edit_mode = true
     haml :edit
   end
 
@@ -100,7 +101,7 @@ class PageController < BaseController
     @page.set_fields(params, %i(title content))
     @page_title = "Förhandsvisar #{@page.title}"
     @page.compiled_content = Markup.to_html(@page.content)
-    haml :preview
+    haml :preview, layout: false
   end
 
   get '/:slug/' do

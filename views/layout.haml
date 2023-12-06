@@ -10,8 +10,10 @@
     %link{ href: '/stylesheets/default.css', rel: 'stylesheet', type: 'text/css' }
     %script{ src: '/javascripts/mousetrap.min.js' }
     %script{ src: '/javascripts/mousetrap-global-bind.min.js' }
+    - settings.js.each do |js|
+      %script{ src: js.fetch(:url), integrity: js.fetch(:sha), crossorigin: :anonymous }
   %body
-    #container
+    %div{ id: @edit_mode ? 'container-lg' : 'container' }
       #header
         #login
           != haml :'../layouts/_login', layout: false
