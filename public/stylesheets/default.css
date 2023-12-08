@@ -105,12 +105,17 @@ hr {
 
 #busy           { display: inline; font-size: 1.6em; }
 #container      { width: 75em; margin: 4em auto 0 auto; text-align: left; }
+#container-lg   { margin: 4em auto 0 auto; text-align: left; }
 #login          { position: absolute; right: 1em; top: 1em; margin: 0.6em; }
 #administration { position: absolute; right: 1em; top: 4em; }
 #message        { margin: 1.5em 0 1em 0; font-size: 1.6em; }
 #sub-navigation { height: 1.5em; }
 #actions        { float: left; }
 #footer         { margin: 2em 0 0 0; }
+
+#preview {
+  background: lightgrey;
+}
 
 #status {
   padding: 0.2em 1em 0 1em;
@@ -335,6 +340,10 @@ ins.diffins { color: #090; }
   /* Zebra striping */
   tbody tr:nth-child(2n) {
     background-color: #212121;
+  }
+
+  #preview {
+    background: #434343;
   }
 
   #navigation {
