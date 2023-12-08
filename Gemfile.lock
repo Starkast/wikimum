@@ -112,7 +112,7 @@ GEM
       faraday (>= 0.17.3, < 3)
     sentry-ruby (5.14.0)
       concurrent-ruby (~> 1.0, >= 1.0.2)
-    sequel (5.74.0)
+    sequel (5.75.0)
       bigdecimal
     sequel_pg (1.17.1)
       pg (>= 0.18.0, != 1.2.0)
