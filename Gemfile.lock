@@ -12,7 +12,8 @@ GEM
     base64 (0.2.0)
     bigdecimal (3.1.4)
     climate_control (1.2.0)
-    commonmarker (0.23.10)
+    commonmarker (1.0.0)
+      rb_sys (~> 0.9)
     concurrent-ruby (1.2.2)
     crack (0.4.5)
       rexml
@@ -85,6 +86,7 @@ GEM
       rack-test (>= 0.5)
     rainbow (3.1.1)
     rake (13.1.0)
+    rb_sys (0.9.84)
     regexp_parser (2.8.3)
     rest-client (2.1.0)
       http-accept (>= 1.7.0, < 2.0)
