@@ -24,6 +24,6 @@ lowlevel_error_handler do |ex, env|
   [500, {}, ["An error has occurred, and engineers have been informed.\n"]]
 end
 
-on_worker_boot do
+before_fork do
   DB.disconnect
 end

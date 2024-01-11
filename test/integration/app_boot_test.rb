@@ -46,7 +46,6 @@ class AppBootTest < Minitest::Test
 
   def mandatory_env(port:)
     {
-      PGGSSENCMODE: "disable",
       PORT: port,
     }
   end
