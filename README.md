@@ -46,8 +46,8 @@ GITHUB_BASIC_SECRET_ID=
 BACKUP_USER=
 BACKUP_PASSWORD=
 PGGSSENCMODE=disable # https://github.com/ged/ruby-pg/issues/311#issuecomment-1609970533
+SESSION_SECRET= # generate with: ruby -rsecurerandom -e 'p SecureRandom.hex(32)'
 # Production
-SESSION_SECRET=
 SENTRY_DSN=
 # Development
 REDIRECT_TO_HTTPS=1 # redirect http:// to https://
