@@ -3,6 +3,8 @@
 require "logger"
 require "rack/utils"
 
+require_relative "services/app_metadata"
+
 class App
   class << self
     def port
@@ -61,6 +63,16 @@ class App
       return true if production?
 
       %w(1 true).include?(ENV["REDIRECT_TO_HTTPS"])
+    end
+  end
+
+  if production?
+    def self.cache_bust
+      AppMetadata.release_version
+    end
+  else
+    def self.cache_bust
+      rand(10_000)
     end
   end
 end
