@@ -1,7 +1,3 @@
-%h1.title
-  Ändrar
-  %a{ href: "/#{@page.slug}" }= @page.title
-
 - # from https://css-tricks.com/snippets/css/a-guide-to-flexbox/
 :css
   .flex-container {
@@ -15,6 +11,9 @@
 
 .flex-container
   .flex-item
+    %h1.title
+      Ändrar
+      %a{ href: "/#{@page.slug}" }= @page.title
     %form{ name: :create, action: "/#{@page.slug}", method: :post }
       %label.block{ for: 'title' } Titel
       %input#title{ type: :text, name: 'title', maxlength: 74, size: 50, value: @page.title }
