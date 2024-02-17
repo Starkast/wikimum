@@ -20,11 +20,10 @@ GEM
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     dyno_metadata (0.0.4)
-    faraday (2.7.11)
-      base64
-      faraday-net_http (>= 2.0, < 3.1)
-      ruby2_keywords (>= 0.0.4)
-    faraday-net_http (3.0.2)
+    faraday (2.9.0)
+      faraday-net_http (>= 2.0, < 3.2)
+    faraday-net_http (3.1.0)
+      net-http
     faraday-retry (2.2.0)
       faraday (~> 2.0)
     github-markup (4.0.2)
@@ -56,6 +55,8 @@ GEM
     multi_json (1.15.0)
     mustermann (3.0.0)
       ruby2_keywords (~> 0.0.1)
+    net-http (0.4.1)
+      uri
     netrc (0.11.0)
     nio4r (2.7.0)
     nokogiri (1.16.2)
@@ -63,7 +64,8 @@ GEM
       racc (~> 1.4)
     nokogiri (1.16.2-arm64-darwin)
       racc (~> 1.4)
-    octokit (8.0.0)
+    octokit (8.1.0)
+      base64
       faraday (>= 1, < 3)
       sawyer (~> 0.9)
     overman (0.87.3)
@@ -145,6 +147,7 @@ GEM
       unf_ext
     unf_ext (0.0.7.7)
     unicode-display_width (2.5.0)
+    uri (0.13.0)
     wait_for_it (0.2.1)
     warning (1.3.0)
     webmock (3.20.0)
