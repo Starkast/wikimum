@@ -114,7 +114,8 @@ hr {
 #footer         { margin: 2em 0 0 0; }
 
 #preview {
-  background: lightgrey;
+  border-left: thin dashed #c4c4c4;
+  padding: 1em;
 }
 
 #status {
@@ -343,7 +344,8 @@ ins.diffins { color: #090; }
   }
 
   #preview {
-    background: #434343;
+    border-left: thin dashed #555;
+    padding: 1em;
   }
 
   #navigation {
