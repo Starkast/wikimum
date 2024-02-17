@@ -10,7 +10,7 @@ GEM
       public_suffix (>= 2.0.2, < 6.0)
     ast (2.4.2)
     base64 (0.2.0)
-    bigdecimal (3.1.5)
+    bigdecimal (3.1.6)
     climate_control (1.2.0)
     commonmarker (0.23.10)
     concurrent-ruby (1.2.2)
@@ -117,7 +117,7 @@ GEM
       faraday (>= 0.17.3, < 3)
     sentry-ruby (5.15.2)
       concurrent-ruby (~> 1.0, >= 1.0.2)
-    sequel (5.76.0)
+    sequel (5.77.0)
       bigdecimal
     sequel_pg (1.17.1)
       pg (>= 0.18.0, != 1.2.0)
