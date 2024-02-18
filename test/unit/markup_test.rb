@@ -4,31 +4,32 @@ require_relative '../test_helper'
 require_relative '../../lib/services/markup'
 
 class MarkupTest < Minitest::Test
+  def test_nil_content
+    content     = nil
+    html_output = ""
+
+    assert_equal html_output, Markup.to_html(content)
+  end
+
   def test_wiki_link_filter
     content     = %([[Server]])
-    html_output = %(<a href="/Server">Server</a>)
+    html_output = %(<p><a href="/Server">Server</a></p>\n)
 
-    doc = HTML::Pipeline.parse(content)
-
-    assert_equal html_output, WikiLinkFilter.call(doc, {})
+    assert_equal html_output, Markup.to_html(content)
   end
 
   def test_wiki_link_filter_with_multiple_links_on_one_row
     content     = %([[Server]] [[Hardware]])
-    html_output = %(<a href="/Server">Server</a> <a href="/Hardware">Hardware</a>)
+    html_output = %(<p><a href="/Server">Server</a> <a href="/Hardware">Hardware</a></p>\n)
 
-    doc = HTML::Pipeline.parse(content)
-
-    assert_equal html_output, WikiLinkFilter.call(doc, {})
+    assert_equal html_output, Markup.to_html(content)
   end
 
   def test_wiki_link_filter_with_multiple_links_on_two_rows
     content     = %([[Server]]\n[[Hardware]])
-    html_output = %(<a href="/Server">Server</a>\n<a href="/Hardware">Hardware</a>)
+    html_output = %(<p><a href="/Server">Server</a>\n<a href="/Hardware">Hardware</a></p>\n)
 
-    doc = HTML::Pipeline.parse(content)
-
-    assert_equal html_output, WikiLinkFilter.call(doc, {})
+    assert_equal html_output, Markup.to_html(content)
   end
 
   def test_wikified_with_markdown
