@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -e
+set -x
+
+RUBY_VERSION=$(cat .ruby-version) docker compose up \
+  --build \
+  --always-recreate-deps \
+  --force-recreate \
+  --remove-orphans \
+  --renew-anon-volumes \
+  "$@"
+
+# this script is useful if you run into some strange problem with the docker setup
+
+#    --always-recreate-deps      Recreate dependent containers. Incompatible with --no-recreate.
+#    --force-recreate            Recreate containers even if their configuration and image haven't changed.
+#    --remove-orphans            Remove containers for services not defined in the Compose file.
+#-V, --renew-anon-volumes        Recreate anonymous volumes instead of retrieving data from the previous containers.
+
+# these flags will make use of more disk space
+# check and clean up with
+#
+#   docker system df
+#   docker system prune

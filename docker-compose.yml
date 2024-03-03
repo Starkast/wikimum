@@ -1,0 +1,32 @@
+version: "3.9"
+services:
+  app:
+    build:
+      context: .
+      args:
+        - RUBY_VERSION
+    ports:
+      - "127.0.0.1:8080:3000"
+    env_file:
+      - ./default.env
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db/db
+      PORT: 3000
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: postgres
+    restart: always
+    # set shared memory limit when using docker-compose
+    # https://github.com/docker-library/postgres/issues/416
+    shm_size: 128mb
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready --dbname=db --username=postgres"]
+      interval: 2s
+      retries: 10
+      start_period: 20s

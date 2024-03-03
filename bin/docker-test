@@ -1,0 +1,24 @@
+#!/bin/bash
+
+set -x
+
+RUBY_VERSION=$(cat .ruby-version) docker compose up \
+  --build \
+  --detach \
+  --wait
+
+curl \
+  --verbose \
+  --silent \
+  --output /dev/null \
+  --fail-with-body \
+  --retry 5 \
+  --retry-all-errors \
+  --retry-connrefused \
+  127.0.0.1:8080
+
+result=$?
+
+docker compose stop
+
+exit $result
