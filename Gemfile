@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 source 'https://rubygems.org/'
-ruby File.read('.ruby-version').chomp
+ruby file: '.ruby-version'
 
 gem 'sequel'
 gem 'pg'
@@ -25,11 +25,7 @@ gem 'warning'
 gem 'rake'
 gem 'rubocop', '~> 1.60.2', require: false
 gem 'dyno_metadata'
-
-group :development do
-  gem 'overman'
-  gem 'localhost'
-end
+gem 'localhost'
 
 group :test do
   gem 'climate_control'

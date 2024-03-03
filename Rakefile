@@ -21,21 +21,6 @@ namespace(:test) do
 end
 
 namespace(:db) do
-  desc "Replace local database with production database"
-  task :pull do |t|
-    require "uri"
-    uri = URI.parse(ENV.fetch("DATABASE_URL", "postgres://localhost/wikimum"))
-    local_database = uri.path[1..-1]
-
-    trap("INT") { exit }
-
-    puts "Will remove local database '#{local_database}', press Enter to proceed, ^C to abort"
-    STDIN.gets
-
-    system "dropdb #{local_database}"
-    system "heroku pg:pull --app wikimum DATABASE_URL #{local_database}"
-  end
-
   desc "Run migrations"
   task :migrate, [:version] do |t, args|
     require 'sequel'

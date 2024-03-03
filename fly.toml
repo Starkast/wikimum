@@ -1,10 +1,9 @@
 app = "wikimum"
 
-[build]
-  builder = "heroku/buildpacks:20"
-
 [processes]
-  web = "/bin/sh -c 'bin/db_migrate && bin/web_start'"
+  # Dockerfile controls this
+  # https://community.fly.io/t/multiple-process-dockerfile/13639
+  web = ""
 
 [env]
   PRIMARY_REGION = "ams"

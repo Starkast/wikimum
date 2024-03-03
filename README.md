@@ -14,6 +14,7 @@ These instructions assume you are using OS X.
 Install prerequisites
 
     brew install postgresql
+    gem install overman
     bundle install
 
 Ruby gems are vendored into `vendor/cache`, you should always check in the gems when changing gems. The caching is set up with [`bundle package --all`](https://bundler.io/man/bundle-package.1.html).
@@ -24,13 +25,9 @@ Make sure PostgreSQL is running
 
     postgres
 
-Get a copy of the production database
-
-    rake db:pull
-
 ### Start the app
 
-In production, the script `bin/web_start` ([background](https://github.com/Starkast/wikimum/commit/acf57ec06ddb9ff3403acf56ababaa58f8cd3f43)) is used, but we avoid using that in the `Procfile` because the integration tests reads that command and needs to get the PID of Puma, not the script, in order to cleanly shutdown Puma.
+In production, the script `bin/start` is used, but we avoid using that in the `Procfile` because the integration tests reads that command and needs to get the PID of Puma, not the script, in order to cleanly shutdown Puma.
 
     overman start
 
@@ -59,7 +56,7 @@ MAINTENANCE_MODE=true
 
 ### Console
 
-    foreman run bundle exec racksh
+    overman run bundle exec racksh
 
 ### Tests
 
@@ -90,7 +87,7 @@ GitHub Actions scan the code using [Brakeman](https://github.com/presidentbeef/b
 If you need to ignore a weakness reported, update `config/brakeman.ignore`. You can get the JSON needed by running Brakeman like this:
 
 ```bash
-docker run -it --rm -v $(pwd):/app -w /app ruby:2.7.6 bash
+docker run -it --rm -v $(pwd):/app -w /app ruby:$(cat .ruby-version) bash
 gem install brakeman
 brakeman --force --format json .
 ```

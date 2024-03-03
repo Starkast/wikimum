@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -e
+set -x
+
+RUBY_VERSION=$(cat .ruby-version) docker compose up \
+  --build \
+  "$@"
+
+# useful but mutually exclusive flags
+#  --detach
+#  --exit-code-from app
