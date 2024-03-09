@@ -2,7 +2,7 @@
 
 require_relative "../lib/app"
 
-workers 2
+workers 0
 threads 1, 16
 
 preload_app!
