@@ -63,7 +63,7 @@ class AppBootTest < Minitest::Test
     port = random_free_port
     options = {
       timeout: 5,
-      wait_for: /Worker.+booted/,
+      wait_for: /Listening on http:/,
       env: {
         RACK_ENV: "development",
         TEST_LOWLEVEL_ERROR_HANDLER: true, # adds broken middleware
@@ -84,7 +84,7 @@ class AppBootTest < Minitest::Test
     port = random_free_port
     options = {
       timeout: 5,
-      wait_for: /Worker.+booted/,
+      wait_for: /Listening on http:/,
       env: {
         RACK_ENV: "development",
         REDIRECT_TO_HTTPS: true,
@@ -112,7 +112,7 @@ class AppBootTest < Minitest::Test
     port = random_free_port
     options = {
       timeout: 5,
-      wait_for: /Worker.+booted/,
+      wait_for: /Listening on http:/,
       env: {
         RACK_ENV: "production",
         LOAD_LOCALHOST_SSL: true, # Tell Puma to bind TLS/SSL port, to simulate production
