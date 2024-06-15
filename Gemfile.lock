@@ -1,3 +1,10 @@
+GIT
+  remote: https://github.com/jeremyevans/sequel.git
+  revision: 7b748b5c89b1448fb6e1c42037b741421fa32101
+  specs:
+    sequel (5.81.0)
+      bigdecimal
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -43,6 +50,7 @@ GEM
     mime-types (3.3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2020.1104)
+    mini_portile2 (2.8.7)
     minitest (5.23.1)
     multi_json (1.15.0)
     mustermann (3.0.0)
@@ -112,8 +120,6 @@ GEM
     selma (0.2.2-x86_64-linux)
     sentry-ruby (5.16.1)
       concurrent-ruby (~> 1.0, >= 1.0.2)
-    sequel (5.81.0)
-      bigdecimal
     sequel_pg (1.17.1)
       pg (>= 0.18.0, != 1.2.0)
       sequel (>= 4.38.0)
@@ -130,6 +136,11 @@ GEM
       sinatra (= 4.0.0)
       tilt (~> 2.0)
     spinels-rack-ssl-enforcer (0.3.0)
+    sqlite3 (2.0.2)
+      mini_portile2 (~> 2.8.0)
+    sqlite3 (2.0.2-aarch64-linux-gnu)
+    sqlite3 (2.0.2-arm64-darwin)
+    sqlite3 (2.0.2-x86_64-linux-gnu)
     strscan (3.1.0)
     temple (0.10.3)
     thor (1.3.0)
@@ -175,11 +186,12 @@ DEPENDENCIES
   rest-client
   rubocop (~> 1.64.1)
   sentry-ruby
-  sequel
+  sequel!
   sequel_pg
   sinatra
   sinatra-contrib
   spinels-rack-ssl-enforcer
+  sqlite3
   wait_for_it
   warning
   webmock
