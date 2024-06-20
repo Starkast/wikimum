@@ -25,6 +25,12 @@ Make sure PostgreSQL is running
 
     postgres
 
+#### Import production database
+
+    dotenv bin/download_database_backup
+    createdb prod-wikimum
+    psql postgres://localhost/prod-wikimum < starkast_wiki_backup_2024-06-15_215012.sql
+
 ### Start the app
 
 In production, the script `bin/start` is used, but we avoid using that in the `Procfile` because the integration tests reads that command and needs to get the PID of Puma, not the script, in order to cleanly shutdown Puma.
