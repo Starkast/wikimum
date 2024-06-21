@@ -3,7 +3,7 @@
 source 'https://rubygems.org/'
 ruby file: '.ruby-version'
 
-gem 'sequel'
+gem 'sequel', github: 'jeremyevans/sequel'
 gem 'pg'
 gem 'sequel_pg', require: 'sequel'
 gem 'sinatra'
@@ -26,6 +26,7 @@ gem 'rake'
 gem 'rubocop', '~> 1.64.1', require: false
 gem 'dyno_metadata'
 gem 'localhost'
+gem 'sqlite3'
 
 group :test do
   gem 'climate_control'

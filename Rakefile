@@ -24,14 +24,16 @@ namespace(:db) do
   desc "Run migrations"
   task :migrate, [:version] do |t, args|
     require 'sequel'
+    require_relative 'config/database' # creates DB
+
     Sequel.extension(:migration)
-    db = Sequel.connect(ENV.fetch('DATABASE_URL', 'postgres://localhost/wikimum'))
+
     if args[:version]
       puts "Migrating to version #{args[:version]}"
-      Sequel::Migrator.run(db, 'migrations', target: args[:version].to_i)
+      Sequel::Migrator.run(DB, 'migrations', target: args[:version].to_i)
     else
       puts "Migrating to latest"
-      Sequel::Migrator.run(db, 'migrations')
+      Sequel::Migrator.run(DB, 'migrations')
     end
   end
 end

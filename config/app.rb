@@ -4,13 +4,7 @@ require 'sinatra/base'
 require 'sequel'
 
 require_relative '../lib/app'
-
-DB = Sequel.connect(ENV.fetch('DATABASE_URL', 'postgres://localhost/wikimum'))
-
-# https://github.com/Starkast/wikimum/issues/412
-# https://sequel.jeremyevans.net/rdoc-plugins/files/lib/sequel/extensions/connection_validator_rb.html
-DB.extension(:connection_validator)
-DB.pool.connection_validation_timeout = 60 * 5
+require_relative 'database'
 
 if App.development?
   require 'logger'
