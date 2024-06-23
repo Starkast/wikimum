@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -e          # exit on error
+set -u          # exit on unset variable
+set -o pipefail # exit on error in pipeline
+
+curl \
+  --silent \
+  --location \
+  --request POST \
+  --user "${BACKUP_USER}":"${BACKUP_PASSWORD}" \
+  --output "starkast_wiki_backup_$(date "+%Y-%m-%d_%H%M%S").sql" \
+  ${BACKUP_URL:-"https://starkast.wiki/.backup"}
