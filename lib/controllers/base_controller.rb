@@ -50,5 +50,20 @@ class BaseController < Sinatra::Base
         redirect back
       end
     end
+
+    def javascript_imports
+      imports =
+        {
+          imports: {
+            "@hotwired/turbo": "https://cdn.jsdelivr.net/npm/@hotwired/turbo@8.0.5/+esm",
+            "@hotwired/stimulus": "https://cdn.jsdelivr.net/npm/@hotwired/stimulus@3.2.2/+esm",
+            "controllers/page_navigation_controller": "/javascripts/controllers/page_navigation_controller.js",
+            "controllers/search_navigation_controller": "/javascripts/controllers/search_navigation_controller.js",
+            "application": "/javascripts/application.js"
+          }
+        }
+
+      JSON.pretty_generate(imports)
+    end
   end
 end
