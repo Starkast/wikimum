@@ -62,7 +62,7 @@ GEM
     public_suffix (6.0.0)
     puma (6.4.2)
       nio4r (~> 2.0)
-    racc (1.8.0)
+    racc (1.8.1)
     rack (3.0.9.1)
     rack-flash3 (1.0.5)
       rack
@@ -85,9 +85,9 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
-    rexml (3.3.1)
+    rexml (3.3.4)
       strscan
-    rubocop (1.65.0)
+    rubocop (1.65.1)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
       parallel (~> 1.10)
@@ -173,7 +173,7 @@ DEPENDENCIES
   racksh
   rake
   rest-client
-  rubocop (~> 1.65.0)
+  rubocop (~> 1.65.1)
   sentry-ruby
   sequel
   sequel_pg
