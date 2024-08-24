@@ -1,8 +1,13 @@
-GEM
-  remote: https://rubygems.org/
+GIT
+  remote: https://github.com/sporkmonger/addressable.git
+  revision: 4229164843616783287ca359bbe38b574f1908a3
   specs:
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
     ast (2.4.2)
     base64 (0.2.0)
     bigdecimal (3.1.8)
@@ -154,7 +159,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  addressable
+  addressable!
   climate_control
   commonmarker
   dyno_metadata
@@ -188,4 +193,4 @@ RUBY VERSION
    ruby 3.2.3p157
 
 BUNDLED WITH
-   2.5.6
+   2.5.17
