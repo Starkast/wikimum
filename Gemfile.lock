@@ -113,7 +113,7 @@ GEM
     selma (0.2.2-x86_64-linux)
     sentry-ruby (5.16.1)
       concurrent-ruby (~> 1.0, >= 1.0.2)
-    sequel (5.83.1)
+    sequel (5.84.0)
       bigdecimal
     sequel_pg (1.17.1)
       pg (>= 0.18.0, != 1.2.0)
