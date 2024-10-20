@@ -1,5 +1,5 @@
 app = "wikimum"
-primary_region = "ams"
+primary_region = "arn"
 
 [processes]
   # Dockerfile controls this
