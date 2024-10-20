@@ -1,0 +1,40 @@
+name: Deploy to preview app
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [labeled, unlabeled]
+
+jobs:
+  deploy:
+    name: Deploy
+    if: |
+      github.event.action == 'labeled' &&
+      github.event.label.name == 'preview'
+    concurrency: fly-deploy-preview
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          echo "RUBY_VERSION=$(cat .ruby-version)" >> $GITHUB_ENV
+      - uses: dentarg/fly@main
+        with:
+          app: wikimum-preview
+          build-args: "RUBY_VERSION=${{ env.RUBY_VERSION }}"
+          fly-token: ${{ secrets.FLY_API_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+  scale:
+    name: Scale down
+    if: |
+      github.event.action == 'unlabeled' &&
+      github.event.label.name == 'preview'
+    concurrency: fly-deploy-preview
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - run: |
+          flyctl scale count 0 --yes --process-group web --app wikimum-preview
+        env:
+          FLY_API_TOKEN: "${{ secrets.FLY_API_TOKEN }}"
