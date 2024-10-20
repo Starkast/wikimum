@@ -1,20 +1,9 @@
 # frozen_string_literal: true
 
-require 'haml/rails_helpers'
 require 'rack-flash'
-require 'sinatra/capture'
+require 'sinatra/haml_helpers'
 require 'sinatra/reloader'
 require 'tilt/haml'
-
-class String
-  def html_safe
-    self
-  end
-
-  def html_safe?
-    true
-  end
-end
 
 class BaseController < Sinatra::Base
   set :views, -> { "views/#{self.name.downcase.sub('controller', '')}" }
@@ -27,8 +16,7 @@ class BaseController < Sinatra::Base
 
   use Rack::Flash
 
-  helpers Haml::RailsHelpers
-  helpers Sinatra::Capture
+  helpers Sinatra::HamlHelpers
 
   configure :development do
     register Sinatra::Reloader
