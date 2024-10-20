@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rack-flash'
+require 'sinatra/haml_helpers'
 require 'sinatra/reloader'
 require 'tilt/haml'
 
@@ -14,6 +15,8 @@ class BaseController < Sinatra::Base
   }]
 
   use Rack::Flash
+
+  helpers Sinatra::HamlHelpers
 
   configure :development do
     register Sinatra::Reloader

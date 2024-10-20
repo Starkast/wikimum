@@ -149,4 +149,29 @@ class AppTest < Minitest::Test
     assert_equal 404, last_response.status
     assert_equal "No code", last_response.body
   end
+
+  def test_footer
+    get "/"
+
+    footer_html = <<~HTML
+      <div id='footer'>
+      <hr>
+      <ul>
+      <li>
+      <a href='/cookies'>Om cookies</a>
+      </li>
+      <li>
+      v42
+      (<a href='https://github.com/Starkast/wikimum/commit/#{AppMetadata.commit}'>#{AppMetadata.short_commit}</a>)
+      </li>
+      <li>
+      <img alt='Starkast' src='/favicon.ico'>
+      </li>
+      </ul>
+
+      </div>
+    HTML
+
+    assert last_response.body.include?(footer_html)
+  end
 end
