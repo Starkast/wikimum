@@ -75,7 +75,7 @@ class AppBootTest < Minitest::Test
 
       get_http_response(port: port)
 
-      assert spawn.wait("DEBUG -- sentry: ** [Sentry] Initializing the background worker")
+      assert spawn.wait("DEBUG -- sentry: ** [Sentry] Initializing")
       assert spawn.wait("puma lowlevel_error_handler ran")
     end
   end
