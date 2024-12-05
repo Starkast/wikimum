@@ -10,6 +10,9 @@ preload_app!
 port        App.port
 environment App.env
 
+debug        if App.puma_debug_logging?
+log_requests if App.puma_request_logging?
+
 if App.localhost_ssl?
   require "localhost" # https://github.com/socketry/localhost
   # SSL/TLS in development on port $PORT-1000 (port $PORT will redirect there)
