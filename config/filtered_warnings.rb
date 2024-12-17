@@ -12,6 +12,9 @@ ignores = %i[
   unused_var
 ] # this list is sorted alphabetically
 
+# TODO: add :default_gem_removal when this PR is release (warning >1.4.0)
+# https://github.com/jeremyevans/ruby-warning/pull/24
+
 Gem.path.each do |path|
   Warning.ignore(ignores, path)
 end
