@@ -21,7 +21,9 @@ gem 'faraday-retry'
 gem 'addressable'
 gem 'sentry-ruby'
 gem 'racksh'
-gem 'warning'
+# Until the :default_gem_removal PR is released (warning >1.4.0)
+# https://github.com/jeremyevans/ruby-warning/pull/24
+gem 'warning', github: 'jeremyevans/ruby-warning'
 gem 'rake'
 gem 'rubocop', '~> 1.69.0', require: false
 gem 'dyno_metadata'
