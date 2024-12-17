@@ -44,25 +44,37 @@ class App
       username_ok && password_ok
     end
 
+    def puma_debug_logging?
+      thruthy? ENV["PUMA_DEBUG_LOGGING"]
+    end
+
+    def puma_request_logging?
+      thruthy? ENV.fetch("PUMA_LOG_REQUESTS", true)
+    end
+
     def maintenance_mode?
-      ENV["MAINTENANCE_MODE"] == "true"
+      thruthy? ENV["MAINTENANCE_MODE"]
     end
 
     def test_lowlevel_error_handler?
-      ENV.key?("TEST_LOWLEVEL_ERROR_HANDLER")
+      thruthy? ENV["TEST_LOWLEVEL_ERROR_HANDLER"]
     end
 
     def localhost_ssl?
       return true if development?
 
       # to force use when "simulating" production
-      ENV.key?("LOAD_LOCALHOST_SSL")
+      thruthy? ENV["LOAD_LOCALHOST_SSL"]
     end
 
     def redirect_to_https?
       return true if production?
 
-      %w(1 true).include?(ENV["REDIRECT_TO_HTTPS"])
+      thruthy? ENV["REDIRECT_TO_HTTPS"]
+    end
+
+    def thruthy?(value)
+      %w(1 on true).include?(value.to_s)
     end
   end
 

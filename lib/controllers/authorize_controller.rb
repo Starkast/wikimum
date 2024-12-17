@@ -37,10 +37,15 @@ class AuthorizeController < BaseController
   end
 
   get '/dev' do
-    halt 404 unless App.development?
+    halt 404 unless (App.development? || App.test?)
 
-    session[:login] = "development"
-    session[:user_id] = -1
+    github_id = 1337
+    login     = ENV.fetch("USER", "user_created_in_dev")
+    user      = Authorize.create_or_update_user({ id: github_id, login: })
+
+    session[:login]    = login
+    session[:user_id]  = user.id
+    session[:starkast] = true
 
     redirect "/"
   end

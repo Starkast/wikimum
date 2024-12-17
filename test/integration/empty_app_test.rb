@@ -16,6 +16,22 @@ class EmptyAppTest < Minitest::Test
     assert last_response.ok?
   end
 
+  def test_dev_authorize
+    login = "user_created_in_test"
+
+    assert_nil User[login:]
+
+    ClimateControl.modify(USER: login) do
+      get "/authorize/dev"
+    end
+
+    redirect_location = last_response["location"]
+
+    assert User[login:]
+    assert_equal 302, last_response.status
+    assert_equal "http://#{Rack::Test::DEFAULT_HOST}/", redirect_location
+  end
+
   def test_root_logged_in
     env "rack.session", { login: "not used", user_id: rand(100) }
     get "/"
