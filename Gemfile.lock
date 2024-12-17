@@ -1,3 +1,9 @@
+GIT
+  remote: https://github.com/jeremyevans/ruby-warning.git
+  revision: 6cbd4f86e5187d01c83abb6adb0cfecad5f89211
+  specs:
+    warning (1.4.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -146,7 +152,6 @@ GEM
     unicode-emoji (4.0.4)
     uri (0.13.1)
     wait_for_it (0.2.1)
-    warning (1.4.0)
     webmock (3.24.0)
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
@@ -187,7 +192,7 @@ DEPENDENCIES
   sinatra-contrib
   spinels-rack-ssl-enforcer
   wait_for_it
-  warning
+  warning!
   webmock
 
 RUBY VERSION
