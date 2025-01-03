@@ -29,8 +29,8 @@ GEM
       thor
       tilt
     hashdiff (1.1.1)
-    html-pipeline (3.0.3)
-      selma (~> 0.1)
+    html-pipeline (3.2.2)
+      selma (~> 0.4)
       zeitwerk (~> 2.5)
     http-accept (1.7.0)
     http-cookie (1.0.3)
@@ -151,7 +151,7 @@ GEM
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
-    zeitwerk (2.6.13)
+    zeitwerk (2.7.1)
 
 PLATFORMS
   aarch64-linux
