@@ -111,6 +111,7 @@ GEM
       rb_sys (~> 0.9)
     selma (0.4.11-aarch64-linux)
     selma (0.4.11-arm64-darwin)
+    selma (0.4.11-x86_64-darwin)
     selma (0.4.11-x86_64-linux)
     sentry-ruby (5.22.1)
       bigdecimal
@@ -157,6 +158,7 @@ PLATFORMS
   aarch64-linux
   arm64-darwin
   ruby
+  x86_64-darwin
   x86_64-linux
 
 DEPENDENCIES
