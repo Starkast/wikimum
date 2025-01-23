@@ -1,0 +1,14 @@
+name: Cron
+
+on:
+  schedule:
+    - cron:  "0 6 * * 6" # 06:00 every Saturday
+  workflow_dispatch:
+
+jobs:
+  preview-psql:
+    runs-on: ubuntu-latest
+    env:
+      PREVIEW_DATABASE_URL: "${{ secrets.PREVIEW_DATABASE_URL }}"
+    steps:
+      - run: psql --command='SELECT version();' $PREVIEW_DATABASE_URL

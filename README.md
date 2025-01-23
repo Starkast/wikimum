@@ -111,6 +111,12 @@ fly secrets set --detach --app wikimum-preview DATABASE_URL="$(pbpaste)"
 fly secrets set --detach --app wikimum-preview SESSION_SECRET="$(pbpaste)"
 ```
 
+To keep the preview database (at Aiven) from being removed prematurely, GitHub Actions has been configured with the `cron.yml` workflow and this secret:
+
+```bash
+gh secret --repo Starkast/wikimum set PREVIEW_DATABASE_URL --body "$(pbpaste)"
+```
+
 ## Code Scanning
 
 GitHub Actions scan the code using [Brakeman](https://github.com/presidentbeef/brakeman).
