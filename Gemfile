@@ -23,7 +23,7 @@ gem 'sentry-ruby'
 gem 'racksh'
 gem 'warning'
 gem 'rake'
-gem 'rubocop', '~> 1.69.2', require: false
+gem 'rubocop', '~> 1.71.1', require: false
 gem 'dyno_metadata'
 gem 'localhost'
 
