@@ -28,7 +28,7 @@ GEM
       temple (>= 0.8.2)
       thor
       tilt
-    hashdiff (1.1.1)
+    hashdiff (1.1.2)
     html-pipeline (3.0.3)
       selma (~> 0.1)
       zeitwerk (~> 2.5)
@@ -89,7 +89,7 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
-    rexml (3.3.9)
+    rexml (3.4.0)
     rubocop (1.69.2)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
@@ -147,7 +147,7 @@ GEM
     uri (0.13.1)
     wait_for_it (0.2.1)
     warning (1.5.0)
-    webmock (3.24.0)
+    webmock (3.25.0)
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
