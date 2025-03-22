@@ -115,7 +115,7 @@ GEM
     sentry-ruby (5.22.4)
       bigdecimal
       concurrent-ruby (~> 1.0, >= 1.0.2)
-    sequel (5.89.0)
+    sequel (5.90.0)
       bigdecimal
     sequel_pg (1.17.1)
       pg (>= 0.18.0, != 1.2.0)
