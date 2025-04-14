@@ -38,7 +38,7 @@ GEM
     json (2.10.2)
     language_server-protocol (3.17.0.4)
     lint_roller (1.1.0)
-    localhost (1.4.1)
+    localhost (1.5.0)
     logger (1.6.1)
     m (1.6.2)
       method_source (>= 0.6.7)
