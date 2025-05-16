@@ -93,7 +93,7 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     rexml (3.4.1)
-    rubocop (1.75.5)
+    rubocop (1.75.6)
       json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.1.0)
@@ -186,7 +186,7 @@ DEPENDENCIES
   racksh
   rake
   rest-client
-  rubocop (~> 1.75.5)
+  rubocop (~> 1.75.6)
   sentry-ruby
   sequel
   sequel_pg
@@ -252,7 +252,7 @@ CHECKSUMS
   regexp_parser (2.10.0) sha256=cb6f0ddde88772cd64bff1dbbf68df66d376043fe2e66a9ef77fcb1b0c548c61
   rest-client (2.1.0) sha256=35a6400bdb14fae28596618e312776c158f7ebbb0ccad752ff4fa142bf2747e3
   rexml (3.4.1) sha256=c74527a9a0a04b4ec31dbe0dc4ed6004b960af943d8db42e539edde3a871abca
-  rubocop (1.75.5) sha256=6ada7c8635023d81dace453da1e3a573455a277d49c3cba30813f32b423be97d
+  rubocop (1.75.6) sha256=1c6c6621b2e76f89999b2f0c0adcced88a273a71e6b8667320b5f509422de262
   rubocop-ast (1.44.1) sha256=e3cc04203b2ef04f6d6cf5f85fe6d643f442b18cc3b23e3ada0ce5b6521b8e92
   ruby-progressbar (1.13.0) sha256=80fc9c47a9b640d6834e0dc7b3c94c9df37f08cb072b7761e4a71e22cff29b33
   ruby2_keywords (0.0.5) sha256=ffd13740c573b7301cf7a2e61fc857b2a8e3d3aff32545d6f8300d8bae10e3ef
