@@ -35,7 +35,7 @@ GEM
     http-accept (1.7.0)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
-    json (2.12.0)
+    json (2.12.2)
     language_server-protocol (3.17.0.5)
     lint_roller (1.1.0)
     localhost (1.5.0)
@@ -93,7 +93,7 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     rexml (3.4.1)
-    rubocop (1.75.5)
+    rubocop (1.76.0)
       json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.1.0)
@@ -101,10 +101,10 @@ GEM
       parser (>= 3.3.0.2)
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 2.9.3, < 3.0)
-      rubocop-ast (>= 1.44.0, < 2.0)
+      rubocop-ast (>= 1.45.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 2.4.0, < 4.0)
-    rubocop-ast (1.44.1)
+    rubocop-ast (1.45.0)
       parser (>= 3.3.7.2)
       prism (~> 1.4)
     ruby-progressbar (1.13.0)
@@ -186,7 +186,7 @@ DEPENDENCIES
   racksh
   rake
   rest-client
-  rubocop (~> 1.75.5)
+  rubocop (~> 1.76.0)
   sentry-ruby
   sequel
   sequel_pg
@@ -217,7 +217,7 @@ CHECKSUMS
   html-pipeline (3.0.3) sha256=c38ce0a024e15f17e928705978b6f16f973ba6637b16b9133eb9f9587d5131bc
   http-accept (1.7.0) sha256=c626860682bfbb3b46462f8c39cd470fd7b0584f61b3cc9df5b2e9eb9972a126
   http-cookie (1.0.3) sha256=2f11269d817bc52ab2af2721e89a377660a961078de2a3a55fc696d7897e8c00
-  json (2.12.0) sha256=b30fce000756de94c756679c7e57ed41f03f8cc8dde2d2dc00a7c44005da0a50
+  json (2.12.2) sha256=ba94a48ad265605c8fa9a50a5892f3ba6a02661aa010f638211f3cb36f44abf4
   language_server-protocol (3.17.0.5) sha256=fd1e39a51a28bf3eec959379985a72e296e9f9acfce46f6a79d31ca8760803cc
   lint_roller (1.1.0) sha256=2c0c845b632a7d172cb849cc90c1bce937a28c5c8ccccb50dfd46a485003cc87
   localhost (1.5.0) sha256=ac48998ca1a4df75bf3c7038beb9d0baa5afb934bc4ed991d1b795f6a34feaf2
@@ -252,8 +252,8 @@ CHECKSUMS
   regexp_parser (2.10.0) sha256=cb6f0ddde88772cd64bff1dbbf68df66d376043fe2e66a9ef77fcb1b0c548c61
   rest-client (2.1.0) sha256=35a6400bdb14fae28596618e312776c158f7ebbb0ccad752ff4fa142bf2747e3
   rexml (3.4.1) sha256=c74527a9a0a04b4ec31dbe0dc4ed6004b960af943d8db42e539edde3a871abca
-  rubocop (1.75.5) sha256=6ada7c8635023d81dace453da1e3a573455a277d49c3cba30813f32b423be97d
-  rubocop-ast (1.44.1) sha256=e3cc04203b2ef04f6d6cf5f85fe6d643f442b18cc3b23e3ada0ce5b6521b8e92
+  rubocop (1.76.0) sha256=b7515398e1280b3cb7e3e0c429933ca3597ea43b7d0f03cb3c2d97719851c411
+  rubocop-ast (1.45.0) sha256=0b4ade77d15f25b9e07214fb42fa98164f5316accea525e14e44bbb8f06f78d7
   ruby-progressbar (1.13.0) sha256=80fc9c47a9b640d6834e0dc7b3c94c9df37f08cb072b7761e4a71e22cff29b33
   ruby2_keywords (0.0.5) sha256=ffd13740c573b7301cf7a2e61fc857b2a8e3d3aff32545d6f8300d8bae10e3ef
   sawyer (0.9.2) sha256=fa3a72d62a4525517b18857ddb78926aab3424de0129be6772a8e2ba240e7aca
