@@ -29,8 +29,8 @@ GEM
       thor
       tilt
     hashdiff (1.1.2)
-    html-pipeline (3.0.3)
-      selma (~> 0.1)
+    html-pipeline (3.2.3)
+      selma (~> 0.4)
       zeitwerk (~> 2.5)
     http-accept (1.7.0)
     http-cookie (1.0.3)
@@ -85,7 +85,9 @@ GEM
       rack-test (>= 0.5)
     rainbow (3.1.1)
     rake (13.2.1)
-    rb_sys (0.9.105)
+    rake-compiler-dock (1.9.1)
+    rb_sys (0.9.114)
+      rake-compiler-dock (= 1.9.1)
     regexp_parser (2.10.0)
     rest-client (2.1.0)
       http-accept (>= 1.7.0, < 2.0)
@@ -112,12 +114,12 @@ GEM
     sawyer (0.9.2)
       addressable (>= 2.3.5)
       faraday (>= 0.17.3, < 3)
-    selma (0.4.11)
+    selma (0.4.12)
       rb_sys (~> 0.9)
-    selma (0.4.11-aarch64-linux)
-    selma (0.4.11-arm64-darwin)
-    selma (0.4.11-x86_64-darwin)
-    selma (0.4.11-x86_64-linux)
+    selma (0.4.12-aarch64-linux)
+    selma (0.4.12-arm64-darwin)
+    selma (0.4.12-x86_64-darwin)
+    selma (0.4.12-x86_64-linux)
     sentry-ruby (5.23.0)
       bigdecimal
       concurrent-ruby (~> 1.0, >= 1.0.2)
@@ -157,7 +159,7 @@ GEM
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
-    zeitwerk (2.6.13)
+    zeitwerk (2.7.2)
 
 PLATFORMS
   aarch64-linux
@@ -214,7 +216,7 @@ CHECKSUMS
   github-markup (5.0.1) sha256=b6e9f8538cb8566935321433190615cbc747550e1705a7af5ba24048d0ddc472
   haml (6.3.0) sha256=8e6eb87d869639e348852009e74a2a1663d79663ed7e7dbcb38beb1f12bcdd97
   hashdiff (1.1.2) sha256=2c30eeded6ed3dce8401d2b5b99e6963fe5f14ed85e60dd9e33c545a44b71a77
-  html-pipeline (3.0.3) sha256=c38ce0a024e15f17e928705978b6f16f973ba6637b16b9133eb9f9587d5131bc
+  html-pipeline (3.2.3) sha256=99333f3e8f40d449a707494fb30e10c92abfaba837c243c0f7fd28e837f93814
   http-accept (1.7.0) sha256=c626860682bfbb3b46462f8c39cd470fd7b0584f61b3cc9df5b2e9eb9972a126
   http-cookie (1.0.3) sha256=2f11269d817bc52ab2af2721e89a377660a961078de2a3a55fc696d7897e8c00
   json (2.12.2) sha256=ba94a48ad265605c8fa9a50a5892f3ba6a02661aa010f638211f3cb36f44abf4
@@ -248,7 +250,8 @@ CHECKSUMS
   racksh (1.0.1) sha256=3863f7f1f98fbece642fb983556ce5469159107a4d2e9c885dad0f92fdaa0214
   rainbow (3.1.1) sha256=039491aa3a89f42efa1d6dec2fc4e62ede96eb6acd95e52f1ad581182b79bc6a
   rake (13.2.1) sha256=46cb38dae65d7d74b6020a4ac9d48afed8eb8149c040eccf0523bec91907059d
-  rb_sys (0.9.105) sha256=f9393ae00e43b0af7dc8945d887f2a8d43f59f94e0413d2bcebee67251650de4
+  rake-compiler-dock (1.9.1) sha256=e73720a29aba9c114728ce39cc0d8eef69ba61d88e7978c57bac171724cd4d53
+  rb_sys (0.9.114) sha256=9c7359b1c35a2a1806a3e1ad85aa6786d60ed65dbcc00cc5c0e1cb1ad9609b20
   regexp_parser (2.10.0) sha256=cb6f0ddde88772cd64bff1dbbf68df66d376043fe2e66a9ef77fcb1b0c548c61
   rest-client (2.1.0) sha256=35a6400bdb14fae28596618e312776c158f7ebbb0ccad752ff4fa142bf2747e3
   rexml (3.4.1) sha256=c74527a9a0a04b4ec31dbe0dc4ed6004b960af943d8db42e539edde3a871abca
@@ -257,11 +260,11 @@ CHECKSUMS
   ruby-progressbar (1.13.0) sha256=80fc9c47a9b640d6834e0dc7b3c94c9df37f08cb072b7761e4a71e22cff29b33
   ruby2_keywords (0.0.5) sha256=ffd13740c573b7301cf7a2e61fc857b2a8e3d3aff32545d6f8300d8bae10e3ef
   sawyer (0.9.2) sha256=fa3a72d62a4525517b18857ddb78926aab3424de0129be6772a8e2ba240e7aca
-  selma (0.4.11) sha256=3fe245a8fb6de6f60bf76efc89c8a7b7fb52ea23569ec71cdf5a2a9b7c228ea6
-  selma (0.4.11-aarch64-linux) sha256=5f56bb62028ebc6a1436d8235a121f7a626638ed961ae5eea1dafd22faab3999
-  selma (0.4.11-arm64-darwin) sha256=2abb7ddb303db57e3d5ba95bf9fe1fcb35fce38b3fb53c67da7c2aee51def213
-  selma (0.4.11-x86_64-darwin) sha256=d8bd2fafbab417b870626dd3c1135a087b55f6013d44534d8367e6c59519b8d5
-  selma (0.4.11-x86_64-linux) sha256=e6eb4087c304b915b2f9dbda590677e1cf5dd1194f1b0caddd06a4830ae1e8b8
+  selma (0.4.12) sha256=9be181808f216147225c1e1ab8b7371f30c6920933d39a5da34b7acce91137df
+  selma (0.4.12-aarch64-linux) sha256=b8de390516168f784ee1706d02e0f9f2953c10b6c10089aa6a10a53d69a80bcf
+  selma (0.4.12-arm64-darwin) sha256=55a025fc55887d5e0aeef8afb7caf364cd4bbfc3cc80edb146a94e8761d9c747
+  selma (0.4.12-x86_64-darwin) sha256=aa20e0fd7482861760600fa99501cee5833ef3db34a7a5d817794d8a52523e43
+  selma (0.4.12-x86_64-linux) sha256=d3df6ddea8181b6a380612513d41cf6b99b08f6771627c813bb41a09b3892c21
   sentry-ruby (5.23.0) sha256=8e8bb2f9a56a267a50fcba947f2ae131b6542f45fc3bb5764c2c25ba68f385cc
   sequel (5.93.0) sha256=5828193600de98e160082b1cd984683c9412533861300b64521f58cb2a5129b2
   sequel_pg (1.17.2) sha256=aff629bb7fbfd18c291907d10a50d03912f432c6ef8c18326a8e37e4990eb9b0
@@ -279,7 +282,7 @@ CHECKSUMS
   wait_for_it (0.2.1) sha256=4693f1ba31a0691851fb43bcedba51a6f749a8a64b088972d91e91d11d471b25
   warning (1.5.0) sha256=0f12c49fea0c06757778eefdcc7771e4fd99308901e3d55c504d87afdd718c53
   webmock (3.25.1) sha256=ab9d5d9353bcbe6322c83e1c60a7103988efc7b67cd72ffb9012629c3d396323
-  zeitwerk (2.6.13) sha256=2db861b021d020f48b5bf51613f355fcd041bf0a27ad8c748fa88fa974c5c7d4
+  zeitwerk (2.7.2) sha256=842e067cb11eb923d747249badfb5fcdc9652d6f20a1f06453317920fdcd4673
 
 RUBY VERSION
    ruby 3.4.1p0
