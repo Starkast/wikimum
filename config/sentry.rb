@@ -6,8 +6,8 @@ require "logger"
 require_relative "../lib/app"
 
 Sentry.init do |config|
-  config.logger = App.null_logger if App.test?
-  config.logger.level = Logger::DEBUG
+  config.sdk_logger = App.null_logger if App.test?
+  config.sdk_logger.level = Logger::DEBUG
 
   # https://docs.sentry.io/platforms/ruby/configuration/releases/#release-health
   config.auto_session_tracking = false
