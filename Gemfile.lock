@@ -146,7 +146,7 @@ GEM
     spinels-rack-ssl-enforcer (1.0.0)
       rack (>= 3.0.0)
     temple (0.10.3)
-    thor (1.3.0)
+    thor (1.4.0)
     tilt (2.4.0)
     unf (0.1.4)
       unf_ext
@@ -277,7 +277,7 @@ CHECKSUMS
   sinatra-contrib (4.1.1) sha256=1ea4b58980a5e599245479753f5eab734ad806ff1f1027032a71be8a1c8f3fbe
   spinels-rack-ssl-enforcer (1.0.0) sha256=1d6b155a847a97622155f7d459d3145f9a50aedcd6b2b5cd87c469566e36244c
   temple (0.10.3) sha256=df3145fe6577af1e25387eb7f7122d32ed51bdb6f2e7bb0f4fbf07b66151913b
-  thor (1.3.0) sha256=1adc7f9e5b3655a68c71393fee8bd0ad088d14ee8e83a0b73726f23cbb3ca7c3
+  thor (1.4.0) sha256=8763e822ccb0f1d7bee88cde131b19a65606657b847cc7b7b4b82e772bcd8a3d
   tilt (2.4.0) sha256=df74f29a451daed26591a85e8e0cebb198892cb75b6573394303acda273fba4d
   unf (0.1.4) sha256=4999517a531f2a955750f8831941891f6158498ec9b6cb1c81ce89388e63022e
   unf_ext (0.0.7.7) sha256=e4e9b1f0c48467fa271d53b180f4ace4c0ff88f01a69ae3da2c30038443e8471
