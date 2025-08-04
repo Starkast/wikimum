@@ -38,7 +38,7 @@ GEM
     json (2.13.2)
     language_server-protocol (3.17.0.5)
     lint_roller (1.1.0)
-    localhost (1.5.0)
+    localhost (1.6.0)
     logger (1.7.0)
     m (1.6.2)
       method_source (>= 0.6.7)
@@ -224,7 +224,7 @@ CHECKSUMS
   json (2.13.2) sha256=02e1f118d434c6b230a64ffa5c8dee07e3ec96244335c392eaed39e1199dbb68
   language_server-protocol (3.17.0.5) sha256=fd1e39a51a28bf3eec959379985a72e296e9f9acfce46f6a79d31ca8760803cc
   lint_roller (1.1.0) sha256=2c0c845b632a7d172cb849cc90c1bce937a28c5c8ccccb50dfd46a485003cc87
-  localhost (1.5.0) sha256=ac48998ca1a4df75bf3c7038beb9d0baa5afb934bc4ed991d1b795f6a34feaf2
+  localhost (1.6.0) sha256=d99697c6344283d39d8ae8572c22fcd556c95347a30d361594c36846b112fa17
   logger (1.7.0) sha256=196edec7cc44b66cfb40f9755ce11b392f21f7967696af15d274dde7edff0203
   m (1.6.2) sha256=2fb85aff050b6b699e6dbca47b45d426e2136ccdfabb64437e9630230d29108e
   method_source (1.0.0) sha256=d779455a2b5666a079ce58577bfad8534f571af7cec8107f4dce328f0981dede
