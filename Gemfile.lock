@@ -7,7 +7,12 @@ GEM
     base64 (0.2.0)
     bigdecimal (3.2.2)
     climate_control (1.2.0)
-    commonmarker (0.23.10)
+    commonmarker (2.4.0)
+      rb_sys (~> 0.9)
+    commonmarker (2.4.0-aarch64-linux)
+    commonmarker (2.4.0-arm64-darwin)
+    commonmarker (2.4.0-x86_64-darwin)
+    commonmarker (2.4.0-x86_64-linux)
     concurrent-ruby (1.3.5)
     crack (1.0.0)
       bigdecimal
@@ -207,7 +212,11 @@ CHECKSUMS
   base64 (0.2.0) sha256=0f25e9b21a02a0cc0cea8ef92b2041035d39350946e8789c562b2d1a3da01507
   bigdecimal (3.2.2) sha256=39085f76b495eb39a79ce07af716f3a6829bc35eb44f2195e2753749f2fa5adc
   climate_control (1.2.0) sha256=36b21896193fa8c8536fa1cd843a07cf8ddbd03aaba43665e26c53ec1bd70aa5
-  commonmarker (0.23.10) sha256=fdd312ae2bb4071b2f3085d4d7533cb9f8d9057a2eaa0760228a65bc3ed565d1
+  commonmarker (2.4.0) sha256=e483a7160fd18ac6626a1149ceb4ef650a15bad0645bd8b0ab3c90810b2c6d3d
+  commonmarker (2.4.0-aarch64-linux) sha256=84bcec138bc7c2c124117a430a8e175c0c0ca3286deb14b167aef5dbb991313f
+  commonmarker (2.4.0-arm64-darwin) sha256=c5172463d52d0f92d519a22e281c53a86b23132a26e2b022bb32e47b85966f77
+  commonmarker (2.4.0-x86_64-darwin) sha256=e827891c9eddb82101fca8506fb2d5647fefb32d9f90f70ab6fd3f086084ac3d
+  commonmarker (2.4.0-x86_64-linux) sha256=e6a1ddc58e216ecf721277336eb3864347f6fc73197159e100ae937711c9ab1e
   concurrent-ruby (1.3.5) sha256=813b3e37aca6df2a21a3b9f1d497f8cbab24a2b94cab325bffe65ee0f6cbebc6
   crack (1.0.0) sha256=c83aefdb428cdc7b66c7f287e488c796f055c0839e6e545fec2c7047743c4a49
   domain_name (0.5.20190701) sha256=000a600454cb4a344769b2f10b531765ea7bd3a304fe47ed12e5ca1eab969851
