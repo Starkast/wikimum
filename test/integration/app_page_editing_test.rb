@@ -31,6 +31,34 @@ class AppPageEditingTest < Minitest::Test
     @user.destroy
   end
 
+  def test_create_page
+    title = "Foo Bar"
+    post "/new", title:, content: "foo bar baz"
+
+    redirect_location = last_response["Location"]
+    slug = "foo_bar"
+    page = Page.find(slug:)
+
+    assert_equal title, page.title
+    assert_equal 302, last_response.status
+    assert_equal "/#{slug}", URI(redirect_location).path
+  ensure
+    page.destroy
+  end
+
+  def test_create_existing_page
+    title = "Foo Bar"
+    content = "foo bar baz"
+    page = Page.create(title:, author: @user)
+
+    post "/new", { title:, content: }
+
+    assert_includes last_response.body, content
+    assert_equal 200, last_response.status
+  ensure
+    page.destroy
+  end
+
   def test_page_edit_no_payload
     post "/#{CGI.escape(@page.slug)}"
 
