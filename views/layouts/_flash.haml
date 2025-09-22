@@ -1,6 +1,7 @@
 #message
   - if flash[:error]
-    %span.error= flash[:error]
+    %span.error
+      != flash[:error]
   -if flash[:notice]
     %span.notice= flash[:notice]
   - if flash[:confirm]
