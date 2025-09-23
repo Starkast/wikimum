@@ -5,13 +5,13 @@
   %input#title{ type: :text, name: 'title', maxlength: 74, size: 50, value: @page.title, autofocus: true }
 
   %label.block{ for: 'content' } Innehåll
-  %textarea#content{ name: 'content', cols: 84, rows: 20 }
+  %textarea#content{ name: 'content', cols: 84, rows: 20 }= @page.content
 
   %label.block{ for: 'comment' } Kommentar
-  %input#comment{ type: :text, name: 'comment', maxlength: 74, size: 50 }
+  %input#comment{ type: :text, name: 'comment', maxlength: 74, size: 50, value: @page.comment }
 
   %label.block{ for: 'concealed' } Privat
-  %input#private{ type: :checkbox, name: 'concealed' }
+  %input#private{ type: :checkbox, name: 'concealed', checked: @page.concealed }
 
   %p{ style: "margin-top: 1em;" }
     %button Skapa sida
@@ -21,4 +21,4 @@
   %hr
 
   %label.block{ for: 'description' } Sidbeskrivning
-  %textarea#description{ name: 'description', cols: 50, rows: 3 }
+  %textarea#description{ name: 'description', cols: 50, rows: 3 }= @page.description

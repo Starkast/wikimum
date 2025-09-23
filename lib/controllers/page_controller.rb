@@ -65,11 +65,14 @@ class PageController < BaseController
   end
 
   post '/new*' do
-    page = Page.new
-    page.set_fields(params, %i(title content description concealed comment))
-    page.author = current_user
-    page.save
-    redirect "#{page.slug}"
+    @page = Page.new
+    @page.set_fields(params, %i(title content description concealed comment))
+    @page.author = current_user
+    @page.save
+    redirect "#{@page.slug}"
+  rescue Sequel::UniqueConstraintViolation
+    flash.now[:error] = %(Sidan existerar redan: <a href="/#{@page.slug}">#{@page.slug}</a>)
+    haml :new
   end
 
   get '/new' do
