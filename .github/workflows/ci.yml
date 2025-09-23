@@ -11,14 +11,14 @@ jobs:
     runs-on: ubuntu-latest
     needs: ruby
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - run: ./bin/docker-test
   ruby:
     runs-on: ubuntu-latest
     env:
       BUNDLE_LOCAL: 1
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: dentarg/postgres@v1
       - uses: ruby/setup-ruby@v1
         with:
