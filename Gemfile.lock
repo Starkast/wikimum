@@ -4,7 +4,7 @@ GEM
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
     ast (2.4.3)
-    base64 (0.2.0)
+    base64 (0.3.0)
     bigdecimal (3.2.2)
     climate_control (1.2.0)
     commonmarker (0.23.10)
@@ -49,7 +49,7 @@ GEM
     mime-types-data (3.2020.1104)
     minitest (5.25.5)
     multi_json (1.15.0)
-    mustermann (3.0.3)
+    mustermann (3.0.4)
       ruby2_keywords (~> 0.0.1)
     net-http (0.6.0)
       uri
@@ -72,10 +72,10 @@ GEM
     puma (6.6.1)
       nio4r (~> 2.0)
     racc (1.8.1)
-    rack (3.1.16)
+    rack (3.2.2)
     rack-flash3 (1.0.5)
       rack
-    rack-protection (4.1.1)
+    rack-protection (4.2.0)
       base64 (>= 0.1.0)
       logger (>= 1.6.0)
       rack (>= 3.0.0, < 4)
@@ -130,24 +130,24 @@ GEM
     sequel_pg (1.17.2)
       pg (>= 0.18.0, != 1.2.0)
       sequel (>= 4.38.0)
-    sinatra (4.1.1)
+    sinatra (4.2.0)
       logger (>= 1.6.0)
       mustermann (~> 3.0)
       rack (>= 3.0.0, < 4)
-      rack-protection (= 4.1.1)
+      rack-protection (= 4.2.0)
       rack-session (>= 2.0.0, < 3)
       tilt (~> 2.0)
-    sinatra-contrib (4.1.1)
+    sinatra-contrib (4.2.0)
       multi_json (>= 0.0.2)
       mustermann (~> 3.0)
-      rack-protection (= 4.1.1)
-      sinatra (= 4.1.1)
+      rack-protection (= 4.2.0)
+      sinatra (= 4.2.0)
       tilt (~> 2.0)
     spinels-rack-ssl-enforcer (1.0.0)
       rack (>= 3.0.0)
     temple (0.10.3)
     thor (1.4.0)
-    tilt (2.4.0)
+    tilt (2.6.1)
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.7)
@@ -204,7 +204,7 @@ DEPENDENCIES
 CHECKSUMS
   addressable (2.8.7) sha256=462986537cf3735ab5f3c0f557f14155d778f4b43ea4f485a9deb9c8f7c58232
   ast (2.4.3) sha256=954615157c1d6a382bc27d690d973195e79db7f55e9765ac7c481c60bdb4d383
-  base64 (0.2.0) sha256=0f25e9b21a02a0cc0cea8ef92b2041035d39350946e8789c562b2d1a3da01507
+  base64 (0.3.0) sha256=27337aeabad6ffae05c265c450490628ef3ebd4b67be58257393227588f5a97b
   bigdecimal (3.2.2) sha256=39085f76b495eb39a79ce07af716f3a6829bc35eb44f2195e2753749f2fa5adc
   climate_control (1.2.0) sha256=36b21896193fa8c8536fa1cd843a07cf8ddbd03aaba43665e26c53ec1bd70aa5
   commonmarker (0.23.10) sha256=fdd312ae2bb4071b2f3085d4d7533cb9f8d9057a2eaa0760228a65bc3ed565d1
@@ -232,7 +232,7 @@ CHECKSUMS
   mime-types-data (3.2020.1104) sha256=4fb1eeb8e3fbe88059c751adc6a96322b8f2c89403db8928bb9bda64b9f3f246
   minitest (5.25.5) sha256=391b6c6cb43a4802bfb7c93af1ebe2ac66a210293f4a3fb7db36f2fc7dc2c756
   multi_json (1.15.0) sha256=1fd04138b6e4a90017e8d1b804c039031399866ff3fbabb7822aea367c78615d
-  mustermann (3.0.3) sha256=d1f8e9ba2ddaed47150ddf81f6a7ea046826b64c672fbc92d83bce6b70657e88
+  mustermann (3.0.4) sha256=85fadcb6b3c6493a8b511b42426f904b7f27b282835502233dd154daab13aa22
   net-http (0.6.0) sha256=9621b20c137898af9d890556848c93603716cab516dc2c89b01a38b894e259fb
   netrc (0.11.0) sha256=de1ce33da8c99ab1d97871726cba75151113f117146becbe45aa85cb3dabee3f
   nio4r (2.7.4) sha256=d95dee68e0bb251b8ff90ac3423a511e3b784124e5db7ff5f4813a220ae73ca9
@@ -248,9 +248,9 @@ CHECKSUMS
   public_suffix (6.0.1) sha256=61d44e1cab5cbbbe5b31068481cf16976dd0dc1b6b07bd95617ef8c5e3e00c6f
   puma (6.6.1) sha256=b9b56e4a4ea75d1bfa6d9e1972ee2c9f43d0883f011826d914e8e37b3694ea1e
   racc (1.8.1) sha256=4a7f6929691dbec8b5209a0b373bc2614882b55fc5d2e447a21aaa691303d62f
-  rack (3.1.16) sha256=efb5606c351efc56b85b10c3493055d0d35209d23f44792ec4e1183eb0234635
+  rack (3.2.2) sha256=74d20a7a17e8c6bc1fd506fa7d83ccf6b7a40869e81572928ca95346dccd92b0
   rack-flash3 (1.0.5) sha256=1f57e26429d7987fdb3c65a2f0da95717bed99ad3e5e45d847da689b9d4a3566
-  rack-protection (4.1.1) sha256=51a254a5d574a7f0ca4f0672025ce2a5ef7c8c3bd09c431349d683e825d7d16a
+  rack-protection (4.2.0) sha256=67909eb1c29ebb52a9bdedfd4201cec70a542edd7671dbd87eae3d73d2d115bf
   rack-session (2.1.1) sha256=0b6dc07dea7e4b583f58a48e8b806d4c9f1c6c9214ebc202ec94562cbea2e4e9
   rack-test (2.2.0) sha256=005a36692c306ac0b4a9350355ee080fd09ddef1148a5f8b2ac636c720f5c463
   racksh (1.0.1) sha256=3863f7f1f98fbece642fb983556ce5469159107a4d2e9c885dad0f92fdaa0214
@@ -273,12 +273,12 @@ CHECKSUMS
   sentry-ruby (5.26.0) sha256=37b82d4849683f7172cbdb0867ee6697e0d8ad8fe9c242b5df0edf690894554b
   sequel (5.96.0) sha256=8e1ac79ce8bc1fa0a061d3bd9eb44605346025eb359f93d7f67efcfef7070e45
   sequel_pg (1.17.2) sha256=aff629bb7fbfd18c291907d10a50d03912f432c6ef8c18326a8e37e4990eb9b0
-  sinatra (4.1.1) sha256=4e997b859aa1b5d2e624f85d5b0fd0f0b3abc0da44daa6cbdf10f7c0da9f4d00
-  sinatra-contrib (4.1.1) sha256=1ea4b58980a5e599245479753f5eab734ad806ff1f1027032a71be8a1c8f3fbe
+  sinatra (4.2.0) sha256=3fab45063312c298dc4153ba35736b755eda329695d2bdf28129ad99131964ef
+  sinatra-contrib (4.2.0) sha256=32052a4d77a54cce3cfa34c9e6c3e28719a519e1e9741dad4bf69dd5526025fb
   spinels-rack-ssl-enforcer (1.0.0) sha256=1d6b155a847a97622155f7d459d3145f9a50aedcd6b2b5cd87c469566e36244c
   temple (0.10.3) sha256=df3145fe6577af1e25387eb7f7122d32ed51bdb6f2e7bb0f4fbf07b66151913b
   thor (1.4.0) sha256=8763e822ccb0f1d7bee88cde131b19a65606657b847cc7b7b4b82e772bcd8a3d
-  tilt (2.4.0) sha256=df74f29a451daed26591a85e8e0cebb198892cb75b6573394303acda273fba4d
+  tilt (2.6.1) sha256=35a99bba2adf7c1e362f5b48f9b581cce4edfba98117e34696dde6d308d84770
   unf (0.1.4) sha256=4999517a531f2a955750f8831941891f6158498ec9b6cb1c81ce89388e63022e
   unf_ext (0.0.7.7) sha256=e4e9b1f0c48467fa271d53b180f4ace4c0ff88f01a69ae3da2c30038443e8471
   unicode-display_width (3.1.4) sha256=8caf2af1c0f2f07ec89ef9e18c7d88c2790e217c482bfc78aaa65eadd5415ac1
