@@ -2,7 +2,7 @@
   %ul
     - if logged_in?
       %li
-        %a{ href: "/#{@page.slug}/edit" } Ändra
+        %a{ href: "/#{@page.slug}/edit", id: "edit_page" } Ändra
         - if starkast?
           %form{ action: "/#{@page.slug}/conceal", method: :post }
             %button

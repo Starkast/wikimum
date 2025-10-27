@@ -8,11 +8,28 @@
       Starkast Wiki
     %link{ href: '/favicon.ico', rel: 'shortcut icon', type: 'image/ico' }
     %link{ href: "/stylesheets/default.css?#{App.cache_bust}", rel: 'stylesheet', type: 'text/css' }
-    %script{ src: '/javascripts/mousetrap.min.js' }
-    %script{ src: '/javascripts/mousetrap-global-bind.min.js' }
     - settings.js.each do |js|
       %script{ src: js.fetch(:url), integrity: js.fetch(:sha), crossorigin: :anonymous }
-  %body
+    %script{type: "importmap"}
+      != javascript_imports
+    %script{type: "module"}
+      import "application"
+  %body{data: {
+          controller: "page-navigation search-navigation",
+          action: "keydown.h->page-navigation#home |
+                   keydown.i->page-navigation#list |
+                   keydown.l->page-navigation#latest |
+                   keydown.n->page-navigation#new |
+                   keydown.e->page-navigation#edit |
+                   keydown.s->page-navigation#focusSearch |
+                   keydown.esc->page-navigation#blurSearch |
+                   keydown.down->search-navigation#down |
+                   keydown.j->search-navigation#down |
+                   keydown.up->search-navigation#up |
+                   keydown.k->search-navigation#up |
+                   keydown.o->search-navigation#open |
+                   keydown.enter->search-navigation#open"
+        }}
     %div{ id: @edit_mode ? 'container-lg' : 'container' }
       #header
         #login
@@ -33,39 +50,3 @@
         !=yield
     #footer
       != haml :'../layouts/_footer', layout: false
-
-    :javascript
-      Mousetrap.bind(['/', 's'], function() {
-        var searchInput = document.getElementById('q');
-        searchInput.focus();
-        searchInput.select();
-        return false;
-      });
-
-      Mousetrap.bind('h', function() {
-        window.location = "/";
-        return false;
-      });
-
-      Mousetrap.bind('i', function() {
-        window.location = "/list";
-        return false;
-      });
-
-      Mousetrap.bind('l', function() {
-        window.location = "/latest";
-        return false;
-      });
-
-      Mousetrap.bind('n', function() {
-        window.location = "/new";
-        return false;
-      });
-
-      Mousetrap.bindGlobal('escape', function() {
-        var searchInput = document.getElementById('q');
-        if (document.activeElement == searchInput) {
-          searchInput.blur();
-        }
-        return false;
-      });

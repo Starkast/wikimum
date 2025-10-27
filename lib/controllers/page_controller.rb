@@ -54,10 +54,10 @@ class PageController < BaseController
     case @pages.count
     when 0
       flash[:notice] = "Din sökning gav inga träffar"
-      redirect request.referrer
+      redirect request.referrer, 303
     when 1
       flash[:confirm] = "Din sökning gav bara denna sida som träff"
-      redirect @pages.first.slug
+      redirect @pages.first.slug, 303
     else
       flash.now[:confirm] = "Din sökning gav #{@pages.count} träffar"
       haml :search
