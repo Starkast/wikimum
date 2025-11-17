@@ -18,7 +18,7 @@ class AppLoggedInTest < Minitest::Test
   end
 
   def setup
-    @page_title = "Test Page"
+    @page_title = "Test Page ÅÄÖ"
     @user = User.create(email: "test@test", login: "test")
     @page = Page.create(title: @page_title, author: @user)
 
@@ -32,16 +32,16 @@ class AppLoggedInTest < Minitest::Test
   end
 
   def test_create_page
-    title = "Foo Bar"
+    title = "Foo Bar Åäö"
     post "/new", title:, content: "foo bar baz"
 
     redirect_location = last_response["Location"]
-    slug = "foo_bar"
+    slug = "foo_bar_åäö"
     page = Page.find(slug:)
 
     assert_equal title, page.title
     assert_equal 302, last_response.status
-    assert_equal "/#{slug}", URI(redirect_location).path
+    assert_equal "/foo_bar_%C3%A5%C3%A4%C3%B6", URI(redirect_location).path
   ensure
     page.destroy
   end

@@ -7,10 +7,6 @@ class PageController < BaseController
       Slug.slugify(params[:slug]) if params[:slug]
     end
 
-    def slug_in_redirect
-      URI.encode_uri_component(slug)
-    end
-
     def restrict_concealed(page)
       return if starkast?
       if page.concealed
@@ -73,7 +69,7 @@ class PageController < BaseController
     @page.set_fields(params, %i(title content description concealed comment))
     @page.author = current_user
     @page.save
-    redirect "#{@page.slug}"
+    redirect "#{@page.slug_for_uri}"
   rescue Sequel::UniqueConstraintViolation
     flash.now[:error] = %(Sidan existerar redan: <a href="/#{@page.slug}">#{@page.slug}</a>)
     haml :new
@@ -96,9 +92,13 @@ class PageController < BaseController
 
   get '/:slug/edit' do
     @page = Page.find(slug: slug)
-    unless logged_in? && @page
+    unless logged_in?
       flash[:error] = "Not authorized to edit!"
-      redirect "/#{slug_in_redirect}"
+      if @page
+        redirect "/#{@page.slug_for_uri}"
+      else
+        redirect "/"
+      end
     end
     redirect "new/#{slug}" unless @page
     @page_title = "Ändrar #{@page.title}"
@@ -145,7 +145,7 @@ class PageController < BaseController
     page.author = current_user
     page.save
 
-    redirect "#{page.slug}"
+    redirect "#{page.slug_for_uri}"
   end
 
   post '/:slug/conceal' do
@@ -155,6 +155,6 @@ class PageController < BaseController
     # intentionally avoid Page save hook
     page.this.update(concealed: !page.concealed)
 
-    redirect "#{page.slug}"
+    redirect "#{page.slug_for_uri}"
   end
 end

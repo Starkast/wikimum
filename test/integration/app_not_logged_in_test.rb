@@ -62,7 +62,7 @@ class AppNotLoggedInTest < Minitest::Test
 
     redirect_location = last_response["Location"]
     assert_equal 302, last_response.status
-    assert_equal "/#{random_slug}", URI(redirect_location).path
+    assert_equal "/", URI(redirect_location).path
   end
 
   def test_latest
