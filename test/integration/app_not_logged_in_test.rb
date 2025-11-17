@@ -6,7 +6,7 @@ require "securerandom"
 require_relative "../test_helper"
 require_relative "../integration_test_helper"
 
-class AppTest < Minitest::Test
+class AppNotLoggedInTest < Minitest::Test
   include Rack::Test::Methods
 
   def app
