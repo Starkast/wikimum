@@ -45,9 +45,15 @@ class AppNotLoggedInTest < Minitest::Test
   end
 
   def test_page_edit_view
-    get "/#{CGI.escape(@page.slug)}/edit"
-    assert last_response.body.include?(@page_title)
-    assert last_response.ok?
+    slug = CGI.escape(@page.slug)
+
+    get "/#{slug}/edit"
+
+    redirect_location = last_response["Location"]
+    assert_equal 302, last_response.status
+    assert_equal "/#{slug}", URI(redirect_location).path
+    follow_redirect!
+    assert last_response.body.include?("Not authorized to edit!")
   end
 
   def test_nonexistent_page_edit_view
@@ -56,7 +62,7 @@ class AppNotLoggedInTest < Minitest::Test
 
     redirect_location = last_response["Location"]
     assert_equal 302, last_response.status
-    assert_equal "/new/#{random_slug}", URI(redirect_location).path
+    assert_equal "/#{random_slug}", URI(redirect_location).path
   end
 
   def test_latest

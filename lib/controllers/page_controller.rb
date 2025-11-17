@@ -7,6 +7,10 @@ class PageController < BaseController
       Slug.slugify(params[:slug]) if params[:slug]
     end
 
+    def slug_in_redirect
+      URI.encode_uri_component(slug)
+    end
+
     def restrict_concealed(page)
       return if starkast?
       if page.concealed
@@ -92,6 +96,10 @@ class PageController < BaseController
 
   get '/:slug/edit' do
     @page = Page.find(slug: slug)
+    unless logged_in? && @page
+      flash[:error] = "Not authorized to edit!"
+      redirect "/#{slug_in_redirect}"
+    end
     redirect "new/#{slug}" unless @page
     @page_title = "Ändrar #{@page.title}"
     restrict_concealed(@page)

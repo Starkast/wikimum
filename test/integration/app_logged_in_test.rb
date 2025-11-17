@@ -59,6 +59,13 @@ class AppLoggedInTest < Minitest::Test
     page.destroy
   end
 
+  def test_page_edit_view
+    get "/#{CGI.escape(@page.slug)}/edit"
+
+    assert last_response.body.include?(@page_title)
+    assert last_response.ok?
+  end
+
   def test_page_edit_no_payload
     post "/#{CGI.escape(@page.slug)}"
 
