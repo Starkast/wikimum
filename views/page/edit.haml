@@ -19,7 +19,7 @@
       %input#title{ type: :text, name: 'title', maxlength: 74, size: 50, value: @page.title }
 
       %label.block{ for: 'content' } Innehåll
-      %textarea#content{ name: 'content', cols: 78, rows: 20, "hx-post": "/#{@page.slug}/preview", "hx-target": "#preview", "hx-trigger": "keyup changed delay:500ms" }= @page.content
+      %textarea#content{ name: 'content', cols: 78, rows: 20, "hx-post": "/#{@page.slug}/preview", "hx-target": "#preview", "hx-trigger": "keyup changed delay:500ms", autofocus: true }= @page.content
 
       %label.block{ for: 'comment' } Kommentar
       %input#comment{ type: :text, name: 'comment', maxlength: 74, size: 50 }
