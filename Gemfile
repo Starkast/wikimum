@@ -20,7 +20,7 @@ gem 'octokit'
 gem 'faraday-retry'
 gem 'addressable'
 gem 'sentry-ruby'
-gem 'racksh'
+gem 'spinels-racksh'
 gem 'warning'
 gem 'rake'
 gem 'rubocop', '~> 1.79.2', require: false
