@@ -11,7 +11,10 @@ def system!(*args)
 end
 
 FileUtils.chdir APP_ROOT do
-  puts "== Installing dependencies =="
+  puts "== Installing overman =="
+  system("which overman") || system!("gem install overman")
+
+  puts "\n== Installing dependencies =="
   system("bundle check") || system!("bundle install")
 
   puts "\n== Preparing database =="
