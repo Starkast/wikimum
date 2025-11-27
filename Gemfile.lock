@@ -88,7 +88,7 @@ GEM
       rack (>= 1.0)
       rack-test (>= 0.5)
     rainbow (3.1.1)
-    rake (13.3.0)
+    rake (13.3.1)
     rb_sys (0.9.105)
     regexp_parser (2.11.0)
     rest-client (2.1.0)
@@ -255,7 +255,7 @@ CHECKSUMS
   rack-test (2.2.0) sha256=005a36692c306ac0b4a9350355ee080fd09ddef1148a5f8b2ac636c720f5c463
   racksh (1.0.1) sha256=3863f7f1f98fbece642fb983556ce5469159107a4d2e9c885dad0f92fdaa0214
   rainbow (3.1.1) sha256=039491aa3a89f42efa1d6dec2fc4e62ede96eb6acd95e52f1ad581182b79bc6a
-  rake (13.3.0) sha256=96f5092d786ff412c62fde76f793cc0541bd84d2eb579caa529aa8a059934493
+  rake (13.3.1) sha256=8c9e89d09f66a26a01264e7e3480ec0607f0c497a861ef16063604b1b08eb19c
   rb_sys (0.9.105) sha256=f9393ae00e43b0af7dc8945d887f2a8d43f59f94e0413d2bcebee67251650de4
   regexp_parser (2.11.0) sha256=d9dd78b475d18893ce3da55ea1a913499b75f26180a3463e9233d7e419c0cd40
   rest-client (2.1.0) sha256=35a6400bdb14fae28596618e312776c158f7ebbb0ccad752ff4fa142bf2747e3
