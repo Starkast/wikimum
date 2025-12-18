@@ -8,13 +8,13 @@ on:
 
 jobs:
   docker:
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-latest
     needs: ruby
     steps:
       - uses: actions/checkout@v5
       - run: ./bin/docker-test
   ruby:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     env:
       BUNDLE_LOCAL: 1
     steps:
