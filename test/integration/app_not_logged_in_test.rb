@@ -44,6 +44,25 @@ class AppNotLoggedInTest < Minitest::Test
     assert_equal "/new/#{random_slug}", URI(redirect_location).path
   end
 
+  def test_new
+    get "/new"
+
+    assert_equal 302, last_response.status
+    assert_equal "/", URI(last_response["Location"]).path
+    follow_redirect!
+    assert last_response.body.include?("You need to be logged in to create a new page!")
+  end
+
+  def test_new_slug
+    random_slug = SecureRandom.hex
+    get "/new/#{random_slug}"
+
+    assert_equal 302, last_response.status
+    assert_equal "/", URI(last_response["Location"]).path
+    follow_redirect!
+    assert last_response.body.include?("You need to be logged in to create a new page!")
+  end
+
   def test_page_edit_view
     slug = CGI.escape(@page.slug)
 
