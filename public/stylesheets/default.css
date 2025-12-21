@@ -300,6 +300,81 @@ del.diffdel { color: #f30; }
 ins.diffins { color: #090; }
 
 
+/* Keyboard Help Overlay */
+
+#keyboard-help {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 200;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+#keyboard-help.visible {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#keyboard-help .modal {
+  background: #fff;
+  border-radius: 8px;
+  padding: 2em;
+  max-width: 28em;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+#keyboard-help h2 {
+  font-size: 2em;
+  margin: 0 0 1em 0;
+  padding: 0;
+}
+
+#keyboard-help dl {
+  font-size: 1.4em;
+  margin: 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.5em 1em;
+}
+
+#keyboard-help dt {
+  text-align: right;
+}
+
+#keyboard-help dd {
+  margin: 0;
+}
+
+#keyboard-help kbd {
+  display: inline-block;
+  padding: 0.2em 0.5em;
+  font-family: monospace;
+  font-size: 0.9em;
+  background: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  box-shadow: 0 1px 0 #999;
+}
+
+#keyboard-help .section-label {
+  grid-column: 1 / -1;
+  font-size: 0.85em;
+  color: #666;
+  margin-top: 0.8em;
+  padding-top: 0.8em;
+  border-top: 1px solid #ddd;
+}
+
+#keyboard-help .section-label:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
 /* Dark Mode */
 
 @media (prefers-color-scheme:dark) {
@@ -365,4 +440,22 @@ ins.diffins { color: #090; }
   span.notice  { color: #000; }
   span.error   { background: Maroon; }
   span.failure { background: Maroon; }
+
+  /* Keyboard Help Overlay */
+  #keyboard-help .modal {
+    background: #404040;
+    color: rgba(255,255,255,.75);
+  }
+
+  #keyboard-help kbd {
+    background: #555;
+    border-color: #666;
+    color: #fff;
+    box-shadow: 0 1px 0 #333;
+  }
+
+  #keyboard-help .section-label {
+    color: #999;
+    border-color: #555;
+  }
 }
