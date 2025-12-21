@@ -5,6 +5,7 @@
     }
     function selectElement(element) {
       element.id = "navigation-selected";
+      element.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
       return true;
     }
     function deselectElement(element) {
