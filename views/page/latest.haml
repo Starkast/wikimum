@@ -4,7 +4,7 @@
   %ul
     - pages.each do |page|
       %li
-        %a{ href: "#{page.slug}" }= page.title
+        %a.page-link{ href: "#{page.slug}" }= page.title
         - if page.concealed
           🔐
         = "(#{page.revision})"
@@ -15,3 +15,5 @@
           %span.latest_item_information
             med kommentaren
             = %Q("#{page.comment}")
+
+!= haml :'_keyboard_navigation', layout: false

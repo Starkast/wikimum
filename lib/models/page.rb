@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "uri"
+
 class Page < Sequel::Model
 
   one_to_many :revisions
@@ -44,6 +46,10 @@ class Page < Sequel::Model
     new_revision.save
 
     self.revision += 1
+  end
+
+  def slug_for_uri
+    URI.encode_uri_component(self.slug)
   end
 
   def calculate_sha1

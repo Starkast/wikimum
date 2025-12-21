@@ -1,0 +1,28 @@
+#!/usr/bin/env ruby
+
+# frozen_string_literal: true
+
+require "fileutils"
+
+APP_ROOT = File.expand_path("..", __dir__)
+
+def system!(*args)
+  system(*args, exception: true)
+end
+
+FileUtils.chdir APP_ROOT do
+  puts "== Installing overman =="
+  system("which overman") || system!("gem install overman")
+
+  puts "\n== Installing dependencies =="
+  system("bundle check") || system!("bundle install")
+
+  puts "\n== Preparing database =="
+  system! "bin/dev_db_bootstrap"
+
+  unless ARGV.include?("--skip-server")
+    puts "\n== Starting development server =="
+    STDOUT.flush # flush the output before exec(2) so that it displays
+    exec "bin/dev"
+  end
+end
