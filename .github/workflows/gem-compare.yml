@@ -3,6 +3,7 @@ name: Gem Compare
 on:
   pull_request:
     types:
+      - labeled
       - ready_for_review
   pull_request_target:
     types:
@@ -15,7 +16,10 @@ permissions:
 
 jobs:
   compare:
-    if: github.actor == 'dependabot[bot]' && startsWith(github.head_ref, 'dependabot/bundler/')
+    if: |
+      startsWith(github.head_ref, 'dependabot/bundler/')) ||
+      startsWith(github.head_ref, 'bump-') ||
+      contains(github.event.label.name, 'gem-compare')
     runs-on: ubuntu-slim
     steps:
       - uses: dentarg/gem-compare@v1
