@@ -34,7 +34,46 @@
     #footer
       != haml :'../layouts/_footer', layout: false
 
+    #keyboard-help
+      .modal
+        %h2 Keyboard Shortcuts
+        %dl
+          .section-label Navigation
+          %dt
+            %kbd ?
+          %dd Show this help
+          %dt
+            %kbd /
+            or
+            %kbd s
+          %dd Focus search
+          %dt
+            %kbd h
+          %dd Go to home
+          %dt
+            %kbd i
+          %dd Go to index
+          %dt
+            %kbd l
+          %dd Go to latest
+          %dt
+            %kbd n
+          %dd New page
+          %dt
+            %kbd Esc
+          %dd Close
+          .section-label Page view
+          %dt
+            %kbd e
+          %dd Edit page
+
     :javascript
+      Mousetrap.bind(['?'], function() {
+        var help = document.getElementById('keyboard-help');
+        help.classList.toggle('visible');
+        return false;
+      });
+
       Mousetrap.bind(['/', 's'], function() {
         var searchInput = document.getElementById('q');
         searchInput.focus();
@@ -63,9 +102,20 @@
       });
 
       Mousetrap.bindGlobal('escape', function() {
+        var help = document.getElementById('keyboard-help');
+        if (help.classList.contains('visible')) {
+          help.classList.remove('visible');
+          return false;
+        }
         var searchInput = document.getElementById('q');
         if (document.activeElement == searchInput) {
           searchInput.blur();
         }
         return false;
+      });
+
+      document.getElementById('keyboard-help').addEventListener('click', function(e) {
+        if (e.target === this) {
+          this.classList.remove('visible');
+        }
       });

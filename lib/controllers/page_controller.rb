@@ -76,14 +76,20 @@ class PageController < BaseController
   end
 
   get '/new' do
-    redirect back unless logged_in?
+    unless logged_in?
+      flash[:error] = "You need to be logged in to create a new page!"
+      redirect "/"
+    end
     @page_title = "Skapa ny sida"
     @page = Page.new
     haml :new
   end
 
   get '/new/:slug' do
-    redirect back unless logged_in?
+    unless logged_in?
+      flash[:error] = "You need to be logged in to create a new page!"
+      redirect "/"
+    end
     @page_title = "Skapa ny sida"
     @page = Page.new(title: slug)
     flash.now[:notice] = "Det finns ingen sida för #{slug}, du får skapa den!"
