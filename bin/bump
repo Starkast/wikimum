@@ -1,0 +1,22 @@
+#!/bin/sh
+
+# set -e
+# set -u
+
+WORKFLOW=gem-bump.yml
+GEM=${1:-}
+
+if [ -z "$GEM" ]; then
+  echo "Usage: $0 <gem name>"
+  exit 0
+fi
+
+set -x
+
+gh workflow run $WORKFLOW ${USE_REF:-} --field gem_name=$GEM
+sleep 2
+runId=$(gh run list --workflow $WORKFLOW --limit 1 --json databaseId --jq '.[].databaseId')
+gh run watch --interval 1 --exit-status $runId
+gh run view --verbose $runId
+prNumber=$(gh run view --log $runId | grep -F 'Pull request created' | head -1 | sed 's|.*/pull/\([0-9][0-9]*\).*|\1|')
+gh pr ready $prNumber
