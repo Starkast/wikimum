@@ -1,0 +1,12 @@
+#!/bin/sh
+
+set -e
+set -u
+
+PR=$1
+PR_BODY=$(gh pr view --json body $PR | jq -r '.body')
+GIT_NAME=$(git config --get user.name)
+GIT_EMAIL=$(git config --get user.email)
+COMMIT_MSG="${PR_BODY}\n\nCo-authored-by: ${GIT_NAME} <${GIT_EMAIL}>"
+
+echo "$COMMIT_MSG" | gh pr merge --squash --auto --body-file - $PR

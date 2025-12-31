@@ -10,8 +10,10 @@
   %ul
     - pages.each do |page|
       %li
-        %a{ href: "#{page.slug}" }= page.title
+        %a.page-link{ href: "#{page.slug}" }= page.title
         - if page.concealed
           🔐
         = "(#{page.revision})"
         %span.description= page.description
+
+!= haml :'_keyboard_navigation', layout: false

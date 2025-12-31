@@ -1,0 +1,19 @@
+name: Bump Gem
+
+on:
+  workflow_dispatch:
+    inputs:
+      gem_name:
+        description: 'Name of the Ruby gem to update'
+        required: true
+        type: string
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: dentarg/bump@main
+        with:
+          gem_name: ${{ inputs.gem_name }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          labels: dependencies

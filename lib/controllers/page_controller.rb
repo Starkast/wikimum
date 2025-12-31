@@ -69,21 +69,27 @@ class PageController < BaseController
     @page.set_fields(params, %i(title content description concealed comment))
     @page.author = current_user
     @page.save
-    redirect "#{@page.slug}"
+    redirect "#{@page.slug_for_uri}"
   rescue Sequel::UniqueConstraintViolation
     flash.now[:error] = %(Sidan existerar redan: <a href="/#{@page.slug}">#{@page.slug}</a>)
     haml :new
   end
 
   get '/new' do
-    redirect back unless logged_in?
+    unless logged_in?
+      flash[:error] = "You need to be logged in to create a new page!"
+      redirect "/"
+    end
     @page_title = "Skapa ny sida"
     @page = Page.new
     haml :new
   end
 
   get '/new/:slug' do
-    redirect back unless logged_in?
+    unless logged_in?
+      flash[:error] = "You need to be logged in to create a new page!"
+      redirect "/"
+    end
     @page_title = "Skapa ny sida"
     @page = Page.new(title: slug)
     flash.now[:notice] = "Det finns ingen sida för #{slug}, du får skapa den!"
@@ -92,6 +98,14 @@ class PageController < BaseController
 
   get '/:slug/edit' do
     @page = Page.find(slug: slug)
+    unless logged_in?
+      flash[:error] = "Not authorized to edit!"
+      if @page
+        redirect "/#{@page.slug_for_uri}"
+      else
+        redirect "/"
+      end
+    end
     redirect "new/#{slug}" unless @page
     @page_title = "Ändrar #{@page.title}"
     restrict_concealed(@page)
@@ -137,7 +151,7 @@ class PageController < BaseController
     page.author = current_user
     page.save
 
-    redirect "#{page.slug}"
+    redirect "#{page.slug_for_uri}"
   end
 
   post '/:slug/conceal' do
@@ -147,6 +161,6 @@ class PageController < BaseController
     # intentionally avoid Page save hook
     page.this.update(concealed: !page.concealed)
 
-    redirect "#{page.slug}"
+    redirect "#{page.slug_for_uri}"
   end
 end

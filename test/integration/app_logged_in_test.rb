@@ -1,0 +1,94 @@
+# frozen_string_literal: true
+
+require "cgi"
+require "securerandom"
+
+require_relative "../test_helper"
+require_relative "../integration_test_helper"
+
+class AppLoggedInTest < Minitest::Test
+  include Rack::Test::Methods
+
+  def app
+    STATIC_APP
+  end
+
+  def ensure_logged_in_user(user)
+    env "rack.session", { login: user.login, user_id: user.id }
+  end
+
+  def setup
+    @page_title = "Test Page ÅÄÖ"
+    @user = User.create(email: "test@test", login: "test")
+    @page = Page.create(title: @page_title, author: @user)
+
+    ensure_logged_in_user(@user)
+  end
+
+  def teardown
+    @page.revisions.each(&:destroy)
+    @page.destroy
+    @user.destroy
+  end
+
+  def test_create_page
+    title = "Foo Bar Åäö"
+    post "/new", title:, content: "foo bar baz"
+
+    redirect_location = last_response["Location"]
+    slug = "foo_bar_åäö"
+    page = Page.find(slug:)
+
+    assert_equal title, page.title
+    assert_equal 302, last_response.status
+    assert_equal "/foo_bar_%C3%A5%C3%A4%C3%B6", URI(redirect_location).path
+  ensure
+    page.destroy
+  end
+
+  def test_create_existing_page
+    title = "Foo Bar"
+    content = "foo bar baz"
+    page = Page.create(title:, author: @user)
+
+    post "/new", { title:, content: }
+
+    assert_includes last_response.body, content
+    assert_equal 200, last_response.status
+  ensure
+    page.destroy
+  end
+
+  def test_page_edit_view
+    get "/#{CGI.escape(@page.slug)}/edit"
+
+    assert last_response.body.include?(@page_title)
+    assert last_response.ok?
+  end
+
+  def test_page_edit_no_payload
+    post "/#{CGI.escape(@page.slug)}"
+
+    assert_equal 400, last_response.status
+    assert_equal "Missing title", last_response.body
+  end
+
+  def test_page_edit
+    assert_nil @page.reload.content
+
+    post "/#{CGI.escape(@page.slug)}", title: @page.title, content: "foo bar"
+
+    redirect_location = last_response["Location"]
+    assert_equal 302, last_response.status
+    assert_equal "/#{CGI.escape(@page.slug)}", URI(redirect_location).path
+    assert_equal "foo bar", @page.reload.content
+  end
+
+  def test_page_preview
+    post "/#{CGI.escape(@page.slug)}/preview", title: @page.title,
+                                               content: "## Foo Bar"
+
+    assert 200, last_response.status
+    assert last_response.body.include?("<h2>Foo Bar</h2>")
+  end
+end
