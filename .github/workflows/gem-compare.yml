@@ -19,7 +19,7 @@ jobs:
     if: |
       startsWith(github.head_ref, 'dependabot/bundler/') ||
       startsWith(github.head_ref, 'bump-') ||
-      contains(github.event.label.name, 'gem-compare')
+      (github.event.action == 'labeled' && github.event.label.name == 'gem-compare')
     runs-on: ubuntu-slim
     steps:
       - uses: dentarg/gem-compare@v1

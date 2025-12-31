@@ -8,12 +8,16 @@ on:
       - synchronize
       - reopened
       - ready_for_review
+      - labeled
   schedule:
     - cron:  "0 6 * * 6" # 06:00 every Saturday
   workflow_dispatch:
 
 jobs:
   docker:
+    if: |
+      github.head_ref == 'main' ||
+      (github.event.action == 'labeled' && github.event.label.name == 'docker-test')
     runs-on: ubuntu-latest
     needs: ruby
     steps:
