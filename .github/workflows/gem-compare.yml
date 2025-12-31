@@ -17,7 +17,7 @@ permissions:
 jobs:
   compare:
     if: |
-      startsWith(github.head_ref, 'dependabot/bundler/')) ||
+      startsWith(github.head_ref, 'dependabot/bundler/') ||
       startsWith(github.head_ref, 'bump-') ||
       contains(github.event.label.name, 'gem-compare')
     runs-on: ubuntu-slim
