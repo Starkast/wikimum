@@ -123,7 +123,7 @@ GEM
     sentry-ruby (5.26.0)
       bigdecimal
       concurrent-ruby (~> 1.0, >= 1.0.2)
-    sequel (5.96.0)
+    sequel (5.99.0)
       bigdecimal
     sequel_pg (1.17.2)
       pg (>= 0.18.0, != 1.2.0)
@@ -268,7 +268,7 @@ CHECKSUMS
   selma (0.4.11-x86_64-darwin) sha256=d8bd2fafbab417b870626dd3c1135a087b55f6013d44534d8367e6c59519b8d5
   selma (0.4.11-x86_64-linux) sha256=e6eb4087c304b915b2f9dbda590677e1cf5dd1194f1b0caddd06a4830ae1e8b8
   sentry-ruby (5.26.0) sha256=37b82d4849683f7172cbdb0867ee6697e0d8ad8fe9c242b5df0edf690894554b
-  sequel (5.96.0) sha256=8e1ac79ce8bc1fa0a061d3bd9eb44605346025eb359f93d7f67efcfef7070e45
+  sequel (5.99.0) sha256=a4613a1961a47a0eb6acdcc0351fe819bf24876a88fc06172a9cee5db370ea42
   sequel_pg (1.17.2) sha256=aff629bb7fbfd18c291907d10a50d03912f432c6ef8c18326a8e37e4990eb9b0
   sinatra (4.2.1) sha256=b7aeb9b11d046b552972ade834f1f9be98b185fa8444480688e3627625377080
   sinatra-contrib (4.2.1) sha256=10d091c944d268aa910c618ea40a3c3ebe0533e6e32990d84af92235a3d26b4a
