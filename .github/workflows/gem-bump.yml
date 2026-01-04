@@ -7,6 +7,24 @@ on:
         description: 'Name of the Ruby gem to update'
         required: true
         type: string
+      update_type:
+        description: 'Update type (major, minor, patch)'
+        required: false
+        type: choice
+        options:
+          - ''
+          - major
+          - minor
+          - patch
+      pre:
+        description: 'Include pre-release versions'
+        required: false
+        type: boolean
+        default: false
+      gem_version:
+        description: 'Specific version to update to'
+        required: false
+        type: string
 
 jobs:
   bump:
@@ -15,5 +33,8 @@ jobs:
       - uses: dentarg/bump@main
         with:
           gem_name: ${{ inputs.gem_name }}
+          update_type: ${{ inputs.update_type }}
+          pre: ${{ inputs.pre }}
+          gem_version: ${{ inputs.gem_version }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           labels: dependencies
