@@ -88,11 +88,24 @@ Manually:
 
 ## Deployment
 
+### Updating dependencies
+
+The `Gem Bump` workflow in combination with [the `gem-bump` GitHub CLI extension](https://github.com/dentarg/gh-gem-bump) can be used:
+
+```shell
+gh extension install dentarg/gh-gem-bump
+
+gh gem-bump sequel 5.99.0
+gh gem-bump --merge 860
+```
+
 ### Production
 
 _TODO_
 
 ### Preview
+
+_TODO: the staging database is not online._
 
 Fly.io app `wikimum-preview` exist to test changes before production. It can be reached at https://wikimum-preview.fly.dev/
 
