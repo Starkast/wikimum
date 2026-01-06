@@ -76,6 +76,11 @@ class App
     def thruthy?(value)
       %w(1 on true).include?(value.to_s)
     end
+
+    def macos?
+      # e.g. "arm64-darwin23"
+      RUBY_PLATFORM.split("-").last.include?("darwin")
+    end
   end
 
   if production?

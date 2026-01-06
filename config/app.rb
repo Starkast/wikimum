@@ -5,6 +5,10 @@ require 'sequel'
 
 require_relative '../lib/app'
 
+# https://starkast.wiki/ruby_homebrew_postgres
+# https://github.com/ged/ruby-pg/issues/311#issuecomment-1609970533
+ENV["PGGSSENCMODE"] = "disable" if App.macos?
+
 DB = Sequel.connect(ENV.fetch('DATABASE_URL', 'postgres://localhost/wikimum'))
 
 # https://github.com/Starkast/wikimum/issues/412
