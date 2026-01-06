@@ -27,6 +27,9 @@ lowlevel_error_handler do |ex, env|
   [500, {}, ["An error has occurred, and engineers have been informed.\n"]]
 end
 
-on_worker_boot do
-  DB.disconnect
+silence_fork_callback_warning
+
+# so we don't need to remember adding it back if we start using cluster mode
+before_worker_boot do
+  App.db.disconnect
 end

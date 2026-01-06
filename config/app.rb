@@ -2,8 +2,23 @@
 
 require 'sinatra/base'
 require 'sequel'
+require 'zeitwerk'
 
 require_relative '../lib/app'
+
+loader = Zeitwerk::Loader.new
+loader.push_dir(File.expand_path('../lib', __dir__))
+# prefer not to have these directories as namespaces
+# https://github.com/fxn/zeitwerk#collapsing-directories
+loader.collapse(File.expand_path('../lib/services', __dir__))
+loader.collapse(File.expand_path('../lib/models', __dir__))
+loader.collapse(File.expand_path('../lib/controllers', __dir__))
+loader.enable_reloading if App.development?
+loader.setup
+
+# https://starkast.wiki/ruby_homebrew_postgres
+# https://github.com/ged/ruby-pg/issues/311#issuecomment-1609970533
+ENV["PGGSSENCMODE"] = "disable" if App.macos?
 
 DB = Sequel.connect(ENV.fetch('DATABASE_URL', 'postgres://localhost/wikimum'))
 
@@ -20,8 +35,4 @@ if App.development?
   require_relative 'filtered_warnings'
 end
 
-$LOAD_PATH.unshift File.join(File.dirname(__FILE__), '..', 'lib')
-
-require 'services'
-require 'models'
-require 'controllers'
+App.db = DB

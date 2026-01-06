@@ -7,6 +7,14 @@ require_relative "services/app_metadata"
 
 class App
   class << self
+    def db=(db)
+      @db = db
+    end
+
+    def db
+      @db
+    end
+
     def port
       ENV.fetch("PORT", 3000).to_i
     end
@@ -75,6 +83,11 @@ class App
 
     def thruthy?(value)
       %w(1 on true).include?(value.to_s)
+    end
+
+    def macos?
+      # e.g. "arm64-darwin23"
+      RUBY_PLATFORM.split("-").last.include?("darwin")
     end
   end
 
