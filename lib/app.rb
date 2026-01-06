@@ -7,6 +7,14 @@ require_relative "services/app_metadata"
 
 class App
   class << self
+    def db=(db)
+      @db = db
+    end
+
+    def db
+      @db
+    end
+
     def port
       ENV.fetch("PORT", 3000).to_i
     end

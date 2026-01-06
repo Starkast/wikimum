@@ -24,6 +24,8 @@ if App.development?
   require_relative 'filtered_warnings'
 end
 
+App.db = DB
+
 $LOAD_PATH.unshift File.join(File.dirname(__FILE__), '..', 'lib')
 
 require 'services'

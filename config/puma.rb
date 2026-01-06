@@ -31,5 +31,5 @@ silence_fork_callback_warning
 
 # so we don't need to remember adding it back if we start using cluster mode
 before_worker_boot do
-  DB.disconnect
+  App.db.disconnect
 end
