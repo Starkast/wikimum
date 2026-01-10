@@ -12,6 +12,78 @@
     max-height: 75vh;
     overflow-y: auto;
   }
+  .uploads-section {
+    margin-top: 1em;
+    padding: 0.5em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  .uploads-section h3 {
+    margin-top: 0;
+  }
+  .upload-list {
+    list-style: none;
+    padding: 0;
+    margin: 0.5em 0;
+  }
+  .upload-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    padding: 0.4em 0;
+  }
+  .upload-preview {
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+  }
+  .upload-filename {
+    font-size: 1.4em;
+    cursor: pointer;
+  }
+  .upload-filename:hover {
+    text-decoration: underline;
+  }
+  .upload-link {
+    text-decoration: none;
+    font-size: 1.2em;
+    opacity: 0.6;
+  }
+  .upload-link:hover {
+    opacity: 1;
+  }
+  .upload-item .delete-btn {
+    color: #c00;
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-size: 0.9em;
+    margin-left: auto;
+  }
+  #upload-form {
+    margin-top: 0.5em;
+  }
+  .upload-status {
+    font-style: italic;
+    color: #666;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .uploads-section {
+      border-color: #555;
+    }
+    .upload-preview {
+      border-color: #555;
+    }
+    .upload-item .delete-btn {
+      color: #f66;
+    }
+    .upload-status {
+      color: #999;
+    }
+  }
 
 .flex-container
   .flex-item
@@ -37,6 +109,116 @@
 
       %label.block{ for: 'description' } Sidbeskrivning
       %textarea#description{ name: 'description', cols: 50, rows: 3 }= @page.description
+
+    .uploads-section
+      %h3 Bifogade filer
+      #upload-form
+        %input#file-input{ type: "file", name: "file" }
+        %button#upload-btn{ type: "button", onclick: "uploadFile()" } Ladda upp
+        %span#upload-status.upload-status
+      %ul#upload-list.upload-list
+        - @page.uploads.each do |upload|
+          %li.upload-item{ data: { id: upload.id, markdown: upload.markdown_reference } }
+            - if upload.image?
+              %img.upload-preview{ src: upload.path, alt: upload.filename }
+            %span.upload-filename{ title: "Infoga markdown", onclick: "insertMarkdown(this.parentElement.dataset.markdown)" }= upload.filename
+            %a.upload-link{ href: upload.path, target: "_blank", title: "Öppna fil" } &#x1F517;
+            %button.delete-btn{ type: "button", onclick: "deleteUpload(this.parentElement.dataset.id)" } Ta bort
+
   .flex-item
     #preview
       != haml :preview, layout: false
+
+:javascript
+  function escapeHtml(text) {
+    var div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  function insertMarkdown(text) {
+    var textarea = document.querySelector('textarea[name="content"]');
+    if (!textarea) {
+      console.error('Textarea not found');
+      return;
+    }
+    var start = textarea.selectionStart;
+    var end = textarea.selectionEnd;
+    var before = textarea.value.substring(0, start);
+    var after = textarea.value.substring(end);
+    textarea.value = before + text + after;
+    textarea.selectionStart = textarea.selectionEnd = start + text.length;
+    textarea.focus();
+    // Trigger HTMX preview update
+    textarea.dispatchEvent(new Event('keyup', { bubbles: true }));
+  }
+
+  function uploadFile() {
+    var fileInput = document.getElementById('file-input');
+    var status = document.getElementById('upload-status');
+
+    if (!fileInput.files.length) {
+      status.textContent = 'Välj en fil först';
+      return;
+    }
+
+    var formData = new FormData();
+    formData.append('file', fileInput.files[0]);
+
+    status.textContent = 'Laddar upp...';
+
+    fetch('/#{@page.slug}/uploads', {
+      method: 'POST',
+      body: formData
+    })
+    .then(function(response) {
+      if (!response.ok) throw new Error('Upload failed');
+      return response.json();
+    })
+    .then(function(data) {
+      var list = document.getElementById('upload-list');
+      var li = document.createElement('li');
+      li.className = 'upload-item';
+      li.dataset.id = data.id;
+
+      li.dataset.markdown = data.markdown;
+
+      var html = '';
+      if (data.image) {
+        html += '<img class="upload-preview" src="' + data.path + '" alt="' + escapeHtml(data.filename) + '">';
+      }
+      html += '<span class="upload-filename" title="Infoga markdown" onclick="insertMarkdown(this.parentElement.dataset.markdown)">' + escapeHtml(data.filename) + '</span>';
+      html += '<a class="upload-link" href="' + data.path + '" target="_blank" title="Öppna fil">&#x1F517;</a>';
+      html += '<button class="delete-btn" type="button" onclick="deleteUpload(this.parentElement.dataset.id)">Ta bort</button>';
+
+      li.innerHTML = html;
+      list.appendChild(li);
+      fileInput.value = '';
+      status.textContent = 'Uppladdad!';
+      setTimeout(function() { status.textContent = ''; }, 2000);
+    })
+    .catch(function(err) {
+      status.textContent = 'Fel vid uppladdning';
+      console.error(err);
+    });
+  }
+
+  function deleteUpload(id) {
+    if (!confirm('Ta bort denna fil?')) return;
+
+    fetch('/#{@page.slug}/uploads/' + id, {
+      method: 'DELETE'
+    })
+    .then(function(response) {
+      if (!response.ok) throw new Error('Delete failed');
+      return response.json();
+    })
+    .then(function() {
+      var item = document.querySelector('.upload-item[data-id="' + id + '"]');
+      if (item) item.remove();
+    })
+    .catch(function(err) {
+      console.error(err);
+      alert('Kunde inte ta bort filen');
+    });
+  }
