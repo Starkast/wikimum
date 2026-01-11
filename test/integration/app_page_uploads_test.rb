@@ -83,6 +83,7 @@ class AppPageUploadsTest < Minitest::Test
     assert_equal 200, last_response.status
     assert last_response.content_type.start_with?("text/plain")
     assert_equal "Hello, World!", last_response.body
+    assert_includes last_response.headers["cache-control"], "public"
   end
 
   def test_list_uploads
@@ -186,6 +187,7 @@ class AppPageUploadsTest < Minitest::Test
 
     assert_equal 200, last_response.status
     assert_equal "Secret content", last_response.body
+    assert_includes last_response.headers["cache-control"], "private"
   ensure
     upload&.destroy
     concealed_page&.destroy
