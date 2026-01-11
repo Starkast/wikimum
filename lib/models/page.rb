@@ -3,8 +3,8 @@
 require "uri"
 
 class Page < Sequel::Model
-
   one_to_many :revisions
+  one_to_many :uploads
   many_to_one :author, class: :User
 
   SEARCH_IN_COLUMNS = %i(title content description).freeze

@@ -121,6 +121,68 @@ class PageController < BaseController
     haml :preview, layout: false
   end
 
+  get '/:slug/uploads/:id/:filename?' do |_, id, _|
+    upload = Upload[id.to_i]
+    halt 404, "Upload not found" unless upload
+    halt 404, "Upload not found" unless upload.page.slug == slug
+    halt 404, "Upload not found" if upload.page.concealed && !starkast?
+
+    # uploads to concealed pages should only be cached in a private cache,
+    # such as a user's browser, not in shared caches like CDNs
+    cache_directive = upload.page.concealed ? :private : :public
+
+    cache_control cache_directive, max_age: 31536000
+    content_type upload.content_type
+
+    upload.data
+  end
+
+  get '/:slug/uploads' do
+    page = Page.find(slug: slug)
+    halt 404, "Page not found" unless page
+    restrict_concealed(page)
+
+    content_type :json
+    page.uploads.map { |u| { id: u.id, filename: u.filename, path: u.path, markdown: u.markdown_reference, image: u.image? } }.to_json
+  end
+
+  post '/:slug/uploads' do
+    halt 401, "Not authorized" unless logged_in?
+
+    page = Page.find(slug: slug)
+    halt 404, "Page not found" unless page
+    restrict_concealed(page)
+
+    file = params[:file]
+    halt 400, "No file provided" unless file && file[:tempfile]
+
+    upload = Upload.new(
+      page: page,
+      author: current_user,
+      filename: file[:filename],
+      content_type: file[:type] || "application/octet-stream",
+      data: Sequel.blob(file[:tempfile].read)
+    )
+    upload.save
+
+    content_type :json
+    { id: upload.id, filename: upload.filename, path: upload.path, markdown: upload.markdown_reference, image: upload.image? }.to_json
+  end
+
+  delete '/:slug/uploads/:id' do |_, id|
+    halt 401, "Not authorized" unless logged_in?
+
+    upload = Upload[id.to_i]
+    halt 404, "Upload not found" unless upload
+    halt 404, "Upload not found" unless upload.page.slug == slug
+    restrict_concealed(upload.page)
+
+    upload.destroy
+
+    content_type :json
+    { success: true }.to_json
+  end
+
   get '/:slug/' do
     redirect "/#{slug}"
   end
