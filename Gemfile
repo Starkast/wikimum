@@ -36,3 +36,4 @@ group :test do
   gem 'wait_for_it'
   gem 'webmock'
 end
+gem "json", "2.14.0"
