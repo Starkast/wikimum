@@ -45,14 +45,6 @@ class LinkTitleFetcher
     { url: url, error: e.message }
   end
 
-  def replace_url_with_link(content, url, title)
-    escaped_url = Regexp.escape(url)
-    # Only replace URLs not already in markdown link format (preceded by "](" )
-    content.gsub(/(?<!\]\()#{escaped_url}/) do
-      "[#{title}](#{url})"
-    end
-  end
-
   private
 
   def decode_entities(text)

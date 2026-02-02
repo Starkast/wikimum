@@ -103,26 +103,6 @@ class LinkTitleFetcherTest < Minitest::Test
     assert_equal "connection refused", result[:error]
   end
 
-  def test_replace_url_with_link_simple
-    content = "Check out https://example.com for info"
-    result = @fetcher.replace_url_with_link(content, "https://example.com", "Example")
-
-    assert_equal "Check out [Example](https://example.com) for info", result
-  end
-
-  def test_replace_url_with_link_preserves_existing_links
-    content = "See [Already](https://example.com) linked"
-    result = @fetcher.replace_url_with_link(content, "https://example.com", "Example")
-
-    assert_equal "See [Already](https://example.com) linked", result
-  end
-
-  def test_replace_url_with_link_multiple_occurrences
-    content = "https://example.com and https://example.com"
-    result = @fetcher.replace_url_with_link(content, "https://example.com", "Example")
-
-    assert_equal "[Example](https://example.com) and [Example](https://example.com)", result
-  end
 end
 
 class MockHttp
