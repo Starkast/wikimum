@@ -1,0 +1,85 @@
+-# Partial for "Hämta titlar" link and JavaScript
+-# Usage: != haml :'page/_link_titles', layout: false
+
+%span.link-titles-inline
+  %a#link-titles-btn{ onclick: "fetchLinkTitles()" } Hämta titlar
+  %span#link-titles-status.link-titles-status
+
+:javascript
+  var linkTitlesProcessing = false;
+
+  function extractBareUrls(content) {
+    var urlPattern = /https?:\/\/[^\s)\]<>"]+/g;
+    var allUrls = [];
+    var match;
+    while ((match = urlPattern.exec(content)) !== null) {
+      if (allUrls.indexOf(match[0]) === -1) {
+        allUrls.push(match[0]);
+      }
+    }
+
+    var result = [];
+    for (var i = 0; i < allUrls.length; i++) {
+      var url = allUrls[i];
+      var escapedUrl = url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      var barePattern = new RegExp('(?<!\\]\\()' + escapedUrl);
+      if (barePattern.test(content)) {
+        result.push(url);
+      }
+    }
+    return result;
+  }
+
+  async function fetchLinkTitles() {
+    if (linkTitlesProcessing) return;
+
+    var textarea = document.getElementById('page-content');
+    var status = document.getElementById('link-titles-status');
+    var btn = document.getElementById('link-titles-btn');
+    var urls = extractBareUrls(textarea.value);
+
+    if (urls.length === 0) {
+      status.textContent = 'Inga URLar';
+      setTimeout(function() { status.textContent = ''; }, 2000);
+      return;
+    }
+
+    linkTitlesProcessing = true;
+    btn.style.pointerEvents = 'none';
+    btn.style.opacity = '0.5';
+
+    for (var i = 0; i < urls.length; i++) {
+      var url = urls[i];
+      status.textContent = (i + 1) + '/' + urls.length;
+
+      try {
+        var formData = new FormData();
+        formData.append('url', url);
+
+        var response = await fetch('/link-title', {
+          method: 'POST',
+          body: formData
+        });
+
+        if (response.ok) {
+          var data = await response.json();
+          if (data.error) {
+            console.error('Error fetching title for', url, data.error);
+          } else if (data.title) {
+            var content = textarea.value;
+            var escapedUrl = url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            var pattern = new RegExp('(?<!\\]\\()' + escapedUrl, 'g');
+            textarea.value = content.replace(pattern, '[' + data.title + '](' + url + ')');
+          }
+        }
+      } catch (err) {
+        console.error('Error fetching title for', url, err);
+      }
+    }
+
+    textarea.dispatchEvent(new Event('keyup', { bubbles: true }));
+    status.textContent = '';
+    btn.style.pointerEvents = '';
+    btn.style.opacity = '';
+    linkTitlesProcessing = false;
+  }

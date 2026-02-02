@@ -96,6 +96,20 @@ class PageController < BaseController
     haml :new
   end
 
+  post '/link-title' do
+    halt 401, "Not authorized" unless logged_in?
+
+    url = params[:url].to_s
+    halt 400, "Missing URL" if url.empty?
+
+    content_type :json
+
+    fetcher = LinkTitleFetcher.new
+    result = fetcher.fetch_title(url)
+
+    { url: url, title: result[:title], error: result[:error] }.compact.to_json
+  end
+
   get '/:slug/edit' do
     @page = Page.find(slug: slug)
     unless logged_in?
