@@ -11,14 +11,19 @@ class LinkTitleFetcher
   URL_PATTERN = %r{https?://[^\s)\]<>"]+}
   MARKDOWN_LINK_PATTERN = /\[([^\]]+)\]\(([^)]+)\)/
 
-  def initialize(http: nil)
+  def initialize(http: nil, log: nil)
     @http = http
+    @log = log
   end
 
   def http
     @http || HTTPX.plugin(:stream)
                   .plugin(:follow_redirects)
                   .with(timeout: { operation_timeout: TIMEOUT }, follow_redirects: { max_redirects: MAX_REDIRECTS })
+  end
+
+  def log
+    @log || App.log
   end
 
   def extract_bare_urls(content)
@@ -35,13 +40,16 @@ class LinkTitleFetcher
     response.each do |chunk|
       buffer << chunk
       if (match = buffer.match(%r{<title[^>]*>([^<]+)</title>}i))
-        return { url: url, title: decode_entities(match[1].strip) }
+        title = decode_entities(match[1].strip)
+        log.info class: self.class.name, method: __method__, url: url, bytes: buffer.bytesize, title: title
+        return { url: url, title: title }
       end
       break if buffer.bytesize >= MAX_BYTES
     end
+    log.warn class: self.class.name, method: __method__, url: url, bytes: buffer.bytesize, error: "No title found"
     { url: url, error: "No title found" }
   rescue StandardError => e
-    warn "at=error class=LinkTitleFetcher method=fetch_title url=#{url} error=#{e.class} message=#{e.message.inspect}"
+    log.error class: self.class.name, method: __method__, url: url, error: e.class, message: e.message.inspect
     { url: url, error: e.message }
   end
 

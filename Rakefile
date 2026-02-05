@@ -7,7 +7,7 @@ require 'rubocop/rake_task'
 Dir['tasks/*.rake'].each { |f| load f }
 
 task default: [:test]
-task test: ['test:unit', 'test:integration', 'rubocop']
+task test: ['test:unit', 'test:integration', 'test:javascript', 'rubocop']
 
 RuboCop::RakeTask.new
 
@@ -18,6 +18,15 @@ namespace(:test) do
 
   Rake::TestTask.new(:unit) do |t|
     t.pattern = "test/unit/*_test.rb"
+  end
+
+  desc "Run JavaScript tests (requires Node.js)"
+  task :javascript do
+    if system('which node > /dev/null 2>&1')
+      sh 'node --test test/javascript/*_test.js'
+    else
+      puts "Skipping JavaScript tests (Node.js not available)"
+    end
   end
 end
 

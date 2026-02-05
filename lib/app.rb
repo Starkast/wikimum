@@ -4,6 +4,7 @@ require "logger"
 require "rack/utils"
 
 require_relative "services/app_metadata"
+require_relative "services/logfmt_logger"
 
 class App
   class << self
@@ -41,6 +42,14 @@ class App
 
     def null_logger
       Logger.new(File.open(File::NULL, "w"))
+    end
+
+    def log
+      @log ||= LogfmtLogger.new($stdout)
+    end
+
+    def log=(logger)
+      @log = logger
     end
 
     def backup_access?(username, password)

@@ -52,7 +52,7 @@ class LinkTitleFetcherTest < Minitest::Test
 
   def test_fetch_title_success
     http = MockHttp.new(body: "<html><head><title>Example Domain</title></head></html>", status: 200)
-    fetcher = LinkTitleFetcher.new(http: http)
+    fetcher = LinkTitleFetcher.new(http: http, log: MockLog.new)
 
     result = fetcher.fetch_title("https://example.com")
 
@@ -63,7 +63,7 @@ class LinkTitleFetcherTest < Minitest::Test
 
   def test_fetch_title_with_html_entities
     http = MockHttp.new(body: "<html><head><title>Tom &amp; Jerry</title></head></html>", status: 200)
-    fetcher = LinkTitleFetcher.new(http: http)
+    fetcher = LinkTitleFetcher.new(http: http, log: MockLog.new)
 
     result = fetcher.fetch_title("https://example.com")
 
@@ -72,7 +72,7 @@ class LinkTitleFetcherTest < Minitest::Test
 
   def test_fetch_title_no_title
     http = MockHttp.new(body: "<html><body>No title here</body></html>", status: 200)
-    fetcher = LinkTitleFetcher.new(http: http)
+    fetcher = LinkTitleFetcher.new(http: http, log: MockLog.new)
 
     result = fetcher.fetch_title("https://example.com")
 
@@ -83,7 +83,7 @@ class LinkTitleFetcherTest < Minitest::Test
 
   def test_fetch_title_http_error
     http = MockHttp.new(body: "", status: 404)
-    fetcher = LinkTitleFetcher.new(http: http)
+    fetcher = LinkTitleFetcher.new(http: http, log: MockLog.new)
 
     result = fetcher.fetch_title("https://example.com")
 
@@ -94,7 +94,7 @@ class LinkTitleFetcherTest < Minitest::Test
 
   def test_fetch_title_connection_error
     http = MockHttp.new(error: StandardError.new("connection refused"))
-    fetcher = LinkTitleFetcher.new(http: http)
+    fetcher = LinkTitleFetcher.new(http: http, log: MockLog.new)
 
     result = fetcher.fetch_title("https://example.com")
 
@@ -102,7 +102,12 @@ class LinkTitleFetcherTest < Minitest::Test
     assert_nil result[:title]
     assert_equal "connection refused", result[:error]
   end
+end
 
+class MockLog
+  def info(**kwargs); end
+  def warn(**kwargs); end
+  def error(**kwargs); end
 end
 
 class MockHttp
