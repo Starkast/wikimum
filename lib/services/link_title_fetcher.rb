@@ -8,8 +8,6 @@ class LinkTitleFetcher
   TIMEOUT = 3
   MAX_REDIRECTS = 3
 
-  URL_PATTERN = %r{https?://[^\s)\]<>"]+}
-  MARKDOWN_LINK_PATTERN = /\[([^\]]+)\]\(([^)]+)\)/
   TITLE_PATTERN = %r{<title[^>]*>([^<]+)</title>}i
 
   def initialize(http: nil, log: nil)
@@ -25,12 +23,6 @@ class LinkTitleFetcher
 
   def log
     @log || App.log
-  end
-
-  def extract_bare_urls(content)
-    linked_urls = content.scan(MARKDOWN_LINK_PATTERN).map { |_, url| url }
-    all_urls = content.scan(URL_PATTERN).uniq
-    all_urls - linked_urls
   end
 
   def fetch_title(url)

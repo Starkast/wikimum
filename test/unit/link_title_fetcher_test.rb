@@ -4,52 +4,6 @@ require_relative '../test_helper'
 require_relative '../../lib/services/link_title_fetcher'
 
 class LinkTitleFetcherTest < Minitest::Test
-  def setup
-    @fetcher = LinkTitleFetcher.new
-  end
-
-  def test_extract_bare_urls_simple
-    content = "Check out https://example.com for more info"
-    urls = @fetcher.extract_bare_urls(content)
-
-    assert_equal ["https://example.com"], urls
-  end
-
-  def test_extract_bare_urls_multiple
-    content = "See https://example.com and http://test.org"
-    urls = @fetcher.extract_bare_urls(content)
-
-    assert_equal ["https://example.com", "http://test.org"], urls
-  end
-
-  def test_extract_bare_urls_ignores_markdown_links
-    content = "Check [Example](https://example.com) for info"
-    urls = @fetcher.extract_bare_urls(content)
-
-    assert_empty urls
-  end
-
-  def test_extract_bare_urls_mixed_bare_and_linked
-    content = "Visit https://bare.com and [Linked](https://linked.com)"
-    urls = @fetcher.extract_bare_urls(content)
-
-    assert_equal ["https://bare.com"], urls
-  end
-
-  def test_extract_bare_urls_deduplicates
-    content = "https://example.com and again https://example.com"
-    urls = @fetcher.extract_bare_urls(content)
-
-    assert_equal ["https://example.com"], urls
-  end
-
-  def test_extract_bare_urls_with_path
-    content = "See https://example.com/path/to/page?query=1"
-    urls = @fetcher.extract_bare_urls(content)
-
-    assert_equal ["https://example.com/path/to/page?query=1"], urls
-  end
-
   def test_fetch_title_success
     http = MockHttp.new(body: "<html><head><title>Example Domain</title></head></html>", status: 200)
     fetcher = LinkTitleFetcher.new(http: http, log: MockLog.new)
