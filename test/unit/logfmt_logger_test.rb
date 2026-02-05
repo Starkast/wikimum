@@ -86,4 +86,16 @@ class LogfmtLoggerTest < Minitest::Test
 
     assert_equal "at=info message=\"say \\\\\\\"hi\\\\\\\"\"\n", @output.string
   end
+
+  def test_escapes_control_characters
+    @log.info message: "hello\x00world"
+
+    assert_equal "at=info message=\"hello\\x00world\"\n", @output.string
+  end
+
+  def test_escapes_newlines
+    @log.info message: "line1\nline2"
+
+    assert_equal "at=info message=\"line1\\nline2\"\n", @output.string
+  end
 end

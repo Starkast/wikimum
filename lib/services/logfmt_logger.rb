@@ -31,10 +31,10 @@ class LogfmtLogger
 
   def format_value(value)
     str = value.to_s
-    if str.empty? || str.match?(/[\s="\\]/)
-      str.dump
-    else
+    if str.match?(/\A[\w.\/:@\-]+\z/)
       str
+    else
+      str.dump
     end
   end
 end
