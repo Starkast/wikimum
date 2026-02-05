@@ -61,3 +61,9 @@ test('handles URLs in parentheses', () => {
   const urls = extractBareUrls(content);
   assert.deepStrictEqual(urls, ['https://example.com']);
 });
+
+test('extracts URL with fragment', () => {
+  const content = 'See https://example.com/page#section for details';
+  const urls = extractBareUrls(content);
+  assert.deepStrictEqual(urls, ['https://example.com/page#section']);
+});
