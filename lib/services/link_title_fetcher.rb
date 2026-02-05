@@ -10,6 +10,7 @@ class LinkTitleFetcher
 
   URL_PATTERN = %r{https?://[^\s)\]<>"]+}
   MARKDOWN_LINK_PATTERN = /\[([^\]]+)\]\(([^)]+)\)/
+  TITLE_PATTERN = %r{<title[^>]*>([^<]+)</title>}i
 
   def initialize(http: nil, log: nil)
     @http = http
@@ -39,7 +40,7 @@ class LinkTitleFetcher
     buffer = +""
     response.each do |chunk|
       buffer << chunk
-      if (match = buffer.match(%r{<title[^>]*>([^<]+)</title>}i))
+      if (match = buffer.match(TITLE_PATTERN))
         title = decode_entities(match[1].strip)
         log.info class: self.class.name, method: __method__, url: url, bytes: buffer.bytesize, title: title
         return { url: url, title: title }
