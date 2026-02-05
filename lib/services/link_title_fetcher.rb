@@ -27,7 +27,6 @@ class LinkTitleFetcher
 
   def fetch_title(url)
     response = http.get(url, stream: true)
-    return { url: url, error: "HTTP #{response.status}" } unless response.status == 200
 
     buffer = +""
     response.each do |chunk|

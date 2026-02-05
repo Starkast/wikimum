@@ -35,15 +35,25 @@ class LinkTitleFetcherTest < Minitest::Test
     assert_equal "No title found", result[:error]
   end
 
-  def test_fetch_title_http_error
-    http = MockHttp.new(body: "", status: 404)
+  def test_fetch_title_from_404_page
+    http = MockHttp.new(body: "<html><head><title>Page Not Found</title></head></html>", status: 404)
+    fetcher = LinkTitleFetcher.new(http: http, log: MockLog.new)
+
+    result = fetcher.fetch_title("https://example.com")
+
+    assert_equal "https://example.com", result[:url]
+    assert_equal "Page Not Found", result[:title]
+  end
+
+  def test_fetch_title_404_no_title
+    http = MockHttp.new(body: "<html><body>Not found</body></html>", status: 404)
     fetcher = LinkTitleFetcher.new(http: http, log: MockLog.new)
 
     result = fetcher.fetch_title("https://example.com")
 
     assert_equal "https://example.com", result[:url]
     assert_nil result[:title]
-    assert_equal "HTTP 404", result[:error]
+    assert_equal "No title found", result[:error]
   end
 
   def test_fetch_title_connection_error
