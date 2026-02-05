@@ -19,7 +19,7 @@
     var urls = extractBareUrls(textarea.value);
 
     if (urls.length === 0) {
-      status.textContent = 'Inga URLar';
+      status.textContent = 'Inga URL:er';
       setTimeout(function() { status.textContent = ''; }, 2000);
       return;
     }
