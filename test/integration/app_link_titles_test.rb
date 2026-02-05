@@ -42,6 +42,7 @@ class AppLinkTitlesTest < Minitest::Test
     post "/link-title"
 
     assert_equal 400, last_response.status
+    assert_equal "Missing URL", last_response.body
   end
 
   def test_link_title_returns_json
