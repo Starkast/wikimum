@@ -74,4 +74,16 @@ class LogfmtLoggerTest < Minitest::Test
 
     assert_equal "at=info error=StandardError\n", @output.string
   end
+
+  def test_escapes_backslashes_in_values
+    @log.info path: 'C:\Users\test'
+
+    assert_equal "at=info path=\"C:\\\\Users\\\\test\"\n", @output.string
+  end
+
+  def test_escapes_backslash_and_quote
+    @log.info message: 'say \"hi\"'
+
+    assert_equal "at=info message=\"say \\\\\\\"hi\\\\\\\"\"\n", @output.string
+  end
 end

@@ -31,8 +31,8 @@ class LogfmtLogger
 
   def format_value(value)
     str = value.to_s
-    if str.empty? || str.match?(/[\s="]/)
-      "\"#{str.gsub('\\', '\\\\\\\\').gsub('"', '\\"')}\""
+    if str.empty? || str.match?(/[\s="\\]/)
+      str.dump
     else
       str
     end
