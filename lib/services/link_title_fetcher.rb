@@ -41,7 +41,7 @@ class LinkTitleFetcher
     log.warn class: self.class.name, method: __method__, url: url, bytes: buffer.bytesize, error: "No title found"
     { url: url, error: "No title found" }
   rescue StandardError => e
-    log.error class: self.class.name, method: __method__, url: url, error: e.class, message: e.message.inspect
+    log.error class: self.class.name, method: __method__, url: url, error: e.class, message: e.message
     { url: url, error: e.message }
   end
 
