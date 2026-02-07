@@ -8,6 +8,10 @@ class LogfmtLogger
     @logger.formatter = method(:format_logfmt)
   end
 
+  def debug(**kwargs)
+    @logger.debug(kwargs)
+  end
+
   def info(**kwargs)
     @logger.info(kwargs)
   end

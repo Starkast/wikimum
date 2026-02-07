@@ -9,6 +9,12 @@ class LogfmtLoggerTest < Minitest::Test
     @log = LogfmtLogger.new(@output)
   end
 
+  def test_debug_outputs_at_debug
+    @log.debug foo: "bar"
+
+    assert_equal "at=debug foo=bar\n", @output.string
+  end
+
   def test_info_outputs_at_info
     @log.info foo: "bar"
 
