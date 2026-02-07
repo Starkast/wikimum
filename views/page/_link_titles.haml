@@ -48,6 +48,7 @@
           } else if (data.title) {
             var content = textarea.value;
             var escapedUrl = url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            // Negative lookbehind requires ES2018+ (Chrome 62+, Firefox 78+, Safari 16.4+)
             var pattern = new RegExp('(?<!\\]\\()' + escapedUrl, 'g');
             textarea.value = content.replace(pattern, '[' + data.title + '](' + url + ')');
           }
