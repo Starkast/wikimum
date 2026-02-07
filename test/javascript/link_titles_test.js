@@ -53,7 +53,7 @@ test('returns empty array for content with no URLs', () => {
 test('handles URLs at end of sentence', () => {
   const content = 'Check this: https://example.com.';
   const urls = extractBareUrls(content);
-  assert.deepStrictEqual(urls, ['https://example.com.']);
+  assert.deepStrictEqual(urls, ['https://example.com']);
 });
 
 test('handles URLs in parentheses', () => {

@@ -4,8 +4,10 @@ function extractBareUrls(content) {
   var allUrls = [];
   var match;
   while ((match = urlPattern.exec(content)) !== null) {
-    if (allUrls.indexOf(match[0]) === -1) {
-      allUrls.push(match[0]);
+    // Strip trailing punctuation that's unlikely to be part of the URL
+    var url = match[0].replace(/[.,;:!?]+$/, '');
+    if (url && allUrls.indexOf(url) === -1) {
+      allUrls.push(url);
     }
   }
 
