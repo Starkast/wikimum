@@ -97,8 +97,6 @@ class PageController < BaseController
   end
 
   post '/link-title' do
-    halt 401, "Not authorized" unless logged_in?
-
     url = params[:url].to_s
     halt 400, "Missing URL" if url.empty?
     halt 400, "Invalid URL" unless UrlValidator.safe?(url)
