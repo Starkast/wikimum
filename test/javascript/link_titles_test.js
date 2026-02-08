@@ -1,6 +1,6 @@
 const { test } = require('node:test');
 const assert = require('node:assert');
-const { extractBareUrls } = require('../../public/javascripts/link_titles.js');
+const { extractBareUrls, escapeMarkdownLinkText } = require('../../public/javascripts/link_titles.js');
 
 test('extracts simple URL', () => {
   const content = 'Check out https://example.com for more info';
@@ -66,4 +66,24 @@ test('extracts URL with fragment', () => {
   const content = 'See https://example.com/page#section for details';
   const urls = extractBareUrls(content);
   assert.deepStrictEqual(urls, ['https://example.com/page#section']);
+});
+
+test('escapes brackets in title', () => {
+  const title = 'Page [with] brackets';
+  assert.strictEqual(escapeMarkdownLinkText(title), 'Page \\[with\\] brackets');
+});
+
+test('escapes backslashes in title', () => {
+  const title = 'Path\\to\\file';
+  assert.strictEqual(escapeMarkdownLinkText(title), 'Path\\\\to\\\\file');
+});
+
+test('replaces newlines with spaces', () => {
+  const title = 'Line1\nLine2\r\nLine3';
+  assert.strictEqual(escapeMarkdownLinkText(title), 'Line1 Line2 Line3');
+});
+
+test('handles title with mixed special chars', () => {
+  const title = 'Test [1] with\\slash\nand newline';
+  assert.strictEqual(escapeMarkdownLinkText(title), 'Test \\[1\\] with\\\\slash and newline');
 });

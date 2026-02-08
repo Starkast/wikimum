@@ -52,6 +52,14 @@ class App
       @log = logger
     end
 
+    def link_title_fetcher
+      @link_title_fetcher ||= LinkTitleFetcher.new
+    end
+
+    def link_title_fetcher=(fetcher)
+      @link_title_fetcher = fetcher
+    end
+
     def backup_access?(username, password)
       backup_user = ENV.fetch("BACKUP_USER")
       backup_pass = ENV.fetch("BACKUP_PASSWORD")

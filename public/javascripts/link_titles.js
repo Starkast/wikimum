@@ -1,6 +1,16 @@
+// Escape markdown-special characters in link text to prevent injection
+function escapeMarkdownLinkText(text) {
+  return text
+    .replace(/\\/g, '\\\\')
+    .replace(/\[/g, '\\[')
+    .replace(/\]/g, '\\]')
+    .replace(/\n/g, ' ')
+    .replace(/\r/g, '');
+}
+
 // Extract bare URLs from content (URLs not already in markdown link format)
 // Note: Uses negative lookbehind (?<!...) which requires ES2018+
-// Supported in Chrome 62+, Firefox 78+, Safari 16.4+, Node 8.10+
+// Supported in Chrome 62+, Firefox 78+, Safari 16.4+, Node 18+
 function extractBareUrls(content) {
   var urlPattern = /https?:\/\/[^\s)\]<>"]+/g;
   var allUrls = [];
@@ -26,5 +36,5 @@ function extractBareUrls(content) {
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { extractBareUrls: extractBareUrls };
+  module.exports = { extractBareUrls: extractBareUrls, escapeMarkdownLinkText: escapeMarkdownLinkText };
 }
