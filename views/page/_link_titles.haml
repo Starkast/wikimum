@@ -40,6 +40,12 @@
           body: formData
         });
 
+        var contentType = response.headers.get('content-type') || '';
+        if (!contentType.includes('application/json')) {
+          status.textContent = 'Fel: ej inloggad?';
+          break;
+        }
+
         if (response.ok) {
           var data = await response.json();
           if (data.error) {

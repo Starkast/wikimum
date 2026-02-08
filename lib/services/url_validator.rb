@@ -30,7 +30,8 @@ class UrlValidator
   def safe?
     uri = URI.parse(@url)
     return false unless %w[http https].include?(uri.scheme)
-    return false if BLOCKED_HOSTS.include?(uri.host&.downcase)
+    return false unless uri.host
+    return false if BLOCKED_HOSTS.include?(uri.host.downcase)
     return false if private_ip?(uri.host)
 
     # Resolve DNS and check resolved IPs

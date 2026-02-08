@@ -57,6 +57,11 @@ class UrlValidatorTest < Minitest::Test
     refute UrlValidator.safe?("")
   end
 
+  def test_blocks_url_without_host
+    refute UrlValidator.safe?("http:///path")
+    refute UrlValidator.safe?("https:///")
+  end
+
   def test_blocks_cloud_metadata_ips
     refute UrlValidator.safe?("http://169.254.169.254")
   end

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../test_helper'
+require_relative '../../lib/services/url_validator'
 require_relative '../../lib/services/link_title_fetcher'
 
 class LinkTitleFetcherTest < Minitest::Test
@@ -66,6 +67,56 @@ class LinkTitleFetcherTest < Minitest::Test
     assert_nil result[:title]
     assert_equal "connection refused", result[:error]
   end
+
+  def test_follows_redirect_to_safe_url
+    http = MockHttpWithRedirects.new([
+      { status: 302, headers: { "location" => "https://example.org/page" } },
+      { status: 200, body: "<title>Redirected Page</title>" }
+    ])
+    fetcher = LinkTitleFetcher.new(http: http, log: MockLog.new)
+
+    result = fetcher.fetch_title("https://example.com")
+
+    assert_equal "https://example.com", result[:url]
+    assert_equal "Redirected Page", result[:title]
+  end
+
+  def test_blocks_redirect_to_private_ip
+    http = MockHttpWithRedirects.new([
+      { status: 302, headers: { "location" => "http://192.168.1.1/admin" } }
+    ])
+    fetcher = LinkTitleFetcher.new(http: http, log: MockLog.new)
+
+    result = fetcher.fetch_title("https://example.com")
+
+    assert_equal "https://example.com", result[:url]
+    assert_equal "Redirect to blocked URL", result[:error]
+  end
+
+  def test_blocks_redirect_to_localhost
+    http = MockHttpWithRedirects.new([
+      { status: 302, headers: { "location" => "http://localhost:8080" } }
+    ])
+    fetcher = LinkTitleFetcher.new(http: http, log: MockLog.new)
+
+    result = fetcher.fetch_title("https://example.com")
+
+    assert_equal "Redirect to blocked URL", result[:error]
+  end
+
+  def test_limits_max_redirects
+    http = MockHttpWithRedirects.new([
+      { status: 302, headers: { "location" => "https://example.com/1" } },
+      { status: 302, headers: { "location" => "https://example.com/2" } },
+      { status: 302, headers: { "location" => "https://example.com/3" } },
+      { status: 302, headers: { "location" => "https://example.com/4" } }
+    ])
+    fetcher = LinkTitleFetcher.new(http: http, log: MockLog.new)
+
+    result = fetcher.fetch_title("https://example.com")
+
+    assert_equal "Too many redirects", result[:error]
+  end
 end
 
 class MockLog
@@ -89,14 +140,28 @@ class MockHttp
 end
 
 class MockResponse
-  attr_reader :status
+  attr_reader :status, :headers
 
-  def initialize(body, status)
+  def initialize(body, status, headers = {})
     @body = body
     @status = status
+    @headers = headers
   end
 
   def each
     yield @body
+  end
+end
+
+class MockHttpWithRedirects
+  def initialize(responses)
+    @responses = responses
+    @call_index = 0
+  end
+
+  def get(_url, stream: false)
+    response = @responses[@call_index]
+    @call_index += 1
+    MockResponse.new(response[:body] || "", response[:status], response[:headers] || {})
   end
 end
