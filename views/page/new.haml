@@ -4,8 +4,10 @@
   %label.block{ for: 'title' } Titel
   %input#title{ type: :text, name: 'title', maxlength: 74, size: 50, value: @page.title, autofocus: true }
 
-  %label.block{ for: 'content' } Innehåll
-  %textarea#content{ name: 'content', cols: 84, rows: 20 }= @page.content
+  %label.block{ for: 'page-content' }
+    Innehåll
+    != haml :'_link_titles', layout: false
+  %textarea#page-content{ name: 'content', cols: 84, rows: 20 }= @page.content
 
   %label.block{ for: 'comment' } Kommentar
   %input#comment{ type: :text, name: 'comment', maxlength: 74, size: 50, value: @page.comment }

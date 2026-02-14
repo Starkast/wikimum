@@ -23,6 +23,9 @@ TestDatabase.migrate
 DYNAMIC_APP = ->() { Rack::Builder.parse_file("config.ru") }
 STATIC_APP  = DYNAMIC_APP.call
 
+# Silence logging during tests
+App.log = LogfmtLogger.new(File::NULL)
+
 Minitest.after_run do
   TestDatabase.disconnect_and_drop("wikimum_test")
 end

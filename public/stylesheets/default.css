@@ -375,6 +375,29 @@ ins.diffins { color: #090; }
   border-top: none;
 }
 
+/* Link titles feature */
+
+.link-titles-inline {
+  display: inline;
+  margin-left: 1em;
+  font-weight: normal;
+  font-size: 0.9em;
+}
+
+.link-titles-inline a {
+  cursor: pointer;
+}
+
+.link-titles-inline a:hover {
+  text-decoration: underline;
+}
+
+.link-titles-status {
+  margin-left: 0.5em;
+  font-style: italic;
+  color: #666;
+}
+
 /* Dark Mode */
 
 @media (prefers-color-scheme:dark) {
@@ -457,5 +480,9 @@ ins.diffins { color: #090; }
   #keyboard-help .section-label {
     color: #999;
     border-color: #555;
+  }
+
+  .link-titles-status {
+    color: #999;
   }
 }
