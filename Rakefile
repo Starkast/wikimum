@@ -28,6 +28,16 @@ namespace(:test) do
       puts "Skipping JavaScript tests (Node.js not available)"
     end
   end
+
+  desc "Run browser tests (requires running server, Chromium, and puppeteer-core)"
+  task :browser do
+    test_url = ENV.fetch('TEST_URL', 'http://localhost:9393')
+    if system('which node > /dev/null 2>&1') && system('which chromium > /dev/null 2>&1')
+      sh "TEST_URL=#{test_url} node --test test/browser/*_test.js"
+    else
+      puts "Skipping browser tests (Node.js or Chromium not available)"
+    end
+  end
 end
 
 namespace(:db) do

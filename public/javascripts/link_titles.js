@@ -1,4 +1,5 @@
 // Escape markdown-special characters in link text to prevent injection
+// Explicitly attach to window for browser use
 function escapeMarkdownLinkText(text) {
   return text
     .replace(/\\/g, '\\\\')
@@ -6,6 +7,9 @@ function escapeMarkdownLinkText(text) {
     .replace(/\]/g, '\\]')
     .replace(/\n/g, ' ')
     .replace(/\r/g, '');
+}
+if (typeof window !== 'undefined') {
+  window.escapeMarkdownLinkText = escapeMarkdownLinkText;
 }
 
 // Extract bare URLs from content (URLs not already in markdown link format)
@@ -33,6 +37,9 @@ function extractBareUrls(content) {
     }
   }
   return result;
+}
+if (typeof window !== 'undefined') {
+  window.extractBareUrls = extractBareUrls;
 }
 
 if (typeof module !== 'undefined' && module.exports) {
