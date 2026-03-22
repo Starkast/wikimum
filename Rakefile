@@ -28,6 +28,60 @@ namespace(:test) do
       puts "Skipping JavaScript tests (Node.js not available)"
     end
   end
+
+  desc "Run browser tests (requires Chromium and puppeteer-core)"
+  task :browser do
+    unless system('which node > /dev/null 2>&1') && system('which chromium > /dev/null 2>&1')
+      puts "Skipping browser tests (Node.js or Chromium not available)"
+      next
+    end
+
+    require 'net/http'
+    require 'securerandom'
+    require_relative 'test/test_database'
+
+    test_port = ENV.fetch('TEST_PORT', '9393')
+    test_url = ENV.fetch('TEST_URL', "http://localhost:#{test_port}")
+
+    # Set up test database
+    database_url = TestDatabase.create('wikimum_browser_test')
+    session_secret = SecureRandom.hex(32)
+
+    ENV['DATABASE_URL'] = database_url
+    TestDatabase.migrate
+
+    # Start the server
+    puts "Starting server on port #{test_port}..."
+    env = {
+      'PORT' => test_port,
+      'RACK_ENV' => 'test',
+      'DATABASE_URL' => database_url,
+      'SESSION_SECRET' => session_secret,
+      'PUMA_LOG_REQUESTS' => '0'
+    }
+    pid = spawn(env, 'bundle', 'exec', 'puma', '--config', 'config/puma.rb',
+                [:out, :err] => '/dev/null')
+
+    # Wait for server to be ready
+    uri = URI(test_url)
+    30.times do
+      begin
+        Net::HTTP.get_response(uri)
+        break
+      rescue Errno::ECONNREFUSED
+        sleep 0.1
+      end
+    end
+
+    begin
+      sh "TEST_URL=#{test_url} node --test test/browser/*_test.js"
+    ensure
+      puts "Stopping server..."
+      Process.kill('TERM', pid)
+      Process.wait(pid)
+      TestDatabase.disconnect_and_drop('wikimum_browser_test')
+    end
+  end
 end
 
 namespace(:db) do

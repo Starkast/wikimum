@@ -15,10 +15,18 @@
     var textarea = document.getElementById('page-content');
     var status = document.getElementById('link-titles-status');
     var btn = document.getElementById('link-titles-btn');
-    var urls = extractBareUrls(textarea.value);
+
+    // Extract URLs from selection if text is selected, otherwise from full content
+    var selectionStart = textarea.selectionStart;
+    var selectionEnd = textarea.selectionEnd;
+    var hasSelection = selectionStart !== selectionEnd;
+    var sourceText = hasSelection
+      ? textarea.value.substring(selectionStart, selectionEnd)
+      : textarea.value;
+    var urls = extractBareUrls(sourceText);
 
     if (urls.length === 0) {
-      status.textContent = 'Inga URL:er';
+      status.textContent = hasSelection ? 'Inga URL:er i markering' : 'Inga URL:er';
       setTimeout(function() { status.textContent = ''; }, 2000);
       return;
     }
