@@ -4,7 +4,7 @@ require 'httpx'
 require 'cgi'
 
 class LinkTitleFetcher
-  MAX_BYTES = 32_768
+  MAX_BYTES = 512 * 1024
   TIMEOUT = 3
   MAX_REDIRECTS = 3
 
