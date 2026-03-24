@@ -25,7 +25,7 @@ gem 'racksh'
 gem 'warning'
 gem 'rake'
 gem 'zeitwerk'
-gem 'rubocop', '~> 1.79.2', require: false
+gem 'rubocop', '~> 1.86.0', require: false
 gem 'dyno_metadata'
 gem 'localhost'
 
