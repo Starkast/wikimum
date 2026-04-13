@@ -7,7 +7,11 @@ GEM
     base64 (0.2.0)
     bigdecimal (4.0.1)
     climate_control (1.2.0)
-    commonmarker (0.23.10)
+    commonmarker (2.8.0)
+      rb_sys (~> 0.9)
+    commonmarker (2.8.0-arm64-darwin)
+    commonmarker (2.8.0-x86_64-darwin)
+    commonmarker (2.8.0-x86_64-linux)
     concurrent-ruby (1.3.5)
     crack (1.0.0)
       bigdecimal
@@ -90,6 +94,10 @@ GEM
       rack-test (>= 0.5)
     rainbow (3.1.1)
     rake (13.3.1)
+    rake-compiler-dock (1.11.0)
+    rb_sys (0.9.126)
+      json (>= 2)
+      rake-compiler-dock (= 1.11.0)
     regexp_parser (2.11.0)
     rest-client (2.1.0)
       http-accept (>= 1.7.0, < 2.0)
@@ -206,7 +214,10 @@ CHECKSUMS
   base64 (0.2.0) sha256=0f25e9b21a02a0cc0cea8ef92b2041035d39350946e8789c562b2d1a3da01507
   bigdecimal (4.0.1) sha256=8b07d3d065a9f921c80ceaea7c9d4ae596697295b584c296fe599dd0ad01c4a7
   climate_control (1.2.0) sha256=36b21896193fa8c8536fa1cd843a07cf8ddbd03aaba43665e26c53ec1bd70aa5
-  commonmarker (0.23.10) sha256=fdd312ae2bb4071b2f3085d4d7533cb9f8d9057a2eaa0760228a65bc3ed565d1
+  commonmarker (2.8.0) sha256=6f08d1758cfaf3e12e298253c657d999cd78a5359aeb90a28e2a92744920ddc4
+  commonmarker (2.8.0-arm64-darwin) sha256=81f35484d8ad933b9690ca0e0edea5afd073e4dddbb428b970a0180ac1fed010
+  commonmarker (2.8.0-x86_64-darwin) sha256=abee2c7d0e97633a0a392f00f32fa7c49d972b0493d88a3e8f303330bdb733c4
+  commonmarker (2.8.0-x86_64-linux) sha256=3b41abbd8155251e823b51f5d0ba8be789320f2e541b082173fb909526fa6840
   concurrent-ruby (1.3.5) sha256=813b3e37aca6df2a21a3b9f1d497f8cbab24a2b94cab325bffe65ee0f6cbebc6
   crack (1.0.0) sha256=c83aefdb428cdc7b66c7f287e488c796f055c0839e6e545fec2c7047743c4a49
   domain_name (0.5.20190701) sha256=000a600454cb4a344769b2f10b531765ea7bd3a304fe47ed12e5ca1eab969851
@@ -256,6 +267,8 @@ CHECKSUMS
   racksh (1.0.1) sha256=3863f7f1f98fbece642fb983556ce5469159107a4d2e9c885dad0f92fdaa0214
   rainbow (3.1.1) sha256=039491aa3a89f42efa1d6dec2fc4e62ede96eb6acd95e52f1ad581182b79bc6a
   rake (13.3.1) sha256=8c9e89d09f66a26a01264e7e3480ec0607f0c497a861ef16063604b1b08eb19c
+  rake-compiler-dock (1.11.0) sha256=eab51f2cd533eb35cea6b624a75281f047123e70a64c58b607471bb49428f8c2
+  rb_sys (0.9.126) sha256=ba958e0b8b4b89eeae0b3d24b64c809eb2c37e0ab0773a49e9b1c2e22c95aef8
   regexp_parser (2.11.0) sha256=d9dd78b475d18893ce3da55ea1a913499b75f26180a3463e9233d7e419c0cd40
   rest-client (2.1.0) sha256=35a6400bdb14fae28596618e312776c158f7ebbb0ccad752ff4fa142bf2747e3
   rexml (3.4.4) sha256=19e0a2c3425dfbf2d4fc1189747bdb2f849b6c5e74180401b15734bc97b5d142
