@@ -3,7 +3,7 @@
 source 'https://rubygems.org/'
 ruby file: '.ruby-version'
 
-gem 'sequel', "5.101.0"
+gem 'sequel', "5.103.0"
 gem 'pg'
 gem 'sequel_pg', require: 'sequel'
 gem 'sinatra'
