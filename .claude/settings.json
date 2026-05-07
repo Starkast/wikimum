@@ -1,0 +1,13 @@
+{
+  "enabledPlugins": {
+    "gem@84codes": true
+  },
+  "extraKnownMarketplaces": {
+    "84codes": {
+      "source": {
+        "source": "github",
+        "repo": "84codes/claude-plugins"
+      }
+    }
+  }
+}
