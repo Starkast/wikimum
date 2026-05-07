@@ -69,6 +69,10 @@
     font-style: italic;
     color: #666;
   }
+  #page-content.drag-over {
+    outline: 2px dashed #4a90e2;
+    outline-offset: -2px;
+  }
 
   @media (prefers-color-scheme: dark) {
     .uploads-section {
@@ -97,7 +101,7 @@
       %label.block{ for: 'page-content' }
         Innehåll
         != haml :'_link_titles', layout: false
-      %textarea#page-content{ name: 'content', cols: 78, rows: 20, "hx-post": "/#{@page.slug}/preview", "hx-target": "#preview", "hx-trigger": "keyup changed delay:500ms", autofocus: true }= @page.content
+      %textarea#page-content{ name: 'content', cols: 78, rows: 20, "hx-post": "/#{@page.slug}/preview", "hx-target": "#preview", "hx-trigger": "keyup changed delay:500ms", autofocus: true, onpaste: "handlePaste(event)", ondragover: "handleDragOver(event)", ondragleave: "handleDragLeave(event)", ondrop: "handleDrop(event)" }= @page.content
 
       %label.block{ for: 'comment' } Kommentar
       %input#comment{ type: :text, name: 'comment', maxlength: 74, size: 50 }
@@ -155,6 +159,38 @@
     textarea.dispatchEvent(new Event('keyup', { bubbles: true }));
   }
 
+  function appendUploadToList(data) {
+    var list = document.getElementById('upload-list');
+    var li = document.createElement('li');
+    li.className = 'upload-item';
+    li.dataset.id = data.id;
+    li.dataset.markdown = data.markdown;
+
+    var html = '';
+    if (data.image) {
+      html += '<img class="upload-preview" src="' + data.path + '" alt="' + escapeHtml(data.filename) + '">';
+    }
+    html += '<span class="upload-filename" title="Infoga markdown" onclick="insertMarkdown(this.parentElement.dataset.markdown)">' + escapeHtml(data.filename) + '</span>';
+    html += '<a class="upload-link" href="' + data.path + '" target="_blank" title="Öppna fil">&#x1F517;</a>';
+    html += '<button class="delete-btn" type="button" onclick="deleteUpload(this.parentElement.dataset.id)">Ta bort</button>';
+
+    li.innerHTML = html;
+    list.appendChild(li);
+  }
+
+  function uploadFileBlob(file) {
+    var formData = new FormData();
+    formData.append('file', file, file.name);
+
+    return fetch('/#{@page.slug}/uploads', {
+      method: 'POST',
+      body: formData
+    }).then(function(response) {
+      if (!response.ok) throw new Error('Upload failed');
+      return response.json();
+    });
+  }
+
   function uploadFile() {
     var fileInput = document.getElementById('file-input');
     var status = document.getElementById('upload-status');
@@ -164,38 +200,46 @@
       return;
     }
 
-    var formData = new FormData();
-    formData.append('file', fileInput.files[0]);
-
     status.textContent = 'Laddar upp...';
 
-    fetch('/#{@page.slug}/uploads', {
-      method: 'POST',
-      body: formData
-    })
-    .then(function(response) {
-      if (!response.ok) throw new Error('Upload failed');
-      return response.json();
-    })
-    .then(function(data) {
-      var list = document.getElementById('upload-list');
-      var li = document.createElement('li');
-      li.className = 'upload-item';
-      li.dataset.id = data.id;
+    uploadFileBlob(fileInput.files[0])
+      .then(function(data) {
+        appendUploadToList(data);
+        fileInput.value = '';
+        status.textContent = 'Uppladdad!';
+        setTimeout(function() { status.textContent = ''; }, 2000);
+      })
+      .catch(function(err) {
+        status.textContent = 'Fel vid uppladdning';
+        console.error(err);
+      });
+  }
 
-      li.dataset.markdown = data.markdown;
+  function pastedFilename(file) {
+    if (file.name && file.name !== 'image.png' && file.name !== '') return file.name;
+    var ext = (file.type.split('/')[1] || 'bin').replace(/[^a-z0-9]/gi, '');
+    var stamp = new Date().toISOString().replace(/[:.]/g, '-');
+    return 'pasted-' + stamp + '.' + ext;
+  }
 
-      var html = '';
-      if (data.image) {
-        html += '<img class="upload-preview" src="' + data.path + '" alt="' + escapeHtml(data.filename) + '">';
-      }
-      html += '<span class="upload-filename" title="Infoga markdown" onclick="insertMarkdown(this.parentElement.dataset.markdown)">' + escapeHtml(data.filename) + '</span>';
-      html += '<a class="upload-link" href="' + data.path + '" target="_blank" title="Öppna fil">&#x1F517;</a>';
-      html += '<button class="delete-btn" type="button" onclick="deleteUpload(this.parentElement.dataset.id)">Ta bort</button>';
+  function uploadFilesAndInsert(files, options) {
+    if (!files.length) return;
+    var renamePasted = options && options.renamePasted;
+    var status = document.getElementById('upload-status');
+    status.textContent = 'Laddar upp...';
 
-      li.innerHTML = html;
-      list.appendChild(li);
-      fileInput.value = '';
+    files.reduce(function(p, file) {
+      return p.then(function() {
+        var toUpload = renamePasted
+          ? new File([file], pastedFilename(file), { type: file.type })
+          : file;
+        return uploadFileBlob(toUpload).then(function(data) {
+          appendUploadToList(data);
+          insertMarkdown(data.markdown);
+        });
+      });
+    }, Promise.resolve())
+    .then(function() {
       status.textContent = 'Uppladdad!';
       setTimeout(function() { status.textContent = ''; }, 2000);
     })
@@ -203,6 +247,45 @@
       status.textContent = 'Fel vid uppladdning';
       console.error(err);
     });
+  }
+
+  function handlePaste(event) {
+    var items = event.clipboardData && event.clipboardData.items;
+    if (!items) return;
+
+    var files = [];
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].kind === 'file') {
+        var file = items[i].getAsFile();
+        if (file) files.push(file);
+      }
+    }
+    if (!files.length) return;
+
+    event.preventDefault();
+    uploadFilesAndInsert(files, { renamePasted: true });
+  }
+
+  function handleDragOver(event) {
+    if (!event.dataTransfer || event.dataTransfer.types.indexOf('Files') === -1) return;
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'copy';
+    event.currentTarget.classList.add('drag-over');
+  }
+
+  function handleDragLeave(event) {
+    event.currentTarget.classList.remove('drag-over');
+  }
+
+  function handleDrop(event) {
+    event.currentTarget.classList.remove('drag-over');
+    var dropped = event.dataTransfer && event.dataTransfer.files;
+    if (!dropped || !dropped.length) return;
+
+    event.preventDefault();
+    var files = [];
+    for (var i = 0; i < dropped.length; i++) files.push(dropped[i]);
+    uploadFilesAndInsert(files, { renamePasted: false });
   }
 
   function deleteUpload(id) {
