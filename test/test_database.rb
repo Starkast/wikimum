@@ -8,11 +8,9 @@ require "fileutils"
 module TestDatabase
   module_function
 
-  def create(prefix)
-    return ENV["TEST_DATABASE_URL"] if database_supplied?
-
-    path = File.join(Dir.tmpdir, "#{prefix}_#{SecureRandom.hex}.sqlite3")
-    "sqlite://#{path}"
+  def setup_env(prefix)
+    ENV["DATABASE_DIR"]  = Dir.tmpdir
+    ENV["DATABASE_NAME"] = "#{prefix}_#{SecureRandom.hex}"
   end
 
   def migrate
@@ -25,19 +23,16 @@ module TestDatabase
   def disconnect_and_drop(prefix)
     DB.disconnect if defined? DB
 
-    return if database_supplied?
+    return unless ENV["DATABASE_NAME"].to_s.start_with?(prefix) # safety check
 
-    path = database_url.sub(%r{\Asqlite://}, "")
-    return unless File.basename(path).start_with?(prefix) # safety check
+    FileUtils.rm_f(database_path)
+  end
 
-    FileUtils.rm_f(path)
+  def database_path
+    File.join(ENV.fetch("DATABASE_DIR"), "#{ENV.fetch('DATABASE_NAME')}.db")
   end
 
   def database_url
-    ENV.fetch("DATABASE_URL")
-  end
-
-  def database_supplied?
-    ENV.key?("TEST_DATABASE_URL")
+    "sqlite://#{database_path}"
   end
 end

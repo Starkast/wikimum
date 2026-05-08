@@ -9,6 +9,11 @@ primary_region = "arn"
 [env]
   PORT = "8080"
   RACK_ENV = "production"
+  DATABASE_DIR = "/storage"
+
+[[mounts]]
+  source = "storage"
+  destination = "/storage"
 
 [[services]]
   processes = ["web"]
