@@ -42,15 +42,14 @@ class AppBackupTest < Minitest::Test
 
       follow_redirect!
 
-      # Need to force encoding due to this line?
-      # https://github.com/rack/rack/blob/2.2.4/lib/rack/mock.rb#L156
-      body = last_response.body.force_encoding(Encoding::UTF_8)
+      body  = last_response.body.b
+      title = @page_title.b
       match_failed_message = <<~MSG
-        did not find @page_title=#{@page_title.inspect} in the SQL dump
+        did not find @page_title=#{@page_title.inspect} in the SQLite backup
       MSG
 
       assert_equal 200, last_response.status
-      assert_match(/#{@page_title}/, body, match_failed_message)
+      assert_includes body, title, match_failed_message
     end
   end
 

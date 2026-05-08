@@ -2,21 +2,16 @@
 
 require "base64"
 require "fileutils"
+require "sqlite3"
 require "tempfile"
 
 class BackupController < Sinatra::Base
   post "/" do
-    dump_path    = create_sql_tempfile("dump").path
-    rel_path     = dump_path.split(backup_tmpdir).last
+    backup_path  = create_backup_tempfile.path
+    rel_path     = backup_path.split(backup_tmpdir).last
     encoded_path = Base64.urlsafe_encode64(rel_path)
 
-    dump_command = [
-      "pg_dump",
-      "--format=plain",
-      "#{ENV.fetch('DATABASE_URL')}",
-    ]
-
-    system(*dump_command, out: dump_path, exception: true)
+    online_backup(DB.opts.fetch(:database), backup_path)
 
     # From https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/307
     #
@@ -31,10 +26,10 @@ class BackupController < Sinatra::Base
   end
 
   post "/download/:encoded_path" do
-    rel_path  = Base64.urlsafe_decode64(params.fetch("encoded_path"))
-    dump_path = File.join(backup_tmpdir, rel_path)
+    rel_path    = Base64.urlsafe_decode64(params.fetch("encoded_path"))
+    backup_path = File.join(backup_tmpdir, rel_path)
 
-    send_file dump_path, type: "text/plain"
+    send_file backup_path, type: "application/vnd.sqlite3"
   end
 
   helpers do
@@ -42,10 +37,21 @@ class BackupController < Sinatra::Base
       File.join(Dir.tmpdir, "wiki_backup")
     end
 
-    def create_sql_tempfile(filename)
+    def create_backup_tempfile
       tmpdir = FileUtils.mkdir_p(backup_tmpdir).first
 
-      Tempfile.new([filename, ".sql"], tmpdir)
+      Tempfile.new(["dump", ".sqlite3"], tmpdir)
+    end
+
+    def online_backup(source_path, target_path)
+      source = SQLite3::Database.new(source_path)
+      target = SQLite3::Database.new(target_path)
+      backup = SQLite3::Backup.new(target, "main", source, "main")
+      backup.step(-1)
+    ensure
+      backup&.finish
+      target&.close
+      source&.close
     end
   end
 end
