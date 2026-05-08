@@ -21,7 +21,12 @@ class Page < Sequel::Model
 
       return self.where { false } if terms.empty?
 
-      self.full_text_search(SEARCH_IN_COLUMNS, terms, rank: true)
+      conditions = terms.map do |term|
+        pattern = "%#{term.gsub(/[\\%_]/) { |c| "\\#{c}" }}%"
+        Sequel.|(*SEARCH_IN_COLUMNS.map { |col| Sequel.ilike(col, pattern) })
+      end
+
+      self.where(Sequel.&(*conditions))
     end
   end
 
