@@ -13,7 +13,6 @@ These instructions assume you are using OS X.
 
 Install prerequisites
 
-    brew install postgresql
     gem install overman
     bundle install
 
@@ -21,15 +20,13 @@ Ruby gems are vendored into `vendor/cache`, you should always check in the gems 
 
 ### Database setup
 
-Make sure PostgreSQL is running
-
-    postgres
+The app uses SQLite. The database file lives at `${DATABASE_DIR}/${DATABASE_NAME}.db`, defaulting to `./storage/wiki.db`. `bin/dev` runs migrations on startup.
 
 #### Import production database
 
     dotenv bin/download_database_backup
-    createdb prod-wikimum
-    psql postgres://localhost/prod-wikimum < starkast_wiki_backup_2024-06-15_215012.sql
+    mkdir -p storage
+    mv starkast_wiki_backup_*.sqlite3 storage/wiki.db
 
 ### Start the app
 
@@ -43,12 +40,12 @@ Go to [http://wikimum.127.0.0.1.nip.io:8080](http://wikimum.127.0.0.1.nip.io:808
 
 ```bash
 # Development and production
-DATABASE_URL=postgres://
+DATABASE_DIR=./storage  # directory holding the SQLite file
+DATABASE_NAME=wiki      # the file is "${DATABASE_NAME}.db"
 GITHUB_BASIC_CLIENT_ID=
 GITHUB_BASIC_SECRET_ID=
 BACKUP_USER=
 BACKUP_PASSWORD=
-PGGSSENCMODE=disable # https://github.com/ged/ruby-pg/issues/311#issuecomment-1609970533
 SESSION_SECRET= # generate with: ruby -rsecurerandom -e 'p SecureRandom.hex(32)'
 # Production
 SENTRY_DSN=
@@ -74,17 +71,17 @@ Run single test with [`m`](https://github.com/qrush/m):
 
 ### [Migrations][sequel-migrations]
 
-To migrate to the latest version, run:
+`bin/dev` runs migrations on startup. To run them manually:
 
-    bin/dev_db_bootstrap
+    bundle exec rake db:migrate
 
-This Rake task takes an optional argument specifying the target version. To migrate to version 42, run:
+To migrate to a specific version, e.g. 42:
 
     bundle exec rake db:migrate[42]
 
-Manually:
+Or via the `sequel` CLI:
 
-    sequel -E -m migrations -M <n> postgres://localhost/wikimum
+    sequel -E -m migrations -M <n> sqlite://storage/wiki.db
 
 ## Deployment
 
@@ -105,8 +102,6 @@ _TODO_
 
 ### Preview
 
-_TODO: the staging database is not online._
-
 Fly.io app `wikimum-preview` exist to test changes before production. It can be reached at https://wikimum-preview.fly.dev/
 
 The first deploy was manual:
@@ -115,19 +110,16 @@ The first deploy was manual:
 flyctl deploy --ha=false --build-arg "RUBY_VERSION=$(cat .ruby-version)" --app=wikimum-preview
 ```
 
-The preview app uses a PostgreSQL database from Aiven, deployed in AWS eu-north-1.
+The SQLite database lives on a Fly volume named `storage` mounted at `/storage`. Create one before the first deploy:
+
+```bash
+flyctl volumes create storage --app=wikimum-preview --region=arn --size=1
+```
 
 These are the secrets configured:
 
 ```bash
-fly secrets set --detach --app wikimum-preview DATABASE_URL="$(pbpaste)"
 fly secrets set --detach --app wikimum-preview SESSION_SECRET="$(pbpaste)"
-```
-
-To keep the preview database (at Aiven) from being removed prematurely, GitHub Actions has been configured with the `cron.yml` workflow and this secret:
-
-```bash
-gh secret --repo Starkast/wikimum set PREVIEW_DATABASE_URL --body "$(pbpaste)"
 ```
 
 ## Code Scanning
