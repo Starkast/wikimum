@@ -16,10 +16,6 @@ loader.collapse(File.expand_path('../lib/controllers', __dir__))
 loader.enable_reloading if App.development?
 loader.setup
 
-# https://starkast.wiki/ruby_homebrew_postgres
-# https://github.com/ged/ruby-pg/issues/311#issuecomment-1609970533
-ENV["PGGSSENCMODE"] = "disable" if App.macos?
-
 require_relative 'database'
 
 if App.development?

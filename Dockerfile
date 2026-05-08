@@ -7,8 +7,7 @@ WORKDIR /app
 # Install base packages
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y \
-    curl \
-    postgresql-client
+    curl
 
 # Set production environment
 ENV BUNDLE_DEPLOYMENT="1" \
@@ -23,7 +22,6 @@ FROM base as build
 RUN apt-get install --no-install-recommends -y \
     build-essential \
     git \
-    libpq-dev \
     pkg-config
 
 # Install application gems

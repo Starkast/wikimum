@@ -2,6 +2,8 @@
 
 require "sequel"
 require "securerandom"
+require "tmpdir"
+require "fileutils"
 
 module TestDatabase
   module_function
@@ -9,11 +11,8 @@ module TestDatabase
   def create(prefix)
     return ENV["TEST_DATABASE_URL"] if database_supplied?
 
-    database_name = "#{prefix}_#{SecureRandom.hex}"
-
-    system("createdb #{database_name}")
-
-    "postgres://localhost/#{database_name}"
+    path = File.join(Dir.tmpdir, "#{prefix}_#{SecureRandom.hex}.sqlite3")
+    "sqlite://#{path}"
   end
 
   def migrate
@@ -26,11 +25,12 @@ module TestDatabase
   def disconnect_and_drop(prefix)
     DB.disconnect if defined? DB
 
-    database_name = database_url.split("/").last
-    return unless database_name.start_with?(prefix) # safety check
     return if database_supplied?
 
-    system("dropdb #{database_name}")
+    path = database_url.sub(%r{\Asqlite://}, "")
+    return unless File.basename(path).start_with?(prefix) # safety check
+
+    FileUtils.rm_f(path)
   end
 
   def database_url
