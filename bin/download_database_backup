@@ -9,5 +9,5 @@ curl \
   --location \
   --request POST \
   --user "${BACKUP_USER}":"${BACKUP_PASSWORD}" \
-  --output "starkast_wiki_backup_$(date "+%Y-%m-%d_%H%M%S").sql" \
+  --output "starkast_wiki_backup_$(date "+%Y-%m-%d_%H%M%S").sqlite3" \
   ${BACKUP_URL:-"https://starkast.wiki/.backup"}

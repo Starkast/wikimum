@@ -3,7 +3,7 @@
  *
  * Usage:
  *   Start the server (SESSION_SECRET must be >=64 chars):
- *     DATABASE_URL=postgres://localhost/wikimum_test RACK_ENV=test \
+ *     DATABASE_URL=sqlite://storage/wiki_test.db RACK_ENV=test \
  *       SESSION_SECRET=$(head -c 64 /dev/urandom | base64 | head -c 64) \
  *       bundle exec puma -p 9393 config.ru
  *   Run this test:

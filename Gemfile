@@ -4,8 +4,6 @@ source 'https://rubygems.org/'
 ruby file: '.ruby-version'
 
 gem 'sequel', "5.104.0"
-gem 'pg'
-gem 'sequel_pg', require: 'sequel'
 gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'rack-flash3', require: 'rack-flash'
@@ -28,6 +26,7 @@ gem 'zeitwerk'
 gem 'rubocop', '~> 1.79.2', require: false
 gem 'dyno_metadata'
 gem 'localhost'
+gem 'sqlite3'
 
 group :test do
   gem 'climate_control'

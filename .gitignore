@@ -19,3 +19,6 @@ package-lock.json
 _yardoc
 doc/
 .DS_Store
+
+# SQLite database
+/storage/*

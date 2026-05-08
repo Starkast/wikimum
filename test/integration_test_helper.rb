@@ -7,7 +7,7 @@ require "rack/test"
 require "securerandom"
 require_relative "test_database"
 
-ENV["DATABASE_URL"] = TestDatabase.create("wikimum_test")
+TestDatabase.setup_env("wikimum_test")
 ENV["RACK_ENV"] = "test"
 
 # Rack::Session::Cookie encrypted when using rack-session 0.3.0 or v2.x used
