@@ -5,23 +5,38 @@ require 'commonmarker'
 
 class Markup
   def self.to_html(content)
+    # Commonmarker 2.x rejects non-UTF-8 input; nil.to_s is US-ASCII.
+    return "" if content.nil? || content.empty?
+
     text_filters = [
       MarkdownFilter,
       WikiLinkFilter,
     ]
     pipeline = HTMLPipeline.new(text_filters:)
-    pipeline.to_html(content.to_s, context: {}, result: {})
+    pipeline.to_html(content, context: {}, result: {})
   end
 end
 
 class MarkdownFilter < HTMLPipeline::TextFilter
-  # Match github-markup 5.0.1's MARKUP_MARKDOWN handler so output is identical
-  # to the prior GitHub::Markup.render_s(MARKUP_MARKDOWN, ...) call.
-  COMMONMARKER_OPTS = [:GITHUB_PRE_LANG].freeze
-  COMMONMARKER_EXTS = %i[tagfilter autolink table strikethrough].freeze
+  # Keep rendering close to what github-markup 5.0.1 + commonmarker 0.x used to
+  # produce. Defaults that match what we want are not listed; defaults that
+  # don't are overridden here. See Commonmarker::Config::OPTIONS for the full
+  # set: https://github.com/gjtorikian/commonmarker/blob/v2.8.2/lib/commonmarker/config.rb
+  COMMONMARKER_OPTIONS = {
+    render: {
+      hardbreaks: false,         # default true; single \n stays a soft break, not <br />
+      escaped_char_spans: false, # default true; \! renders as ! not <span>!</span>
+    },
+    extension: {
+      header_ids: nil, # default ""; nil suppresses <a> anchors injected into headings
+      tasklist:   false, # default true; render `- [ ]` literally instead of stripping
+      shortcodes: false, # default true; render `:smile:` literally, no emoji expansion
+    },
+  }.freeze
+  COMMONMARKER_PLUGINS = { syntax_highlighter: nil }.freeze
 
   def call
-    CommonMarker.render_html(text, COMMONMARKER_OPTS, COMMONMARKER_EXTS)
+    Commonmarker.to_html(text, options: COMMONMARKER_OPTIONS, plugins: COMMONMARKER_PLUGINS)
   end
 end
 
