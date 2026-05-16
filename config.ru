@@ -8,6 +8,7 @@ require_relative 'config/sentry'
 use Sentry::Rack::CaptureExceptions
 
 require 'rack/ssl-enforcer'
+require_relative 'lib/hsts_for_host'
 
 # Connects to the database
 require_relative 'config/app'
@@ -18,11 +19,15 @@ if App.test_lowlevel_error_handler?
   use BrokenApp
 end
 
+if App.production?
+  use HstsForHost, host: "starkast.wiki"
+end
+
 if App.redirect_to_https?
   options = if App.development?
     { https_port: App.ssl_port, hsts: false }
   else
-    { hsts: { subdomains: false } }
+    { hsts: false }
   end
 
   use Rack::SslEnforcer, options

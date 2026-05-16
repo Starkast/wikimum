@@ -135,7 +135,9 @@ class AppBootTest < Minitest::Test
 
       # Test HTTPS respone
       assert_equal "200", https_res.code
-      assert_equal ["max-age=31536000"], https_res.get_fields("strict-transport-security")
+      # HSTS is only emitted for the starkast.wiki host (see HstsForHost middleware).
+      # Localhost should not receive a Strict-Transport-Security header.
+      refute https_res.key?("strict-transport-security")
     end
   end
 end
