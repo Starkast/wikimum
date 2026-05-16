@@ -58,6 +58,7 @@ class PageController < BaseController
 
   get '/search' do
     @page_title = "Sökresultat"
+    @noindex = true
     @q = params[:q]
     @pages = Page
       .select(:id, :slug, :title, :concealed, :description)
