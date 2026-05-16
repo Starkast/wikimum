@@ -85,8 +85,12 @@ class AppNotLoggedInTest < Minitest::Test
   end
 
   def test_latest
+    @page.this.update(comment: "Important note", revision: 7)
     get "/latest"
     assert last_response.body.include?("<h2>#{Time.now.to_date}</h2>")
+    assert last_response.body.include?("av #{@user.login}")
+    assert last_response.body.include?("(7)")
+    assert last_response.body.include?("Important note")
     assert last_response.ok?
   end
 

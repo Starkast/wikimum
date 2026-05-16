@@ -30,7 +30,9 @@ class PageController < BaseController
 
   get '/list' do
     @page_title = "Innehållsförteckning"
-    @page_groups = Page.order(:title_char, :title)
+    @page_groups = Page
+      .select(:id, :slug, :title, :title_char, :revision, :concealed, :description)
+      .order(:title_char, :title)
       .with_concealed_if(starkast?)
       .to_hash_groups(:title_char)
     haml :index
@@ -38,7 +40,9 @@ class PageController < BaseController
 
   get '/latest' do
     @page_title = "Senast ändrad"
-    @page_groups = Page.order(:updated_on).reverse
+    @page_groups = Page
+      .select(:id, :slug, :title, :revision, :concealed, :comment, :updated_on, :author_id)
+      .order(:updated_on).reverse
       .with_concealed_if(starkast?)
       .eager_graph(:author)
       .add_graph_aliases(date: [:pages, :date, Sequel.lit("DATE(updated_on)")])
