@@ -66,6 +66,14 @@ class AppLoggedInTest < Minitest::Test
     assert last_response.ok?
   end
 
+  def test_page_etag_encodes_logged_in_audience
+    get "/#{CGI.escape(@page.slug)}"
+    assert last_response.ok?
+    # Encoded suffix: -<a|p>-<s|u> = authed, not starkast
+    assert_match(/-a-u\b/, last_response.headers["ETag"].to_s,
+      "logged-in ETag should end with -a-u, got #{last_response.headers["ETag"].inspect}")
+  end
+
   def test_page_edit_no_payload
     post "/#{CGI.escape(@page.slug)}"
 

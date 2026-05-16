@@ -64,6 +64,26 @@ class AppNotLoggedInTest < Minitest::Test
     assert last_response.ok?
   end
 
+  def test_page_sets_etag_header_for_anonymous_visitors
+    get "/#{CGI.escape(@page.slug)}"
+    assert last_response.ok?
+    # Encoded suffix: -<a|p>-<s|u> = anonymous, not starkast
+    assert_match(/-p-u\b/, last_response.headers["ETag"].to_s,
+      "anonymous ETag should end with -p-u, got #{last_response.headers["ETag"].inspect}")
+  end
+
+  def test_page_returns_304_when_etag_matches
+    get "/#{CGI.escape(@page.slug)}"
+    etag = last_response.headers["ETag"]
+    refute_nil etag
+
+    header "If-None-Match", etag
+    get "/#{CGI.escape(@page.slug)}"
+
+    assert_equal 304, last_response.status
+    assert_empty last_response.body
+  end
+
   def test_page_show_uses_one_query_and_renders_author
     queries = []
     counting = Logger.new(File::NULL).tap do |l|

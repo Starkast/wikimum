@@ -216,7 +216,7 @@ class PageController < BaseController
 
   get '/:slug' do
     @page = Page
-      .select(:id, :slug, :title, :concealed, :revision, :updated_on, :compiled_content, :author_id)
+      .select(:id, :slug, :title, :concealed, :revision, :updated_on, :compiled_content, :author_id, :sha1)
       .eager_graph(:author)
       .where(slug: slug)
       .limit(1)
@@ -225,6 +225,13 @@ class PageController < BaseController
     redirect "new/#{slug}" unless @page
     @page_title = @page.title
     restrict_concealed(@page)
+
+    # Etag halts the response with 304 before view rendering when the browser's
+    # If-None-Match matches. Encode auth state in the etag so a logged-in user
+    # never gets the anonymous body served back from their cache, and so a
+    # starkast user doesn't share an etag with non-starkast.
+    etag [@page.sha1, logged_in? ? "a" : "p", starkast? ? "s" : "u"].join("-")
+
     haml :show
   end
 
