@@ -100,6 +100,38 @@ class AppNotLoggedInTest < Minitest::Test
     assert last_response.ok?
   end
 
+  def test_search_renders_multiple_hits_with_a_single_query
+    other = Page.create(
+      title: "Other Test Page",
+      description: "Sökbeskrivning för test",
+      author: @user,
+    )
+    queries = capture_db_queries { get "/search?q=test" }
+
+    assert last_response.ok?
+    assert last_response.body.include?(">#{@page.title}</a>"), "expected setup page title in body"
+    assert last_response.body.include?(">#{other.title}</a>"), "expected second page title in body"
+    assert last_response.body.include?("Sökbeskrivning för test"), "expected description in body"
+    assert_equal 1, queries.size, "expected /search to use one DB query, got #{queries.size}: #{queries.inspect}"
+  ensure
+    other&.destroy
+  end
+
+  def capture_db_queries
+    logger = Logger.new(File::NULL)
+    captured = []
+    logger.define_singleton_method(:add) do |_severity, message = nil, progname = nil|
+      sql = message || progname
+      captured << sql if sql.is_a?(String)
+      true
+    end
+    DB.loggers << logger
+    yield
+    captured
+  ensure
+    DB.loggers.delete(logger) if logger
+  end
+
   def test_user
     get "/user"
     follow_redirect!
