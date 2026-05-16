@@ -91,4 +91,36 @@ class MarkupTest < Minitest::Test
   def test_tagfilter_strips_iframe_tags
     assert_equal "\n", Markup.to_html(%(<iframe src="x"></iframe>))
   end
+
+  def test_headings_render_without_anchor_links
+    content     = "## Foo Bar"
+    html_output = "<h2>Foo Bar</h2>\n"
+
+    assert_equal html_output, Markup.to_html(content)
+  end
+
+  # Commonmarker 2.x enables a few extensions by default that github-markup +
+  # commonmarker 0.x did not. The tests below pin our intent: keep wiki
+  # rendering stable instead of inheriting newer defaults.
+
+  def test_tasklist_markers_render_literally
+    content     = "- [ ] todo\n- [x] done"
+    html_output = "<ul>\n<li>[ ] todo</li>\n<li>[x] done</li>\n</ul>\n"
+
+    assert_equal html_output, Markup.to_html(content)
+  end
+
+  def test_shortcodes_are_not_expanded_to_emoji
+    content     = "I am :smile: happy"
+    html_output = "<p>I am :smile: happy</p>\n"
+
+    assert_equal html_output, Markup.to_html(content)
+  end
+
+  def test_escaped_characters_render_without_span_wrappers
+    content     = "\\!important"
+    html_output = "<p>!important</p>\n"
+
+    assert_equal html_output, Markup.to_html(content)
+  end
 end
