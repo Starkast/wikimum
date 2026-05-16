@@ -1,2 +1,5 @@
+User-Agent: Claude-User
+Allow: /
+
 User-Agent: *
 Disallow: /
