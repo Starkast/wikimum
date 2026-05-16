@@ -23,7 +23,6 @@ GEM
       net-http (>= 0.5.0)
     faraday-retry (2.3.2)
       faraday (~> 2.0)
-    github-markup (5.0.1)
     haml (6.3.0)
       temple (>= 0.8.2)
       thor
@@ -63,7 +62,6 @@ GEM
     parser (3.3.9.0)
       ast (~> 2.4.1)
       racc
-    pg (1.6.3)
     pg (1.6.3-aarch64-linux)
     pg (1.6.3-arm64-darwin)
     pg (1.6.3-x86_64-darwin)
@@ -173,7 +171,6 @@ DEPENDENCIES
   commonmarker
   dyno_metadata
   faraday-retry
-  github-markup
   haml
   html-pipeline
   httpx
@@ -214,7 +211,6 @@ CHECKSUMS
   faraday (2.13.1) sha256=cc531eb5467e7d74d4517630fa96f1a7003647cbf20a9a3e067d098941217b75
   faraday-net_http (3.4.1) sha256=095757fae7872b94eac839c08a1a4b8d84fd91d6886cfbe75caa2143de64ab3b
   faraday-retry (2.3.2) sha256=2402d2029032ebd238a2046221e67f6ef0da78c5a8ce8cd4f8b9c62e4d6451d1
-  github-markup (5.0.1) sha256=b6e9f8538cb8566935321433190615cbc747550e1705a7af5ba24048d0ddc472
   haml (6.3.0) sha256=8e6eb87d869639e348852009e74a2a1663d79663ed7e7dbcb38beb1f12bcdd97
   hashdiff (1.1.2) sha256=2c30eeded6ed3dce8401d2b5b99e6963fe5f14ed85e60dd9e33c545a44b71a77
   html-pipeline (3.0.3) sha256=c38ce0a024e15f17e928705978b6f16f973ba6637b16b9133eb9f9587d5131bc
@@ -239,7 +235,6 @@ CHECKSUMS
   octokit (10.0.0) sha256=82e99a539b7637b7e905e6d277bb0c1a4bed56735935cc33db6da7eae49a24e8
   parallel (1.27.0) sha256=4ac151e1806b755fb4e2dc2332cbf0e54f2e24ba821ff2d3dcf86bf6dc4ae130
   parser (3.3.9.0) sha256=94d6929354b1a6e3e1f89d79d4d302cc8f5aa814431a6c9c7e0623335d7687f2
-  pg (1.6.3) sha256=1388d0563e13d2758c1089e35e973a3249e955c659592d10e5b77c468f628a99
   pg (1.6.3-aarch64-linux) sha256=0698ad563e02383c27510b76bf7d4cd2de19cd1d16a5013f375dd473e4be72ea
   pg (1.6.3-arm64-darwin) sha256=7240330b572e6355d7c75a7de535edb5dfcbd6295d9c7777df4d9dddfb8c0e5f
   pg (1.6.3-x86_64-darwin) sha256=ee2e04a17c0627225054ffeb43e31a95be9d7e93abda2737ea3ce4a62f2729d6

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'html-pipeline'
-require 'github/markup'
+require 'commonmarker'
 
 class Markup
   def self.to_html(content)
@@ -15,8 +15,13 @@ class Markup
 end
 
 class MarkdownFilter < HTMLPipeline::TextFilter
+  # Match github-markup 5.0.1's MARKUP_MARKDOWN handler so output is identical
+  # to the prior GitHub::Markup.render_s(MARKUP_MARKDOWN, ...) call.
+  COMMONMARKER_OPTS = [:GITHUB_PRE_LANG].freeze
+  COMMONMARKER_EXTS = %i[tagfilter autolink table strikethrough].freeze
+
   def call
-    GitHub::Markup.render_s(GitHub::Markups::MARKUP_MARKDOWN, text)
+    CommonMarker.render_html(text, COMMONMARKER_OPTS, COMMONMARKER_EXTS)
   end
 end
 
