@@ -59,6 +59,13 @@ class AppLoggedInTest < Minitest::Test
     page.destroy
   end
 
+  def test_create_page_with_emoji_only_title
+    post "/new", { title: "❤️", content: "foo bar baz" }
+
+    assert_equal 200, last_response.status
+    assert_includes last_response.body, "Titeln måste innehålla bokstäver eller siffror"
+  end
+
   def test_page_edit_view
     get "/#{CGI.escape(@page.slug)}/edit"
 

@@ -72,6 +72,12 @@ class PageController < BaseController
     @page = Page.new
     @page.set_fields(params, %i(title content description concealed comment))
     @page.author = current_user
+
+    if Slug.slugify(@page.title.to_s).empty?
+      flash.now[:error] = "Titeln måste innehålla bokstäver eller siffror"
+      return haml :new
+    end
+
     @page.save
     redirect "#{@page.slug_for_uri}"
   rescue Sequel::UniqueConstraintViolation
