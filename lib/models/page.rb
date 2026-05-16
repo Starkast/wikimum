@@ -21,7 +21,7 @@ class Page < Sequel::Model
 
       return self.where { false } if terms.empty?
 
-      self.full_text_search(SEARCH_IN_COLUMNS, terms, rank: true)
+      self.full_text_search(SEARCH_IN_COLUMNS, terms, rank: true, plain: true)
     end
   end
 
