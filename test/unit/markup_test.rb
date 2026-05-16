@@ -32,6 +32,13 @@ class MarkupTest < Minitest::Test
     assert_equal html_output, Markup.to_html(content)
   end
 
+  def test_wiki_link_filter_with_dot_in_link
+    content     = %([[1.2.3]])
+    html_output = %(<p><a href="/1.2.3">1.2.3</a></p>\n)
+
+    assert_equal html_output, Markup.to_html(content)
+  end
+
   def test_wikified_with_markdown
     content     = %([[Server]])
     html_output = %(<p><a href="/Server">Server</a></p>\n)
