@@ -67,8 +67,8 @@ class PageController < BaseController
 
     case @pages.size
     when 0
-      flash[:notice] = "Din sökning gav inga träffar"
-      redirect request.referrer
+      flash.now[:notice] = "Din sökning gav inga träffar"
+      haml :search
     when 1
       flash[:confirm] = "Din sökning gav bara denna sida som träff"
       redirect @pages.first.slug
