@@ -95,6 +95,25 @@ class AppNotLoggedInTest < Minitest::Test
     extras&.each(&:destroy)
   end
 
+  def test_anonymous_page_view_sends_revalidating_cache_control
+    get "/#{CGI.escape(@page.slug)}"
+    cc = last_response.headers["Cache-Control"].to_s
+    assert_includes cc, "public"
+    # no-cache forces browser revalidation on every navigation so a fresh
+    # login-state chrome shows up immediately rather than after max-age expires.
+    assert_includes cc, "no-cache"
+    # s-maxage lets nginx (shared cache) hold the response longer than the
+    # browser; revalidation against the upstream ETag stays cheap.
+    assert_includes cc, "s-maxage=600"
+  end
+
+  def test_anonymous_index_sends_public_cache_control
+    get "/list"
+    cc = last_response.headers["Cache-Control"].to_s
+    assert_includes cc, "public"
+    assert_includes cc, "no-cache"
+  end
+
   def test_page
     get "/#{CGI.escape(@page.slug)}"
     assert last_response.body.include?(@page_title)

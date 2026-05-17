@@ -40,6 +40,13 @@ class AppLoggedInTest < Minitest::Test
       "logged-in responses must continue to write Set-Cookie"
   end
 
+  def test_logged_in_page_view_sends_private_no_store_cache_control
+    get "/#{CGI.escape(@page.slug)}"
+    cc = last_response.headers["Cache-Control"].to_s
+    assert_includes cc, "private"
+    assert_includes cc, "no-store"
+  end
+
   def test_create_page
     title = "Foo Bar Åäö"
     post "/new", title:, content: "foo bar baz"
