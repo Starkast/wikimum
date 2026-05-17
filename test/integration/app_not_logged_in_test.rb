@@ -32,10 +32,28 @@ class AppNotLoggedInTest < Minitest::Test
   def test_session_cookie_is_named_wikimum_session
     # Cookie name must be `wikimum_session` (no dot) so nginx in front can
     # reference it as `$cookie_wikimum_session` for cache-bypass rules.
+    # Populate the session so the cookie actually gets written — anonymous
+    # GETs skip Set-Cookie now (see test_anonymous_get_does_not_set_a_session_cookie).
+    env "rack.session", { login: @user.login, user_id: @user.id }
     get "/"
     cookie = last_response.headers["Set-Cookie"].to_s
     assert_match(/^wikimum_session=/, cookie,
       "expected wikimum_session= prefix, got: #{cookie.inspect}")
+  end
+
+  def test_anonymous_get_does_not_set_a_session_cookie
+    # Layout reads `session[:login]` via the `logged_in?` helper, which loads
+    # the session. Rack::Session::Cookie's commit logic then writes Set-Cookie
+    # for every response that touched the session at all. We don't want that
+    # for anonymous responses — both because there is no useful state to
+    # persist and because the Set-Cookie header prevents nginx in front from
+    # caching the response.
+    get "/"
+
+    refute_includes last_response.headers.fetch("Set-Cookie", ""), "rack.session=",
+      "anonymous GET should not write a session cookie"
+    refute_includes last_response.headers.fetch("Set-Cookie", ""), "wikimum_session=",
+      "anonymous GET should not write a session cookie"
   end
 
   def test_root_sets_etag_header_for_anonymous_visitors

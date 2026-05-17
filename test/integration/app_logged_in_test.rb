@@ -31,6 +31,15 @@ class AppLoggedInTest < Minitest::Test
     @user.destroy
   end
 
+  def test_logged_in_response_still_sets_session_cookie
+    # Counterpart to test_anonymous_get_does_not_set_a_session_cookie in
+    # app_not_logged_in_test: the skip-empty-session after-filter must NOT
+    # suppress Set-Cookie when the session actually holds login data.
+    get "/"
+    refute_empty last_response.headers["Set-Cookie"].to_s,
+      "logged-in responses must continue to write Set-Cookie"
+  end
+
   def test_create_page
     title = "Foo Bar Åäö"
     post "/new", title:, content: "foo bar baz"

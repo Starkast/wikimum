@@ -30,6 +30,30 @@ class BaseController < Sinatra::Base
     @page_title = nil
   end
 
+  # Don't write a session cookie back when there's nothing to persist.
+  # The layout reads `session[:login]` via `logged_in?` on every render,
+  # which marks the session as "loaded" and would otherwise make rack-session
+  # write a fresh Set-Cookie for every anonymous response. Set-Cookie blocks
+  # nginx from caching the response, and there's nothing useful in the
+  # cookie when the session hash is empty anyway.
+  # Keys that rack-session and Rack::Flash put in the session even when no
+  # user data exists:
+  #   - "session_id": Sinatra/rack-session inserts this on first access.
+  #   - "__FLASH__":  Rack::Flash seeds an empty Hash on every request.
+  # Treat a session containing only these (and an empty __FLASH__) as empty.
+  SESSION_NOISE_KEYS = %w[session_id __FLASH__].freeze
+
+  after do
+    session_options = request.env["rack.session.options"]
+    next unless session_options
+
+    data = session.to_hash.reject { |k, _| SESSION_NOISE_KEYS.include?(k.to_s) }
+    flash = session["__FLASH__"]
+    has_pending_flash = flash.is_a?(Hash) && flash.any?
+
+    session_options[:skip] = true if data.empty? && !has_pending_flash
+  end
+
   helpers do
     def logged_in?
       session[:login]
