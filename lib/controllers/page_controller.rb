@@ -42,6 +42,26 @@ class PageController < BaseController
         starkast? ? "s" : "u",
       ].join("-")
     end
+
+    # Anonymous views are safe to cache in shared caches (nginx in front of
+    # the app, browser): the rendered HTML doesn't include any per-user data
+    # in the body. `no-cache` makes the browser revalidate every navigation
+    # so the moment a visitor logs in, the next page load sees fresh chrome
+    # — revalidation is cheap thanks to the ETag (304 with no body).
+    # `s-maxage` controls shared caches (nginx); 10 minutes is the default
+    # freshness window before nginx revalidates upstream.
+    #
+    # Authed views render edit/admin links and the current user, so they
+    # must never end up in a shared cache and must not be stored locally
+    # either (a browser-bookmarked authed page after logout would otherwise
+    # flash admin chrome before re-render).
+    def cache_for_audience
+      if logged_in?
+        cache_control :private, no_store: true
+      else
+        cache_control :public, :no_cache, s_maxage: 600
+      end
+    end
   end
 
   get '/' do
@@ -58,6 +78,7 @@ class PageController < BaseController
     end
 
     @page_title = @page.title
+    cache_for_audience
 
     # Skipped for the empty-wiki fallback (Page.new has no sha1); that
     # response is cheap to render anyway.
@@ -73,6 +94,7 @@ class PageController < BaseController
       .order(:title_char, :title)
       .with_concealed_if(starkast?)
       .to_hash_groups(:title_char)
+    cache_for_audience
     haml :index
   end
 
@@ -85,6 +107,7 @@ class PageController < BaseController
       .eager_graph(:author)
       .add_graph_aliases(date: [:pages, :date, Sequel.lit("DATE(updated_on)")])
       .to_hash_groups(:date)
+    cache_for_audience
     haml :latest
   end
 
@@ -257,6 +280,7 @@ class PageController < BaseController
     redirect "new/#{slug}" unless @page
     @page_title = @page.title
     restrict_concealed(@page)
+    cache_for_audience
     etag_for_page(@page)
     haml :show
   end
@@ -266,6 +290,7 @@ class PageController < BaseController
     redirect "#{slug}" unless @page
     @page_title = "#{@page.title} (#{revision})"
     restrict_concealed(@page)
+    cache_for_audience
     haml :show
   end
 
