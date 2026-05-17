@@ -38,6 +38,25 @@ class AppNotLoggedInTest < Minitest::Test
       "expected wikimum_session= prefix, got: #{cookie.inspect}")
   end
 
+  def test_root_sets_etag_header_for_anonymous_visitors
+    get "/"
+    assert last_response.ok?
+    assert_match(/-p-u\b/, last_response.headers["ETag"].to_s,
+      "anonymous ETag should end with -p-u, got #{last_response.headers["ETag"].inspect}")
+  end
+
+  def test_root_returns_304_when_etag_matches
+    get "/"
+    etag = last_response.headers["ETag"]
+    refute_nil etag
+
+    header "If-None-Match", etag
+    get "/"
+
+    assert_equal 304, last_response.status
+    assert_empty last_response.body
+  end
+
   def test_root_uses_one_bounded_query_and_renders_author
     # Create extra pages so the route can't accidentally fetch the whole
     # table — `Page.eager_graph(:author).all.first` without LIMIT would
@@ -62,6 +81,41 @@ class AppNotLoggedInTest < Minitest::Test
     get "/#{CGI.escape(@page.slug)}"
     assert last_response.body.include?(@page_title)
     assert last_response.ok?
+  end
+
+  def test_page_sets_etag_header_for_anonymous_visitors
+    get "/#{CGI.escape(@page.slug)}"
+    assert last_response.ok?
+    # Encoded suffix: -<a|p>-<s|u> = anonymous, not starkast
+    assert_match(/-p-u\b/, last_response.headers["ETag"].to_s,
+      "anonymous ETag should end with -p-u, got #{last_response.headers["ETag"].inspect}")
+  end
+
+  def test_page_returns_304_when_etag_matches
+    get "/#{CGI.escape(@page.slug)}"
+    etag = last_response.headers["ETag"]
+    refute_nil etag
+
+    header "If-None-Match", etag
+    get "/#{CGI.escape(@page.slug)}"
+
+    assert_equal 304, last_response.status
+    assert_empty last_response.body
+  end
+
+  def test_page_does_not_304_anonymous_request_holding_a_logged_in_etag
+    # Anonymous request, but the browser is presenting an etag that would
+    # only have been issued for a logged-in audience. The server's etag for
+    # this request bucket differs (audience suffix), so If-None-Match must
+    # not match — full 200 response, not 304.
+    # Quoted per HTTP ETag syntax (Sinatra's `etag` helper wraps values).
+    fake_authed_etag = %("#{[@page.sha1, "x", "a", "u"].join("-")}")
+    header "If-None-Match", fake_authed_etag
+
+    get "/#{CGI.escape(@page.slug)}"
+
+    assert_equal 200, last_response.status,
+      "anonymous request must not 304 against a logged-in audience etag"
   end
 
   def test_page_show_uses_one_query_and_renders_author
