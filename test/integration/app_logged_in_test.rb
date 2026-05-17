@@ -40,6 +40,20 @@ class AppLoggedInTest < Minitest::Test
       "logged-in responses must continue to write Set-Cookie"
   end
 
+  def test_logout_writes_session_cookie_to_overwrite_login_cookie
+    # Regression: the skip-empty-session after-filter must NOT trigger when
+    # the request arrived with a populated session — otherwise GET
+    # /authorize/reset clears the in-memory session but writes no Set-Cookie,
+    # so the browser keeps the original signed login cookie and stays logged
+    # in across the redirect-back.
+    get "/authorize/reset"
+
+    assert_equal 302, last_response.status
+    set_cookie = last_response.headers["Set-Cookie"].to_s
+    assert_match(/^wikimum_session=/, set_cookie,
+      "logout must overwrite the existing wikimum_session cookie, got: #{set_cookie.inspect}")
+  end
+
   def test_logged_in_page_view_sends_private_no_store_cache_control
     get "/#{CGI.escape(@page.slug)}"
     cc = last_response.headers["Cache-Control"].to_s
