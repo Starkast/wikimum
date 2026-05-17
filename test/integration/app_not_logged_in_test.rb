@@ -29,7 +29,12 @@ class AppNotLoggedInTest < Minitest::Test
     assert last_response.ok?
   end
 
-  def test_root_uses_one_query_and_renders_author
+  def test_root_uses_one_bounded_query_and_renders_author
+    # Create extra pages so the route can't accidentally fetch the whole
+    # table — `Page.eager_graph(:author).all.first` without LIMIT would
+    # materialise every page row joined with users in memory.
+    extras = 3.times.map { |i| Page.create(title: "Extra #{i}", author: @user) }
+
     queries = capture_db_queries { get "/" }
 
     assert last_response.ok?
@@ -38,6 +43,10 @@ class AppNotLoggedInTest < Minitest::Test
       "expected author login rendered by _actions partial")
     assert_equal 1, queries.size,
       "GET / should use one DB query, got #{queries.size}: #{queries.inspect}"
+    assert_match(/LIMIT 1\b/i, queries.first,
+      "GET / must bound the page lookup with LIMIT 1, got: #{queries.first.inspect}")
+  ensure
+    extras&.each(&:destroy)
   end
 
   def test_page
@@ -66,6 +75,8 @@ class AppNotLoggedInTest < Minitest::Test
     assert_includes last_response.body, @page_title
     assert_match(/av\s+#{Regexp.escape(@user.login)}/, last_response.body, "expected author login rendered by _actions partial")
     assert_equal 1, queries.size, "GET /:slug should use one DB query, got #{queries.size}: #{queries.inspect}"
+    assert_match(/LIMIT 1\b/i, queries.first,
+      "GET /:slug must bound the page lookup with LIMIT 1, got: #{queries.first.inspect}")
   end
 
   def test_nonexistent_page
