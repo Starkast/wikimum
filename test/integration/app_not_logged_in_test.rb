@@ -38,6 +38,25 @@ class AppNotLoggedInTest < Minitest::Test
       "expected wikimum_session= prefix, got: #{cookie.inspect}")
   end
 
+  def test_root_sets_etag_header_for_anonymous_visitors
+    get "/"
+    assert last_response.ok?
+    assert_match(/-p-u\b/, last_response.headers["ETag"].to_s,
+      "anonymous ETag should end with -p-u, got #{last_response.headers["ETag"].inspect}")
+  end
+
+  def test_root_returns_304_when_etag_matches
+    get "/"
+    etag = last_response.headers["ETag"]
+    refute_nil etag
+
+    header "If-None-Match", etag
+    get "/"
+
+    assert_equal 304, last_response.status
+    assert_empty last_response.body
+  end
+
   def test_root_uses_one_bounded_query_and_renders_author
     # Create extra pages so the route can't accidentally fetch the whole
     # table — `Page.eager_graph(:author).all.first` without LIMIT would

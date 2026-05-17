@@ -15,11 +15,19 @@ class PageController < BaseController
         redirect back
       end
     end
+
+    # Halts the response with 304 before the view renders when the browser's
+    # If-None-Match matches. The audience suffix (a/p for logged_in?, s/u for
+    # starkast?) keeps anonymous and authed renders in separate cache buckets
+    # so neither audience can receive the other's body back from a 304.
+    def etag_for_page(page)
+      etag [page.sha1, logged_in? ? "a" : "p", starkast? ? "s" : "u"].join("-")
+    end
   end
 
   get '/' do
     @page = Page
-      .select(:id, :slug, :title, :concealed, :revision, :updated_on, :compiled_content, :author_id)
+      .select(:id, :slug, :title, :concealed, :revision, :updated_on, :compiled_content, :author_id, :sha1)
       .eager_graph(:author)
       .order(:id)
       .limit(1)
@@ -31,6 +39,11 @@ class PageController < BaseController
     end
 
     @page_title = @page.title
+
+    # Skipped for the empty-wiki fallback (Page.new has no sha1); that
+    # response is cheap to render anyway.
+    etag_for_page(@page) unless @page.new?
+
     haml :show
   end
 
@@ -225,13 +238,7 @@ class PageController < BaseController
     redirect "new/#{slug}" unless @page
     @page_title = @page.title
     restrict_concealed(@page)
-
-    # Etag halts the response with 304 before view rendering when the browser's
-    # If-None-Match matches. Encode auth state in the etag so a logged-in user
-    # never gets the anonymous body served back from their cache, and so a
-    # starkast user doesn't share an etag with non-starkast.
-    etag [@page.sha1, logged_in? ? "a" : "p", starkast? ? "s" : "u"].join("-")
-
+    etag_for_page(@page)
     haml :show
   end
 
