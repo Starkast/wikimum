@@ -43,15 +43,28 @@ class BaseController < Sinatra::Base
   # Treat a session containing only these (and an empty __FLASH__) as empty.
   SESSION_NOISE_KEYS = %w[session_id __FLASH__].freeze
 
+  def session_has_real_data?
+    data = session.to_hash.reject { |k, _| SESSION_NOISE_KEYS.include?(k.to_s) }
+    return true unless data.empty?
+    flash = session["__FLASH__"]
+    flash.is_a?(Hash) && flash.any?
+  end
+
+  before do
+    # Snapshot whether the request *arrived* with a populated session so the
+    # after-filter can tell anonymous-throughout (skip the cookie, lets nginx
+    # cache) apart from logout-this-request (must write a fresh cookie to
+    # overwrite the browser's signed login cookie — see `/authorize/reset`).
+    @session_had_real_data_on_entry = session_has_real_data?
+  end
+
   after do
     session_options = request.env["rack.session.options"]
     next unless session_options
+    next if @session_had_real_data_on_entry
+    next if session_has_real_data?
 
-    data = session.to_hash.reject { |k, _| SESSION_NOISE_KEYS.include?(k.to_s) }
-    flash = session["__FLASH__"]
-    has_pending_flash = flash.is_a?(Hash) && flash.any?
-
-    session_options[:skip] = true if data.empty? && !has_pending_flash
+    session_options[:skip] = true
   end
 
   helpers do
