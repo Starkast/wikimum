@@ -18,7 +18,12 @@ class PageController < BaseController
   end
 
   get '/' do
-    @page = Page.order(:id).first || Page.new(title: "Förstasidan")
+    @page = Page
+      .select(:id, :slug, :title, :concealed, :revision, :updated_on, :compiled_content, :author_id)
+      .eager_graph(:author)
+      .order(:id)
+      .all
+      .first || Page.new(title: "Förstasidan")
 
     if @page.new? && logged_in?
       redirect "new"

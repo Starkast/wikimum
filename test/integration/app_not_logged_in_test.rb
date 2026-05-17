@@ -29,6 +29,17 @@ class AppNotLoggedInTest < Minitest::Test
     assert last_response.ok?
   end
 
+  def test_root_uses_one_query_and_renders_author
+    queries = capture_db_queries { get "/" }
+
+    assert last_response.ok?
+    assert_includes last_response.body, @page.title
+    assert_match(/av\s+#{Regexp.escape(@user.login)}/, last_response.body,
+      "expected author login rendered by _actions partial")
+    assert_equal 1, queries.size,
+      "GET / should use one DB query, got #{queries.size}: #{queries.inspect}"
+  end
+
   def test_page
     get "/#{CGI.escape(@page.slug)}"
     assert last_response.body.include?(@page_title)
