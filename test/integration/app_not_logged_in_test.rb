@@ -29,6 +29,15 @@ class AppNotLoggedInTest < Minitest::Test
     assert last_response.ok?
   end
 
+  def test_session_cookie_is_named_wikimum_session
+    # Cookie name must be `wikimum_session` (no dot) so nginx in front can
+    # reference it as `$cookie_wikimum_session` for cache-bypass rules.
+    get "/"
+    cookie = last_response.headers["Set-Cookie"].to_s
+    assert_match(/^wikimum_session=/, cookie,
+      "expected wikimum_session= prefix, got: #{cookie.inspect}")
+  end
+
   def test_root_uses_one_bounded_query_and_renders_author
     # Create extra pages so the route can't accidentally fetch the whole
     # table — `Page.eager_graph(:author).all.first` without LIMIT would

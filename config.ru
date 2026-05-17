@@ -29,6 +29,7 @@ if App.redirect_to_https?
 end
 
 use Rack::Session::Cookie,
+  key: 'wikimum_session',
   same_site: :lax,
   secret: ENV.fetch('SESSION_SECRET'),
   expire_after: 60 * 60 * 24 * 365
