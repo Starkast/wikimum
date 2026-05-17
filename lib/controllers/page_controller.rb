@@ -52,10 +52,14 @@ class PageController < BaseController
 
   get '/search' do
     @page_title = "Sökresultat"
-    @pages = Page.with_concealed_if(starkast?).search(params[:q])
     @q = params[:q]
+    @pages = Page
+      .select(:id, :slug, :title, :concealed, :description)
+      .with_concealed_if(starkast?)
+      .search(params[:q])
+      .all
 
-    case @pages.count
+    case @pages.size
     when 0
       flash[:notice] = "Din sökning gav inga träffar"
       redirect request.referrer
@@ -63,7 +67,7 @@ class PageController < BaseController
       flash[:confirm] = "Din sökning gav bara denna sida som träff"
       redirect @pages.first.slug
     else
-      flash.now[:confirm] = "Din sökning gav #{@pages.count} träffar"
+      flash.now[:confirm] = "Din sökning gav #{@pages.size} träffar"
       haml :search
     end
   end

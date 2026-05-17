@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "cgi"
+
 require_relative "../test_helper"
 require_relative "../integration_test_helper"
 
@@ -80,5 +82,34 @@ class AppConcealedPagesTest < Minitest::Test
     get "/list"
     assert last_response.body.include?(@page_title)
     assert last_response.ok?
+  end
+
+  def test_search_does_not_leak_concealed_pages
+    visible1 = Page.create(title: "Visible ÅÄÖ one", author: @user)
+    visible2 = Page.create(title: "Visible ÅÄÖ two", author: @user)
+
+    get "/search?q=#{CGI.escape('ÅÄÖ')}"
+
+    assert last_response.ok?
+    refute last_response.body.include?(@page_title),
+      "concealed page should not appear in search results for non-starkast users"
+    assert last_response.body.include?(visible1.title)
+    assert last_response.body.include?(visible2.title)
+  ensure
+    visible1&.destroy
+    visible2&.destroy
+  end
+
+  def test_search_includes_concealed_pages_when_logged_in_as_starkast
+    login_as_starkast
+    visible = Page.create(title: "Visible ÅÄÖ", author: @user)
+
+    get "/search?q=#{CGI.escape('ÅÄÖ')}"
+
+    assert last_response.ok?
+    assert last_response.body.include?(@page_title)
+    assert last_response.body.include?(visible.title)
+  ensure
+    visible&.destroy
   end
 end
