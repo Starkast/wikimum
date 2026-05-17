@@ -22,6 +22,7 @@ class PageController < BaseController
       .select(:id, :slug, :title, :concealed, :revision, :updated_on, :compiled_content, :author_id)
       .eager_graph(:author)
       .order(:id)
+      .limit(1)
       .all
       .first || Page.new(title: "Förstasidan")
 
@@ -218,6 +219,7 @@ class PageController < BaseController
       .select(:id, :slug, :title, :concealed, :revision, :updated_on, :compiled_content, :author_id)
       .eager_graph(:author)
       .where(slug: slug)
+      .limit(1)
       .all
       .first
     redirect "new/#{slug}" unless @page
