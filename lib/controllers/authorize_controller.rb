@@ -33,6 +33,16 @@ class AuthorizeController < BaseController
   get '/reset' do
     session.clear
 
+    # Clearing the session in memory isn't enough: rack-session would still
+    # write a fresh signed `wikimum_session=<empty>` cookie on the way out,
+    # which keeps tripping `proxy_cache_bypass $cookie_wikimum_session` in
+    # nginx for every subsequent anonymous request (X-Cache-Status: BYPASS)
+    # until the cookie expires a year later. Tell rack-session to skip the
+    # commit and write an explicit deletion cookie instead, so the browser
+    # actually drops it and post-logout requests can HIT the page cache.
+    request.env["rack.session.options"][:drop] = true
+    response.delete_cookie('wikimum_session', path: '/')
+
     redirect back
   end
 
