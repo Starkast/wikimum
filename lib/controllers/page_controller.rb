@@ -209,7 +209,12 @@ class PageController < BaseController
   end
 
   get '/:slug' do
-    @page = Page.find(slug: slug)
+    @page = Page
+      .select(:id, :slug, :title, :concealed, :revision, :updated_on, :compiled_content, :author_id)
+      .eager_graph(:author)
+      .where(slug: slug)
+      .all
+      .first
     redirect "new/#{slug}" unless @page
     @page_title = @page.title
     restrict_concealed(@page)

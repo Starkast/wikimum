@@ -35,6 +35,28 @@ class AppNotLoggedInTest < Minitest::Test
     assert last_response.ok?
   end
 
+  def test_page_show_uses_one_query_and_renders_author
+    queries = []
+    counting = Logger.new(File::NULL).tap do |l|
+      l.define_singleton_method(:add) do |_severity, message = nil, progname = nil|
+        sql = message || progname
+        queries << sql if sql.is_a?(String)
+        true
+      end
+    end
+    DB.loggers << counting
+    begin
+      get "/#{CGI.escape(@page.slug)}"
+    ensure
+      DB.loggers.delete(counting)
+    end
+
+    assert last_response.ok?
+    assert_includes last_response.body, @page_title
+    assert_match(/av\s+#{Regexp.escape(@user.login)}/, last_response.body, "expected author login rendered by _actions partial")
+    assert_equal 1, queries.size, "GET /:slug should use one DB query, got #{queries.size}: #{queries.inspect}"
+  end
+
   def test_nonexistent_page
     random_slug = SecureRandom.hex
     get "/#{random_slug}"
