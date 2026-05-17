@@ -112,4 +112,31 @@ class AppConcealedPagesTest < Minitest::Test
   ensure
     visible&.destroy
   end
+
+  def test_etag_does_not_short_circuit_concealed_redirect_for_anonymous
+    # Anonymous visitor sends an If-None-Match that *would* match the etag
+    # computed for an anonymous view of this concealed page. The auth-gate
+    # (restrict_concealed) must run BEFORE the etag check so the 304
+    # path can't bypass authorization. If the order ever swaps, a 304 is
+    # returned instead of the 302 redirect.
+    # Sinatra's `etag` helper wraps the value in double quotes per HTTP spec,
+    # so If-None-Match must match the quoted form to actually short-circuit.
+    matching_etag = %("#{[@page.sha1, "c", "p", "u"].join("-")}")
+    header "If-None-Match", matching_etag
+
+    get "/#{@page.slug_for_uri}"
+
+    refute_equal 304, last_response.status,
+      "etag check must run after restrict_concealed; got 304 — auth gate bypassed"
+    assert_equal 302, last_response.status
+  end
+
+  def test_etag_encodes_starkast_audience_with_s_suffix
+    login_as_starkast
+    get "/#{@page.slug_for_uri}"
+
+    assert last_response.ok?
+    assert_match(/-a-s\b/, last_response.headers["ETag"].to_s,
+      "starkast ETag should end with -a-s, got #{last_response.headers["ETag"].inspect}")
+  end
 end

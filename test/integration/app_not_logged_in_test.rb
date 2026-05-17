@@ -103,6 +103,21 @@ class AppNotLoggedInTest < Minitest::Test
     assert_empty last_response.body
   end
 
+  def test_page_does_not_304_anonymous_request_holding_a_logged_in_etag
+    # Anonymous request, but the browser is presenting an etag that would
+    # only have been issued for a logged-in audience. The server's etag for
+    # this request bucket differs (audience suffix), so If-None-Match must
+    # not match — full 200 response, not 304.
+    # Quoted per HTTP ETag syntax (Sinatra's `etag` helper wraps values).
+    fake_authed_etag = %("#{[@page.sha1, "x", "a", "u"].join("-")}")
+    header "If-None-Match", fake_authed_etag
+
+    get "/#{CGI.escape(@page.slug)}"
+
+    assert_equal 200, last_response.status,
+      "anonymous request must not 304 against a logged-in audience etag"
+  end
+
   def test_page_show_uses_one_query_and_renders_author
     queries = []
     counting = Logger.new(File::NULL).tap do |l|

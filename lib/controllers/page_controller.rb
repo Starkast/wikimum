@@ -17,11 +17,30 @@ class PageController < BaseController
     end
 
     # Halts the response with 304 before the view renders when the browser's
-    # If-None-Match matches. The audience suffix (a/p for logged_in?, s/u for
-    # starkast?) keeps anonymous and authed renders in separate cache buckets
-    # so neither audience can receive the other's body back from a 304.
+    # If-None-Match matches. Components of the etag value:
+    #
+    #   - page.sha1 — content fingerprint, recomputed in Page#before_save.
+    #   - page.concealed — `post '/:slug/conceal'` uses `page.this.update` and
+    #     deliberately bypasses before_save, so sha1 doesn't reflect
+    #     concealment toggles. Mix it in explicitly so the etag is in sync
+    #     with what _actions.haml renders.
+    #   - audience suffix (a/p for logged_in?, s/u for starkast?) — keeps
+    #     anonymous, authed-not-starkast, and starkast renders in separate
+    #     cache buckets so neither audience can receive another's body back
+    #     from a 304.
+    #
+    # The audience suffix is defence in depth, not the access policy. Two
+    # different logged-in users share the same etag but have different
+    # `current_user.login` rendered in the layout — they must not be allowed
+    # to share a cached body. Authed responses set Cache-Control: private to
+    # keep them out of shared caches.
     def etag_for_page(page)
-      etag [page.sha1, logged_in? ? "a" : "p", starkast? ? "s" : "u"].join("-")
+      etag [
+        page.sha1,
+        page.concealed ? "c" : "x",
+        logged_in? ? "a" : "p",
+        starkast? ? "s" : "u",
+      ].join("-")
     end
   end
 
