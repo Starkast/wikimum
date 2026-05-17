@@ -1,14 +1,19 @@
 # frozen_string_literal: true
 
-require "base64"
 require "fileutils"
+require "securerandom"
 require "tempfile"
 
 class BackupController < Sinatra::Base
+  # Holds Tempfile objects between the POST that creates them and the
+  # follow-up download. Without a strong reference, Tempfile's finalizer
+  # could delete the dump file on the next GC — turning the redirected
+  # download into a 404 race.
+  PENDING_DUMPS = {} # rubocop:disable Style/MutableConstant
+  PENDING_DUMPS_LOCK = Mutex.new
+
   post "/" do
-    dump_path    = create_sql_tempfile("dump").path
-    rel_path     = dump_path.split(backup_tmpdir).last
-    encoded_path = Base64.urlsafe_encode64(rel_path)
+    tempfile = create_sql_tempfile("dump")
 
     dump_command = [
       "pg_dump",
@@ -16,25 +21,22 @@ class BackupController < Sinatra::Base
       "#{ENV.fetch('DATABASE_URL')}",
     ]
 
-    system(*dump_command, out: dump_path, exception: true)
+    system(*dump_command, out: tempfile.path, exception: true)
 
-    # From https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/307
-    #
-    # > 307 guarantees that the method and the body will not be changed when the
-    # > redirected request is made
-    #
-    # curl respects the original method even for 303 redirects
-    # despite the man page stating the opposite (curl 7.84.0)
-    # rack-test only preseerve original method for 307 redirects
-    #
-    redirect url("/download/#{encoded_path}"), 307
+    token = SecureRandom.urlsafe_base64(16)
+    PENDING_DUMPS_LOCK.synchronize { PENDING_DUMPS[token] = tempfile }
+
+    # 307 preserves the original POST method on redirect (per RFC 7231).
+    redirect url("/download/#{token}"), 307
   end
 
-  post "/download/:encoded_path" do
-    rel_path  = Base64.urlsafe_decode64(params.fetch("encoded_path"))
-    dump_path = File.join(backup_tmpdir, rel_path)
+  post "/download/:token" do
+    tempfile = PENDING_DUMPS_LOCK.synchronize do
+      PENDING_DUMPS.delete(params.fetch("token"))
+    end
+    halt 404, "Backup not found" unless tempfile
 
-    send_file dump_path, type: "text/plain"
+    send_file tempfile.path, type: "text/plain"
   end
 
   helpers do

@@ -62,6 +62,26 @@ class AppBackupTest < Minitest::Test
     assert_backup(maintenance_mode: true)
   end
 
+  def test_backup_survives_garbage_collection_between_redirect_and_download
+    # Regression for the Tempfile-GC race: the controller used to keep only
+    # `Tempfile.new(...).path` (a string), so once the POST returned the
+    # Tempfile object had no Ruby references and could be collected — taking
+    # the dump file with it. The follow-up download then 404'd. Forcing GC
+    # between the two requests pins the bug deterministically.
+    ClimateControl.modify(BACKUP_USER: "user", BACKUP_PASSWORD: "pass") do
+      basic_authorize "user", "pass"
+      post "/.backup"
+
+      GC.start
+      GC.start
+
+      follow_redirect!
+
+      assert_equal 200, last_response.status,
+        "download must succeed even if GC ran between the redirect and the follow-up request"
+    end
+  end
+
   def test_backup_without_auth
     post "/.backup"
 
