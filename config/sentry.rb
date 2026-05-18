@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "sentry-ruby"
+require "httpx"
 require "httpx/adapters/sentry"
 require "logger"
 
