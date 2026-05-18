@@ -1,8 +1,5 @@
 # Wikimum
 
-[![GitHub Build Status](https://github.com/Starkast/wikimum/workflows/CI/badge.svg)](https://github.com/Starkast/wikimum/actions)
-[![Code Climate](https://codeclimate.com/github/Starkast/wikimum/badges/gpa.svg)](https://codeclimate.com/github/Starkast/wikimum)
-
 Next Generation Wikimum!
 
 _This application is under active development and should not be used in production yet_.
