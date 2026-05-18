@@ -2,6 +2,9 @@
 
 require "climate_control"
 require "minitest/autorun"
+require "webmock"
+require "httpx"
+require "httpx/adapters/webmock"
 require "webmock/minitest"
 
 # Enable filtered warnings
