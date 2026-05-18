@@ -29,6 +29,52 @@ class AppNotLoggedInTest < Minitest::Test
     assert last_response.ok?
   end
 
+  def test_session_cookie_is_named_wikimum_session
+    # Cookie name must be `wikimum_session` (no dot) so nginx in front can
+    # reference it as `$cookie_wikimum_session` for cache-bypass rules.
+    # Populate the session so the cookie actually gets written — anonymous
+    # GETs skip Set-Cookie now (see test_anonymous_get_does_not_set_a_session_cookie).
+    env "rack.session", { login: @user.login, user_id: @user.id }
+    get "/"
+    cookie = last_response.headers["Set-Cookie"].to_s
+    assert_match(/^wikimum_session=/, cookie,
+      "expected wikimum_session= prefix, got: #{cookie.inspect}")
+  end
+
+  def test_anonymous_get_does_not_set_a_session_cookie
+    # Layout reads `session[:login]` via the `logged_in?` helper, which loads
+    # the session. Rack::Session::Cookie's commit logic then writes Set-Cookie
+    # for every response that touched the session at all. We don't want that
+    # for anonymous responses — both because there is no useful state to
+    # persist and because the Set-Cookie header prevents nginx in front from
+    # caching the response.
+    get "/"
+
+    refute_includes last_response.headers.fetch("Set-Cookie", ""), "rack.session=",
+      "anonymous GET should not write a session cookie"
+    refute_includes last_response.headers.fetch("Set-Cookie", ""), "wikimum_session=",
+      "anonymous GET should not write a session cookie"
+  end
+
+  def test_root_sets_etag_header_for_anonymous_visitors
+    get "/"
+    assert last_response.ok?
+    assert_match(/-p-u\b/, last_response.headers["ETag"].to_s,
+      "anonymous ETag should end with -p-u, got #{last_response.headers["ETag"].inspect}")
+  end
+
+  def test_root_returns_304_when_etag_matches
+    get "/"
+    etag = last_response.headers["ETag"]
+    refute_nil etag
+
+    header "If-None-Match", etag
+    get "/"
+
+    assert_equal 304, last_response.status
+    assert_empty last_response.body
+  end
+
   def test_root_uses_one_bounded_query_and_renders_author
     # Create extra pages so the route can't accidentally fetch the whole
     # table — `Page.eager_graph(:author).all.first` without LIMIT would
@@ -49,10 +95,64 @@ class AppNotLoggedInTest < Minitest::Test
     extras&.each(&:destroy)
   end
 
+  def test_anonymous_page_view_sends_revalidating_cache_control
+    get "/#{CGI.escape(@page.slug)}"
+    cc = last_response.headers["Cache-Control"].to_s
+    assert_includes cc, "public"
+    # no-cache forces browser revalidation on every navigation so a fresh
+    # login-state chrome shows up immediately rather than after max-age expires.
+    assert_includes cc, "no-cache"
+    # s-maxage lets nginx (shared cache) hold the response longer than the
+    # browser; revalidation against the upstream ETag stays cheap.
+    assert_includes cc, "s-maxage=600"
+  end
+
+  def test_anonymous_index_sends_public_cache_control
+    get "/list"
+    cc = last_response.headers["Cache-Control"].to_s
+    assert_includes cc, "public"
+    assert_includes cc, "no-cache"
+  end
+
   def test_page
     get "/#{CGI.escape(@page.slug)}"
     assert last_response.body.include?(@page_title)
     assert last_response.ok?
+  end
+
+  def test_page_sets_etag_header_for_anonymous_visitors
+    get "/#{CGI.escape(@page.slug)}"
+    assert last_response.ok?
+    # Encoded suffix: -<a|p>-<s|u> = anonymous, not starkast
+    assert_match(/-p-u\b/, last_response.headers["ETag"].to_s,
+      "anonymous ETag should end with -p-u, got #{last_response.headers["ETag"].inspect}")
+  end
+
+  def test_page_returns_304_when_etag_matches
+    get "/#{CGI.escape(@page.slug)}"
+    etag = last_response.headers["ETag"]
+    refute_nil etag
+
+    header "If-None-Match", etag
+    get "/#{CGI.escape(@page.slug)}"
+
+    assert_equal 304, last_response.status
+    assert_empty last_response.body
+  end
+
+  def test_page_does_not_304_anonymous_request_holding_a_logged_in_etag
+    # Anonymous request, but the browser is presenting an etag that would
+    # only have been issued for a logged-in audience. The server's etag for
+    # this request bucket differs (audience suffix), so If-None-Match must
+    # not match — full 200 response, not 304.
+    # Quoted per HTTP ETag syntax (Sinatra's `etag` helper wraps values).
+    fake_authed_etag = %("#{[@page.sha1, "x", "a", "u"].join("-")}")
+    header "If-None-Match", fake_authed_etag
+
+    get "/#{CGI.escape(@page.slug)}"
+
+    assert_equal 200, last_response.status,
+      "anonymous request must not 304 against a logged-in audience etag"
   end
 
   def test_page_show_uses_one_query_and_renders_author
