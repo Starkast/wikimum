@@ -261,6 +261,15 @@ class AppNotLoggedInTest < Minitest::Test
     other&.destroy
   end
 
+  def test_search_no_hits_renders_in_place
+    random_query = SecureRandom.hex
+    get "/search", q: random_query
+
+    assert last_response.ok?, "expected 200, got #{last_response.status}"
+    assert last_response.body.include?("Din sökning gav inga träffar")
+    assert last_response.body.include?("Sökresultat")
+  end
+
   def test_search_results_are_noindex
     other_page = Page.create(title: "Test annan sida", author: @user)
     get "/search?q=Test"
