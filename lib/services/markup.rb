@@ -9,8 +9,8 @@ class Markup
     return "" if content.nil? || content.empty?
 
     text_filters = [
-      MarkdownFilter,
-      WikiLinkFilter,
+      MarkdownFilter.new,
+      WikiLinkFilter.new,
     ]
     pipeline = HTMLPipeline.new(text_filters:)
     pipeline.to_html(content, context: {}, result: {})
@@ -35,7 +35,7 @@ class MarkdownFilter < HTMLPipeline::TextFilter
   }.freeze
   COMMONMARKER_PLUGINS = { syntax_highlighter: nil }.freeze
 
-  def call
+  def call(text, context: {}, result: {})
     Commonmarker.to_html(text, options: COMMONMARKER_OPTIONS, plugins: COMMONMARKER_PLUGINS)
   end
 end
@@ -43,9 +43,8 @@ end
 class WikiLinkFilter < HTMLPipeline::TextFilter
   WIKI_LINK_REGEXP = /\[\[(?<link>[\d\w\sÅÄÖåäö:-]{1,35})\]\]/i.freeze
 
-  def call
-    content = text
-    content.gsub(WIKI_LINK_REGEXP) do |word|
+  def call(text, context: {}, result: {})
+    text.gsub(WIKI_LINK_REGEXP) do |word|
       link = word.match(WIKI_LINK_REGEXP)[:link]
       %(<a href="/#{link}">#{link}</a>)
     end
