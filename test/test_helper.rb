@@ -2,7 +2,6 @@
 
 require "climate_control"
 require "minitest/autorun"
-require "minitest/unit"
 require "webmock/minitest"
 
 # Enable filtered warnings
