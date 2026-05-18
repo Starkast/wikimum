@@ -175,7 +175,7 @@ GEM
     unicode-emoji (4.0.4)
     uri (1.1.1)
     wait_for_it (0.2.1)
-    warning (1.5.0)
+    warning (1.6.0)
     webmock (3.25.1)
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
@@ -226,6 +226,7 @@ CHECKSUMS
   bake (0.24.1) sha256=8bfac7e61514b17720e3b13cf6a5e122243f43123c6802707b150904bec5f4c7
   base64 (0.3.0) sha256=27337aeabad6ffae05c265c450490628ef3ebd4b67be58257393227588f5a97b
   bigdecimal (4.0.1) sha256=8b07d3d065a9f921c80ceaea7c9d4ae596697295b584c296fe599dd0ad01c4a7
+  bundler (4.0.11) sha256=5bcec0fb78302e48d02ee46f10ee6e6942be647ba5b44a6d1ddfda9a240ce785
   climate_control (1.2.0) sha256=36b21896193fa8c8536fa1cd843a07cf8ddbd03aaba43665e26c53ec1bd70aa5
   commonmarker (2.8.2-aarch64-linux) sha256=715a5df28e5c1ec7b520e6441466062e9717b82193d2a5bd11a9c94f2f1e15f0
   commonmarker (2.8.2-arm64-darwin) sha256=cd7364f1fb9735d60218e4af0a4afbbeedbc465eb81cccca56f29a4efe2b5013
@@ -312,7 +313,7 @@ CHECKSUMS
   unicode-emoji (4.0.4) sha256=2c2c4ef7f353e5809497126285a50b23056cc6e61b64433764a35eff6c36532a
   uri (1.1.1) sha256=379fa58d27ffb1387eaada68c749d1426738bd0f654d812fcc07e7568f5c57c6
   wait_for_it (0.2.1) sha256=4693f1ba31a0691851fb43bcedba51a6f749a8a64b088972d91e91d11d471b25
-  warning (1.5.0) sha256=0f12c49fea0c06757778eefdcc7771e4fd99308901e3d55c504d87afdd718c53
+  warning (1.6.0) sha256=a49cdfae19fb77d19afff2efbe45f8ab759e9cd25b4e4ce2c79dbaf46bdb6c9e
   webmock (3.25.1) sha256=ab9d5d9353bcbe6322c83e1c60a7103988efc7b67cd72ffb9012629c3d396323
   zeitwerk (2.7.4) sha256=2bef90f356bdafe9a6c2bd32bcd804f83a4f9b8bc27f3600fff051eb3edcec8b
 
