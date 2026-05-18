@@ -131,7 +131,7 @@ GEM
     samovar (2.4.1)
       console (~> 1.0)
       mapping (~> 1.0)
-    sawyer (0.9.2)
+    sawyer (0.9.3)
       addressable (>= 2.3.5)
       faraday (>= 0.17.3, < 3)
     selma (0.4.11-aarch64-linux)
@@ -286,7 +286,7 @@ CHECKSUMS
   rubocop-ast (1.49.1) sha256=4412f3ee70f6fe4546cc489548e0f6fcf76cafcfa80fa03af67098ffed755035
   ruby-progressbar (1.13.0) sha256=80fc9c47a9b640d6834e0dc7b3c94c9df37f08cb072b7761e4a71e22cff29b33
   samovar (2.4.1) sha256=c3b91dd0580771e3bc600621c1111f29542529dcffafaac3b6bf068b3f309e80
-  sawyer (0.9.2) sha256=fa3a72d62a4525517b18857ddb78926aab3424de0129be6772a8e2ba240e7aca
+  sawyer (0.9.3) sha256=0d0f19298408047037638639fe62f4794483fb04320269169bd41af2bdcf5e41
   selma (0.4.11-aarch64-linux) sha256=5f56bb62028ebc6a1436d8235a121f7a626638ed961ae5eea1dafd22faab3999
   selma (0.4.11-arm64-darwin) sha256=2abb7ddb303db57e3d5ba95bf9fe1fcb35fce38b3fb53c67da7c2aee51def213
   selma (0.4.11-x86_64-darwin) sha256=d8bd2fafbab417b870626dd3c1135a087b55f6013d44534d8367e6c59519b8d5
