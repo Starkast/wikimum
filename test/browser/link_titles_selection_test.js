@@ -21,10 +21,24 @@ describe('Link titles selection feature', { timeout: 30000 }, () => {
   let page;
 
   before(async () => {
+    // `--disable-dev-shm-usage` is required on GitHub Actions runners:
+    // /dev/shm there is ~64 MB, which makes Chromium crash silently during
+    // startup. The launcher then hits its 30 s "waiting for WS endpoint"
+    // timeout, exactly as we kept seeing in CI. `--disable-gpu` is the
+    // standard headless-on-Linux companion.
     browser = await puppeteer.launch({
       executablePath: '/usr/bin/chromium',
       headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
+      // Surface Chromium's own stderr in the test runner log so the next
+      // time it dies during startup we see the real error, not just our
+      // own launch timeout.
+      dumpio: true,
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-gpu',
+      ],
     });
     page = await browser.newPage();
 
