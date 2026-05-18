@@ -270,6 +270,17 @@ class AppNotLoggedInTest < Minitest::Test
     assert last_response.body.include?("Sökresultat")
   end
 
+  def test_search_results_are_noindex
+    other_page = Page.create(title: "Test annan sida", author: @user)
+    get "/search?q=Test"
+
+    assert last_response.ok?
+    assert_match(/name=['"]robots['"]/, last_response.body)
+    assert_match(/content=['"]noindex['"]/, last_response.body)
+  ensure
+    other_page&.destroy
+  end
+
   def capture_db_queries
     logger = Logger.new(File::NULL)
     captured = []
