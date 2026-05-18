@@ -39,7 +39,7 @@ GEM
     http-accept (1.7.0)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
-    httpx (1.7.6)
+    httpx (1.7.8)
       http-2 (>= 1.1.3)
     json (2.13.2)
     language_server-protocol (3.17.0.5)
@@ -209,6 +209,7 @@ CHECKSUMS
   ast (2.4.3) sha256=954615157c1d6a382bc27d690d973195e79db7f55e9765ac7c481c60bdb4d383
   base64 (0.3.0) sha256=27337aeabad6ffae05c265c450490628ef3ebd4b67be58257393227588f5a97b
   bigdecimal (4.0.1) sha256=8b07d3d065a9f921c80ceaea7c9d4ae596697295b584c296fe599dd0ad01c4a7
+  bundler (4.0.11) sha256=5bcec0fb78302e48d02ee46f10ee6e6942be647ba5b44a6d1ddfda9a240ce785
   climate_control (1.2.0) sha256=36b21896193fa8c8536fa1cd843a07cf8ddbd03aaba43665e26c53ec1bd70aa5
   commonmarker (2.8.2-aarch64-linux) sha256=715a5df28e5c1ec7b520e6441466062e9717b82193d2a5bd11a9c94f2f1e15f0
   commonmarker (2.8.2-arm64-darwin) sha256=cd7364f1fb9735d60218e4af0a4afbbeedbc465eb81cccca56f29a4efe2b5013
@@ -228,7 +229,7 @@ CHECKSUMS
   http-2 (1.1.3) sha256=1b2f379d35a11dbae94f8a1a52c053d8c161eb4a0c98b5d1605ff1b2bf171c9c
   http-accept (1.7.0) sha256=c626860682bfbb3b46462f8c39cd470fd7b0584f61b3cc9df5b2e9eb9972a126
   http-cookie (1.0.3) sha256=2f11269d817bc52ab2af2721e89a377660a961078de2a3a55fc696d7897e8c00
-  httpx (1.7.6) sha256=82d825abc9876a132adc3492c56a0c528478ac238dd6f74d3422ab0036c6b5c8
+  httpx (1.7.8) sha256=6d769465ed608287a272ba0e4700fc22cee6f0335d80bd5c2effaf7fb7bd2a3a
   json (2.13.2) sha256=02e1f118d434c6b230a64ffa5c8dee07e3ec96244335c392eaed39e1199dbb68
   language_server-protocol (3.17.0.5) sha256=fd1e39a51a28bf3eec959379985a72e296e9f9acfce46f6a79d31ca8760803cc
   lint_roller (1.1.0) sha256=2c0c845b632a7d172cb849cc90c1bce937a28c5c8ccccb50dfd46a485003cc87
