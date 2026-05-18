@@ -271,6 +271,9 @@ class PageController < BaseController
   end
 
   get '/:slug' do
+    if params[:slug].include?(" ")
+      redirect "/#{params[:slug].tr(' ', '_')}", 301
+    end
     @page = Page
       .select(:id, :slug, :title, :concealed, :revision, :updated_on, :compiled_content, :author_id, :sha1)
       .eager_graph(:author)
