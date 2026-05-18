@@ -31,6 +31,39 @@ class AppLoggedInTest < Minitest::Test
     @user.destroy
   end
 
+  def test_logged_in_response_still_sets_session_cookie
+    # Counterpart to test_anonymous_get_does_not_set_a_session_cookie in
+    # app_not_logged_in_test: the skip-empty-session after-filter must NOT
+    # suppress Set-Cookie when the session actually holds login data.
+    get "/"
+    refute_empty last_response.headers["Set-Cookie"].to_s,
+      "logged-in responses must continue to write Set-Cookie"
+  end
+
+  def test_logout_deletes_the_session_cookie
+    # GET /authorize/reset must send a *deletion* Set-Cookie (empty value +
+    # past expiry), not just a fresh signed empty session. Otherwise the
+    # browser keeps a non-empty wikimum_session value, which keeps tripping
+    # nginx's `proxy_cache_bypass $cookie_wikimum_session` on every
+    # subsequent anonymous request for up to a year (X-Cache-Status: BYPASS
+    # instead of HIT).
+    get "/authorize/reset"
+
+    assert_equal 302, last_response.status
+    set_cookie = last_response.headers["Set-Cookie"].to_s
+    assert_match(/^wikimum_session=;/, set_cookie,
+      "logout cookie should be the deletion form (empty value), got: #{set_cookie.inspect}")
+    assert_match(/expires=Thu, 01 Jan 1970/i, set_cookie,
+      "logout cookie should expire in the past so the browser drops it, got: #{set_cookie.inspect}")
+  end
+
+  def test_logged_in_page_view_sends_private_no_store_cache_control
+    get "/#{CGI.escape(@page.slug)}"
+    cc = last_response.headers["Cache-Control"].to_s
+    assert_includes cc, "private"
+    assert_includes cc, "no-store"
+  end
+
   def test_create_page
     title = "Foo Bar Åäö"
     post "/new", title:, content: "foo bar baz"
@@ -64,6 +97,14 @@ class AppLoggedInTest < Minitest::Test
 
     assert last_response.body.include?(@page_title)
     assert last_response.ok?
+  end
+
+  def test_page_etag_encodes_logged_in_audience
+    get "/#{CGI.escape(@page.slug)}"
+    assert last_response.ok?
+    # Encoded suffix: -<a|p>-<s|u> = authed, not starkast
+    assert_match(/-a-u\b/, last_response.headers["ETag"].to_s,
+      "logged-in ETag should end with -a-u, got #{last_response.headers["ETag"].inspect}")
   end
 
   def test_page_edit_no_payload
