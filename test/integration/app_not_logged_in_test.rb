@@ -379,18 +379,18 @@ class AppNotLoggedInTest < Minitest::Test
     get "/"
 
     footer_html = <<~HTML
-      <div id='footer'>
+      <div id="footer">
       <hr>
       <ul>
       <li>
-      <a href='/cookies'>Om cookies</a>
+      <a href="/cookies">Om cookies</a>
       </li>
       <li>
       v42
-      (<a href='https://github.com/Starkast/wikimum/commit/#{AppMetadata.commit}'>#{AppMetadata.short_commit}</a>)
+      (<a href="https://github.com/Starkast/wikimum/commit/#{AppMetadata.commit}">#{AppMetadata.short_commit}</a>)
       </li>
       <li>
-      <img alt='Starkast' src='/favicon.ico'>
+      <img alt="Starkast" src="/favicon.ico">
       </li>
       </ul>
 
