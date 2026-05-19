@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'addressable/uri'
-require 'rest-client'
+require 'httpx'
 require 'json'
 
 module Authorize
@@ -11,15 +11,15 @@ module Authorize
   REDIRECT_URI_BASE_PATH = %q(/authorize/callback).freeze
 
   def access_token(code)
-    oauth_result = RestClient.post(GITHUB_OAUTH_TOKEN_URL,
-      {
-        client_id:     ENV.fetch('GITHUB_BASIC_CLIENT_ID'),
-        client_secret: ENV.fetch('GITHUB_BASIC_SECRET_ID'),
-        code:          code
-      },
-      accept: :json)
-
-    JSON.parse(oauth_result).fetch('access_token')
+    response = HTTPX.with(headers: { "accept" => "application/json" })
+                    .post(GITHUB_OAUTH_TOKEN_URL,
+                          form: {
+                            client_id:     ENV.fetch('GITHUB_BASIC_CLIENT_ID'),
+                            client_secret: ENV.fetch('GITHUB_BASIC_SECRET_ID'),
+                            code:          code,
+                          })
+    response.raise_for_status
+    JSON.parse(response.to_s).fetch('access_token')
   end
 
   def create_or_update_user(user_info)

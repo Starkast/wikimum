@@ -12,12 +12,26 @@ class AuthorizeTest < Minitest::Test
       GITHUB_BASIC_SECRET_ID: "fake_github_secret",
     }
 
-    stub_request(:post, Authorize::GITHUB_OAUTH_TOKEN_URL)
-      .to_return(body: { access_token: access_token }.to_json)
+    stub = stub_request(:post, Authorize::GITHUB_OAUTH_TOKEN_URL)
+      .with(
+        body: {
+          client_id: "fake_github_id",
+          client_secret: "fake_github_secret",
+          code: code,
+        },
+        headers: { "Accept" => "application/json" },
+      )
+      .to_return(
+        status: 200,
+        headers: { "Content-Type" => "application/json" },
+        body: { access_token: access_token }.to_json,
+      )
 
     ClimateControl.modify(test_env) do
       assert_equal access_token, Authorize.access_token(code)
     end
+
+    assert_requested(stub)
   end
 
   def test_construct_redirect_uri
