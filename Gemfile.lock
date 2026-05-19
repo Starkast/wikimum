@@ -118,10 +118,10 @@ GEM
     sawyer (0.9.3)
       addressable (>= 2.3.5)
       faraday (>= 0.17.3, < 3)
-    selma (0.4.11-aarch64-linux)
-    selma (0.4.11-arm64-darwin)
-    selma (0.4.11-x86_64-darwin)
-    selma (0.4.11-x86_64-linux)
+    selma (0.5.0-aarch64-linux)
+    selma (0.5.0-arm64-darwin)
+    selma (0.5.0-x86_64-darwin)
+    selma (0.5.0-x86_64-linux)
     sentry-ruby (6.5.0)
       bigdecimal
       concurrent-ruby (~> 1.0, >= 1.0.2)
@@ -261,10 +261,10 @@ CHECKSUMS
   ruby-progressbar (1.13.0) sha256=80fc9c47a9b640d6834e0dc7b3c94c9df37f08cb072b7761e4a71e22cff29b33
   samovar (2.4.1) sha256=c3b91dd0580771e3bc600621c1111f29542529dcffafaac3b6bf068b3f309e80
   sawyer (0.9.3) sha256=0d0f19298408047037638639fe62f4794483fb04320269169bd41af2bdcf5e41
-  selma (0.4.11-aarch64-linux) sha256=5f56bb62028ebc6a1436d8235a121f7a626638ed961ae5eea1dafd22faab3999
-  selma (0.4.11-arm64-darwin) sha256=2abb7ddb303db57e3d5ba95bf9fe1fcb35fce38b3fb53c67da7c2aee51def213
-  selma (0.4.11-x86_64-darwin) sha256=d8bd2fafbab417b870626dd3c1135a087b55f6013d44534d8367e6c59519b8d5
-  selma (0.4.11-x86_64-linux) sha256=e6eb4087c304b915b2f9dbda590677e1cf5dd1194f1b0caddd06a4830ae1e8b8
+  selma (0.5.0-aarch64-linux) sha256=991e9f1a49d401973995e1a181d752b3d03f22bc5d89bf2b205167ad0b87330c
+  selma (0.5.0-arm64-darwin) sha256=18ad9fa862a80f8ae3bdb19cb05a54456ba51d9cdb398dac0ba8a5b061d7ab79
+  selma (0.5.0-x86_64-darwin) sha256=c98d8b2b629d8aefdae40f6ede063cfae2014d4ecb43d2429a8302c1b73a3b5e
+  selma (0.5.0-x86_64-linux) sha256=12c00dc7dbe142eda730b2b6c38c3430902c3c88a192dfab5305313d1d79c85b
   sentry-ruby (6.5.0) sha256=3c57ae0d6a017aafcd9ac37114e38149a58534679dec5d4e9e8fc010b85f3a6b
   sequel (5.104.0) sha256=1521819b9204aa7f5c25b29fbb2a609ba3f6a82d2271f34f718e1169d31bf03e
   sequel_pg (1.19.0) sha256=cf384d09c6ea2c0ab31d1f95dcf12b0801b34829fe496ac102e43394498a82f3
