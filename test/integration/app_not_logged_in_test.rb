@@ -204,6 +204,24 @@ class AppNotLoggedInTest < Minitest::Test
     assert_includes last_response.body, @page_title
   end
 
+  def test_revision_lookup_handles_legacy_mixed_case_slug
+    # Revise! copies the page's slug into the revision row, so revisions of
+    # legacy pages inherited the same mixed-case slug as the page itself.
+    # /:slug/:revision must match them case-insensitively too.
+    @page.revise!
+    revision = Revision.where(page_id: @page.id, revision: 1).first
+    revision.this.update(slug: "Öppettider")
+
+    get "/#{CGI.escape("Öppettider")}/1"
+
+    assert last_response.ok?,
+      "GET /Öppettider/1 should find a revision stored with legacy uppercase slug, " \
+      "got #{last_response.status} -> #{last_response["Location"].inspect}"
+    assert_includes last_response.body, @page_title
+  ensure
+    revision&.destroy
+  end
+
   def test_new
     get "/new"
 
