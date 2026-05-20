@@ -5,6 +5,12 @@ class Revision < Sequel::Model
   many_to_one :page
   many_to_one :author, class: :User
 
+  dataset_module do
+    def with_slug(slug)
+      self.where(Sequel.function(:lower, :slug) => slug)
+    end
+  end
+
   def revisions
     self.page.revisions
   end

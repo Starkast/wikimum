@@ -16,6 +16,15 @@ class Page < Sequel::Model
       self.exclude(concealed: true)
     end
 
+    # Look up by slug case-insensitively. The route normalizes the request
+    # slug through Slug.slugify (which lowercases), but pages created before
+    # Slug.slugify started downcasing preserved their title's casing in the
+    # slug column — see GitHub issue #138. Comparing on `lower(slug)` keeps
+    # those legacy rows reachable.
+    def with_slug(slug)
+      self.where(Sequel.function(:lower, :slug) => slug)
+    end
+
     def search(query)
       terms = query.to_s.strip.split
 

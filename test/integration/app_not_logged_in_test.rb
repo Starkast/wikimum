@@ -188,6 +188,40 @@ class AppNotLoggedInTest < Minitest::Test
     assert_equal "/new/#{random_slug}", URI(redirect_location).path
   end
 
+  def test_page_lookup_handles_legacy_mixed_case_slug
+    # Pages created before Slug.slugify started downcasing kept their title's
+    # original casing in the slug column. The route normalizes the request
+    # slug through Slug.slugify (which lowercases), so a stored slug like
+    # 'Öppettider' would never match and the visitor was redirected to
+    # /new/öppettider. See GitHub issue #138.
+    @page.this.update(slug: "Öppettider")
+
+    get "/#{CGI.escape("Öppettider")}"
+
+    assert last_response.ok?,
+      "GET /Öppettider should find a page stored with legacy uppercase slug, " \
+      "got #{last_response.status} -> #{last_response["Location"].inspect}"
+    assert_includes last_response.body, @page_title
+  end
+
+  def test_revision_lookup_handles_legacy_mixed_case_slug
+    # Revise! copies the page's slug into the revision row, so revisions of
+    # legacy pages inherited the same mixed-case slug as the page itself.
+    # /:slug/:revision must match them case-insensitively too.
+    @page.revise!
+    revision = Revision.where(page_id: @page.id, revision: 1).first
+    revision.this.update(slug: "Öppettider")
+
+    get "/#{CGI.escape("Öppettider")}/1"
+
+    assert last_response.ok?,
+      "GET /Öppettider/1 should find a revision stored with legacy uppercase slug, " \
+      "got #{last_response.status} -> #{last_response["Location"].inspect}"
+    assert_includes last_response.body, @page_title
+  ensure
+    revision&.destroy
+  end
+
   def test_new
     get "/new"
 
