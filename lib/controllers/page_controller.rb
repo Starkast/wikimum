@@ -180,7 +180,7 @@ class PageController < BaseController
   end
 
   get '/:slug/edit' do
-    @page = Page.find(slug: slug)
+    @page = Page.with_slug(slug).first
     unless logged_in?
       flash[:error] = "Not authorized to edit!"
       if @page
@@ -207,7 +207,7 @@ class PageController < BaseController
   get '/:slug/uploads/:id/:filename?' do |_, id, _|
     upload = Upload[id.to_i]
     halt 404, "Upload not found" unless upload
-    halt 404, "Upload not found" unless upload.page.slug == slug
+    halt 404, "Upload not found" unless upload.page.slug.downcase == slug
     halt 404, "Upload not found" if upload.page.concealed && !starkast?
 
     # uploads to concealed pages should only be cached in a private cache,
@@ -221,7 +221,7 @@ class PageController < BaseController
   end
 
   get '/:slug/uploads' do
-    page = Page.find(slug: slug)
+    page = Page.with_slug(slug).first
     halt 404, "Page not found" unless page
     restrict_concealed(page)
 
@@ -232,7 +232,7 @@ class PageController < BaseController
   post '/:slug/uploads' do
     halt 401, "Not authorized" unless logged_in?
 
-    page = Page.find(slug: slug)
+    page = Page.with_slug(slug).first
     halt 404, "Page not found" unless page
     restrict_concealed(page)
 
@@ -257,7 +257,7 @@ class PageController < BaseController
 
     upload = Upload[id.to_i]
     halt 404, "Upload not found" unless upload
-    halt 404, "Upload not found" unless upload.page.slug == slug
+    halt 404, "Upload not found" unless upload.page.slug.downcase == slug
     restrict_concealed(upload.page)
 
     upload.destroy
@@ -274,7 +274,7 @@ class PageController < BaseController
     @page = Page
       .select(:id, :slug, :title, :concealed, :revision, :updated_on, :compiled_content, :author_id, :sha1)
       .eager_graph(:author)
-      .where(slug: slug)
+      .with_slug(slug)
       .limit(1)
       .all
       .first
@@ -287,7 +287,7 @@ class PageController < BaseController
   end
 
   get '/:slug/:revision' do |_, revision|
-    @page = Revision.where(slug: slug, revision: revision.to_i).first
+    @page = Revision.with_slug(slug).where(revision: revision.to_i).first
     redirect "#{slug}" unless @page
     @page_title = "#{@page.title} (#{revision})"
     restrict_concealed(@page)
@@ -298,7 +298,7 @@ class PageController < BaseController
   post '/:slug' do
     halt 400, "Missing title" if params[:title].to_s.empty?
 
-    page = Page.find(slug: slug)
+    page = Page.with_slug(slug).first
     restrict_concealed(page)
     page.revise!
     page.set_fields(params, %i(title content description comment))
@@ -309,7 +309,7 @@ class PageController < BaseController
   end
 
   post '/:slug/conceal' do
-    page = Page.find(slug: slug)
+    page = Page.with_slug(slug).first
     restrict_concealed(page)
 
     # intentionally avoid Page save hook
