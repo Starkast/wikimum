@@ -344,8 +344,7 @@ class AppNotLoggedInTest < Minitest::Test
     }
 
     github_api_headers = {
-      "Authorization" => "token #{access_token}",
-      "Content-Type" =>"application/json",
+      "Authorization" => "Bearer #{access_token}",
     }
 
     ClimateControl.modify(github_api_credentials) do
@@ -359,7 +358,7 @@ class AppNotLoggedInTest < Minitest::Test
 
       stub_request(:get, "https://api.github.com/orgs/starkast/members/#{user}")
         .with(headers: github_api_headers)
-        .to_return_json(body: {})
+        .to_return(status: 204)
 
       get "/authorize/callback?code=#{code}"
 
