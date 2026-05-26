@@ -12,8 +12,7 @@
     %link{ href: "/stylesheets/default.css?#{App.cache_bust}", rel: 'stylesheet', type: 'text/css' }
     %script{ src: '/javascripts/mousetrap.min.js' }
     %script{ src: '/javascripts/mousetrap-global-bind.min.js' }
-    - settings.js.each do |js|
-      %script{ src: js.fetch(:url), integrity: js.fetch(:sha), crossorigin: :anonymous }
+    %script{ src: '/javascripts/htmx.min.js' }
   %body
     %div{ id: @edit_mode ? 'container-lg' : 'container' }
       #header
