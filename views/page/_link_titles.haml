@@ -45,6 +45,7 @@
 
         var response = await fetch('/link-title', {
           method: 'POST',
+          headers: { 'X-CSRF-Token': csrfToken() },
           body: formData
         });
 

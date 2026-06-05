@@ -24,7 +24,9 @@ class AppConcealedPagesTest < Minitest::Test
   end
 
   def login_as_starkast
-    env "rack.session", { login: @user.login, user_id: @user.id, starkast: true }
+    session = { login: @user.login, user_id: @user.id, starkast: true }
+    env "rack.session", session
+    header "X-CSRF-Token", Rack::Protection::AuthenticityToken.token(session)
   end
 
   def test_concealed

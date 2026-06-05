@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rack-flash'
+require 'rack/protection'
 require 'sinatra/haml_helpers'
 require 'sinatra/reloader'
 require 'tilt/haml'
@@ -8,6 +9,8 @@ require 'tilt/haml'
 class BaseController < Sinatra::Base
   set :views, -> { "views/#{self.name.downcase.sub('controller', '')}" }
   set :haml, layout: :'/../layout', format: :html5, escape_html: true
+
+  CSRF = Rack::Protection::AuthenticityToken.new(nil)
 
   use Rack::Flash
 
@@ -76,6 +79,10 @@ class BaseController < Sinatra::Base
       session[:starkast]
     end
 
+    def csrf_token
+      Rack::Protection::AuthenticityToken.token(session)
+    end
+
     def prevent_unauthorized_modifications
       return if request.request_method == "GET"
 
@@ -84,6 +91,8 @@ class BaseController < Sinatra::Base
 
         redirect back
       end
+
+      halt 403, "Forbidden" unless CSRF.accepts?(request.env)
     end
   end
 end
