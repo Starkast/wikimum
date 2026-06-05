@@ -357,6 +357,7 @@ class AppNotLoggedInTest < Minitest::Test
     assert_equal 302, last_response.status
     assert redirect_location.include?(client_id)
     assert redirect_location.include?(URI(referer).path)
+    assert redirect_location.include?("state=")
   end
 
   def test_authorize_without_referer
@@ -382,6 +383,10 @@ class AppNotLoggedInTest < Minitest::Test
     }
 
     ClimateControl.modify(github_api_credentials) do
+      header "Referer", "http://#{current_session.default_host}/"
+      get "/authorize"
+      state = last_response["Location"][/[?&]state=([^&]+)/, 1]
+
       stub_request(:post, Authorize::GITHUB_OAUTH_TOKEN_URL)
         .with(body: { client_id: client_id, client_secret: client_secret, code: code })
         .to_return(body: { access_token: access_token }.to_json)
@@ -394,7 +399,7 @@ class AppNotLoggedInTest < Minitest::Test
         .with(headers: github_api_headers)
         .to_return(status: 204)
 
-      get "/authorize/callback?code=#{code}"
+      get "/authorize/callback?code=#{code}&state=#{state}"
 
       assert_equal 302, last_response.status
       assert_equal "http://#{current_session.default_host}/", last_response["Location"]
