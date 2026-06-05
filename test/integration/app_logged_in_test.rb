@@ -14,7 +14,9 @@ class AppLoggedInTest < Minitest::Test
   end
 
   def ensure_logged_in_user(user)
-    env "rack.session", { login: user.login, user_id: user.id }
+    session = { login: user.login, user_id: user.id }
+    env "rack.session", session
+    header "X-CSRF-Token", Rack::Protection::AuthenticityToken.token(session)
   end
 
   def setup

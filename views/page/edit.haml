@@ -95,6 +95,7 @@
       Ändrar
       %a{ href: "/#{@page.slug}" }= @page.title
     %form{ name: :create, action: "/#{@page.slug}", method: :post }
+      %input{ type: :hidden, name: 'authenticity_token', value: csrf_token }
       %label.block{ for: 'title' } Titel
       %input#title{ type: :text, name: 'title', maxlength: 74, size: 50, value: @page.title }
 
@@ -184,6 +185,7 @@
 
     return fetch('/#{@page.slug}/uploads', {
       method: 'POST',
+      headers: { 'X-CSRF-Token': csrfToken() },
       body: formData
     }).then(function(response) {
       if (!response.ok) throw new Error('Upload failed');
@@ -292,7 +294,8 @@
     if (!confirm('Ta bort denna fil?')) return;
 
     fetch('/#{@page.slug}/uploads/' + id, {
-      method: 'DELETE'
+      method: 'DELETE',
+      headers: { 'X-CSRF-Token': csrfToken() }
     })
     .then(function(response) {
       if (!response.ok) throw new Error('Delete failed');

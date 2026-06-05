@@ -3,6 +3,7 @@
 # With Rack 3, rack-test does not autoload Rack::Builder
 # https://github.com/rack/rack-test/commit/29cb95c9588d73e5ee436ead9e6887d5bd341abc
 require "rack/builder"
+require "rack/protection"
 require "rack/test"
 require "securerandom"
 require_relative "test_database"
