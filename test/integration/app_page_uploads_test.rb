@@ -129,6 +129,31 @@ class AppPageUploadsTest < Minitest::Test
     assert_nil Upload[upload.id]
   end
 
+  def test_upload_rejects_files_over_the_size_limit
+    with_max_upload_size(10) do
+      oversized = Rack::Test::UploadedFile.new(
+        StringIO.new("x" * 11),
+        "text/plain",
+        original_filename: "big.txt"
+      )
+
+      post "/#{CGI.escape(@page.slug)}/uploads", file: oversized
+    end
+
+    assert_equal 413, last_response.status
+    assert Upload.where(page_id: @page.id).empty?
+  end
+
+  def with_max_upload_size(bytes)
+    original = PageController::MAX_UPLOAD_SIZE
+    PageController.send(:remove_const, :MAX_UPLOAD_SIZE)
+    PageController.const_set(:MAX_UPLOAD_SIZE, bytes)
+    yield
+  ensure
+    PageController.send(:remove_const, :MAX_UPLOAD_SIZE)
+    PageController.const_set(:MAX_UPLOAD_SIZE, original)
+  end
+
   def test_upload_requires_login
     env "rack.session", {}
 
