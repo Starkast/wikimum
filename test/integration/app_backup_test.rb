@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+require "base64"
+require "fileutils"
+require "securerandom"
+require "tmpdir"
+
 require_relative "../test_helper"
 require_relative "../integration_test_helper"
 
@@ -60,6 +65,25 @@ class AppBackupTest < Minitest::Test
 
   def test_backup_in_maintenance_mode
     assert_backup(maintenance_mode: true)
+  end
+
+  def test_download_rejects_path_traversal
+    backup_dir = File.join(Dir.tmpdir, "wiki_backup")
+    FileUtils.mkdir_p(backup_dir)
+    secret = File.join(Dir.tmpdir, "wiki_backup_secret_#{SecureRandom.hex}.txt")
+    File.write(secret, "TOP SECRET")
+
+    encoded = Base64.urlsafe_encode64("../#{File.basename(secret)}")
+
+    ClimateControl.modify(BACKUP_USER: "user", BACKUP_PASSWORD: "pass") do
+      basic_authorize "user", "pass"
+      post "/.backup/download/#{encoded}"
+    end
+
+    refute_equal 200, last_response.status
+    refute_includes last_response.body.to_s, "TOP SECRET"
+  ensure
+    File.delete(secret) if secret && File.exist?(secret)
   end
 
   def test_backup_without_auth

@@ -32,7 +32,8 @@ class BackupController < Sinatra::Base
 
   post "/download/:encoded_path" do
     rel_path  = Base64.urlsafe_decode64(params.fetch("encoded_path"))
-    dump_path = File.join(backup_tmpdir, rel_path)
+    dump_path = resolve_within_backup_dir(rel_path)
+    halt 404 unless dump_path
 
     send_file dump_path, type: "text/plain"
   end
@@ -40,6 +41,15 @@ class BackupController < Sinatra::Base
   helpers do
     def backup_tmpdir
       File.join(Dir.tmpdir, "wiki_backup")
+    end
+
+    # Resolve symlinks and `..`, then require the result to stay inside the backup dir.
+    def resolve_within_backup_dir(rel_path)
+      root = File.realpath(backup_tmpdir)
+      path = File.realpath(File.join(root, rel_path))
+      path if path.start_with?(root + File::SEPARATOR)
+    rescue Errno::ENOENT
+      nil
     end
 
     def create_sql_tempfile(filename)
