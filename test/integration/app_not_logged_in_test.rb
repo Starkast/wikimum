@@ -366,6 +366,16 @@ class AppNotLoggedInTest < Minitest::Test
     assert_equal 400, last_response.status
   end
 
+  def test_authorize_requests_read_org_scope
+    # Without read:org the membership check 302s and starkast? is always false.
+    ClimateControl.modify(GITHUB_BASIC_CLIENT_ID: "fake_client_id") do
+      header "Referer", "http://fake/referer"
+      get "/authorize"
+    end
+
+    assert_includes last_response["Location"], "read:org"
+  end
+
   def test_authorize_callback
     access_token = "fake_access_token"
     user = "fake_user"

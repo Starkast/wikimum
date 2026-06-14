@@ -14,7 +14,7 @@ class AuthorizeController < BaseController
 
     # redirect_uri is already percent-encoded, so build the query by hand to avoid double-encoding.
     query = [
-      "scope=user:email",
+      "scope=user:email%20read:org",
       "client_id=#{ENV.fetch('GITHUB_BASIC_CLIENT_ID')}",
       "redirect_uri=#{Authorize.construct_redirect_uri(request.referrer)}",
       "state=#{session[:state]}",
