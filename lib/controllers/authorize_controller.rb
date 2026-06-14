@@ -12,10 +12,15 @@ class AuthorizeController < BaseController
 
     session[:state] = SecureRandom.hex(32)
 
-    redirect_uri = Authorize.construct_redirect_uri(request.referrer)
-    parameters = %Q(?scope=user:email&client_id=#{ENV.fetch('GITHUB_BASIC_CLIENT_ID')}&redirect_uri=#{redirect_uri}&state=#{session[:state]})
+    # redirect_uri is already percent-encoded, so build the query by hand to avoid double-encoding.
+    query = [
+      "scope=user:email",
+      "client_id=#{ENV.fetch('GITHUB_BASIC_CLIENT_ID')}",
+      "redirect_uri=#{Authorize.construct_redirect_uri(request.referrer)}",
+      "state=#{session[:state]}",
+    ].join("&")
 
-    redirect URI.join(GITHUB_OAUTH_AUTHORIZE_URL, parameters)
+    redirect URI.join(GITHUB_OAUTH_AUTHORIZE_URL, "?#{query}")
   end
 
   get '/callback*' do
