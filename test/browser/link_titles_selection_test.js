@@ -42,10 +42,8 @@ describe('Link titles selection feature', { timeout: 30000 }, () => {
     });
     page = await browser.newPage();
 
-    // Login via dev endpoint
+    // Login via dev endpoint; goto follows the 302 and stores the session cookie before resolving
     await page.goto(`${TEST_URL}/authorize/dev`);
-    // Wait for redirect to complete
-    await page.waitForNavigation({ waitUntil: 'networkidle0' }).catch(() => {});
   });
 
   after(async () => {
