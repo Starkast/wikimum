@@ -2,6 +2,8 @@
 
 class PageController < BaseController
 
+  MAX_UPLOAD_SIZE = 25 * 1024 * 1024
+
   helpers do
     def slug
       Slug.slugify(params[:slug]) if params[:slug]
@@ -238,6 +240,7 @@ class PageController < BaseController
 
     file = params[:file]
     halt 400, "No file provided" unless file && file[:tempfile]
+    halt 413, "File too large" if file[:tempfile].size > MAX_UPLOAD_SIZE
 
     upload = Upload.new(
       page: page,
