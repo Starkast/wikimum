@@ -5,7 +5,8 @@
 /* Reset and set some "defaults" */
 
 *    { font-size: 100.01%; margin: 0; padding: 0; }
-html { font-size: 62.5%; }
+/* Always reserve the scrollbar's space so page length doesn't shift the layout */
+html { font-size: 62.5%; scrollbar-gutter: stable; }
 body {
   margin: 2em 5em;
   font-family: Arial;
