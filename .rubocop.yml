@@ -3,6 +3,7 @@ inherit_mode:
     - Exclude
 
 AllCops:
+  TargetRubyVersion: 4.0
   DisabledByDefault: true
   SuggestExtensions: false
 
