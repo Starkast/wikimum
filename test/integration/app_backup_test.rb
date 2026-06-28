@@ -67,6 +67,44 @@ class AppBackupTest < Minitest::Test
     assert_backup(maintenance_mode: true)
   end
 
+  # A GC pass between the backup and download requests must not delete the dump.
+  def test_backup_survives_gc_before_download
+    username, password = ["user", "pass"]
+
+    ClimateControl.modify(BACKUP_USER: username, BACKUP_PASSWORD: password) do
+      basic_authorize username, password
+      post "/.backup"
+
+      GC.start
+
+      follow_redirect!
+
+      body = last_response.body.force_encoding(Encoding::UTF_8)
+      assert_equal 200, last_response.status
+      assert_match(/#{@page_title}/, body)
+    end
+  end
+
+  # Each backup must sweep stale dumps so they do not accumulate on disk.
+  def test_backup_sweeps_stale_dumps
+    backup_dir = File.join(Dir.tmpdir, "wiki_backup")
+    FileUtils.mkdir_p(backup_dir)
+    stale = File.join(backup_dir, "dump-#{SecureRandom.uuid}.sql")
+    File.write(stale, "old dump")
+    File.utime(Time.now - 7200, Time.now - 7200, stale)
+
+    username, password = ["user", "pass"]
+    ClimateControl.modify(BACKUP_USER: username, BACKUP_PASSWORD: password) do
+      basic_authorize username, password
+      post "/.backup"
+      follow_redirect!
+
+      assert_equal 200, last_response.status
+    end
+
+    refute File.exist?(stale), "expected stale dump to be swept"
+  end
+
   def test_download_rejects_path_traversal
     backup_dir = File.join(Dir.tmpdir, "wiki_backup")
     FileUtils.mkdir_p(backup_dir)
