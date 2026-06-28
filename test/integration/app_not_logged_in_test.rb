@@ -114,6 +114,16 @@ class AppNotLoggedInTest < Minitest::Test
     assert_includes cc, "no-cache"
   end
 
+  def test_flashed_page_is_not_cacheable
+    get "/new"
+    follow_redirect!
+
+    assert last_response.ok?
+    assert_includes last_response.body, "logged in to create a new page"
+    assert_includes last_response.headers["Cache-Control"].to_s, "no-store",
+      "a response showing a flash must not be cacheable"
+  end
+
   def test_page
     get "/#{CGI.escape(@page.slug)}"
     assert last_response.body.include?(@page_title)
