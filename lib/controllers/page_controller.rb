@@ -42,6 +42,7 @@ class PageController < BaseController
         page.concealed ? "c" : "x",
         logged_in? ? "a" : "p",
         starkast? ? "s" : "u",
+        flash.keys.any? ? "f" : "n",
       ].join("-")
     end
 
@@ -58,7 +59,7 @@ class PageController < BaseController
     # either (a browser-bookmarked authed page after logout would otherwise
     # flash admin chrome before re-render).
     def cache_for_audience
-      if logged_in?
+      if logged_in? || flash.keys.any?
         cache_control :private, no_store: true
       else
         cache_control :public, :no_cache, s_maxage: 600
