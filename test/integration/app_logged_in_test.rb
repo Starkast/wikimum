@@ -98,7 +98,19 @@ class AppLoggedInTest < Minitest::Test
     get "/#{CGI.escape(@page.slug)}/edit"
 
     assert last_response.body.include?(@page_title)
+    assert_includes last_response.body, 'value="crawlable"',
+      "edit form should offer the crawlable visibility option"
     assert last_response.ok?
+  end
+
+  def test_edit_can_make_page_crawlable
+    refute_predicate @page.reload, :crawlable?
+
+    post "/#{CGI.escape(@page.slug)}", title: @page.title, visibility: "crawlable"
+
+    assert_equal 302, last_response.status
+    assert_predicate @page.reload, :crawlable?,
+      "any logged-in editor should be able to make a page crawlable"
   end
 
   def test_page_etag_encodes_logged_in_audience

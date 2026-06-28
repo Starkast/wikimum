@@ -29,4 +29,12 @@ class PageTest < Minitest::Test
 
     assert_includes results.map(&:id), @page.id
   end
+
+  def test_visibility_defaults_to_public
+    @page = Page.create(title: "Plain", author: @user)
+
+    assert_equal "public", @page.reload.visibility
+    refute_predicate @page, :concealed?
+    refute_predicate @page, :crawlable?
+  end
 end

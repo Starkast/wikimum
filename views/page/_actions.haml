@@ -3,11 +3,8 @@
     - if logged_in?
       %li
         %a{ href: "/#{@page.slug}/edit" } Ändra
-        - if starkast?
-          %form{ action: "/#{@page.slug}/conceal", method: :post }
-            %input{ type: :hidden, name: 'authenticity_token', value: csrf_token }
-            %button
-              = @page.concealed ? 'Gör publik' : 'Gör privat'
+        - if starkast? && @page.concealed?
+          %span.concealed-badge Privat
 
       - unless @page.revisions.empty?
         %span

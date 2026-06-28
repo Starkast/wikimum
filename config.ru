@@ -36,7 +36,7 @@ use Rack::Session::Cookie,
 
 use Rack::Static, {
   root: "public",
-  urls: ["/stylesheets", "/images", "/javascripts", "/favicon.ico", "/robots.txt"],
+  urls: ["/stylesheets", "/images", "/javascripts", "/favicon.ico"],
   cache_control: "public,max-age=#{365 * 24 * 3600}"
 }
 

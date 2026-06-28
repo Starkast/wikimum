@@ -11,21 +11,27 @@ class PageController < BaseController
 
     def restrict_concealed(page)
       return if starkast?
-      if page.concealed
+      if page.concealed?
         flash[:error] = "Not authorized!"
 
         redirect back
       end
     end
 
+    # Set visibility from the form radio; concealed is starkast-only.
+    def apply_visibility(page)
+      choice = params[:visibility]
+      return unless Page::VISIBILITIES.include?(choice)
+      return if choice == Page::CONCEALED && !starkast?
+
+      page.visibility = choice
+    end
+
     # Halts the response with 304 before the view renders when the browser's
     # If-None-Match matches. Components of the etag value:
     #
     #   - page.sha1 — content fingerprint, recomputed in Page#before_save.
-    #   - page.concealed — `post '/:slug/conceal'` uses `page.this.update` and
-    #     deliberately bypasses before_save, so sha1 doesn't reflect
-    #     concealment toggles. Mix it in explicitly so the etag is in sync
-    #     with what _actions.haml renders.
+    #   - concealed flag — keeps concealed and public renders in separate cache entries.
     #   - audience suffix (a/p for logged_in?, s/u for starkast?) — keeps
     #     anonymous, authed-not-starkast, and starkast renders in separate
     #     cache buckets so neither audience can receive another's body back
@@ -39,7 +45,7 @@ class PageController < BaseController
     def etag_for_page(page)
       etag [
         page.sha1,
-        page.concealed ? "c" : "x",
+        page.concealed? ? "c" : "x",
         logged_in? ? "a" : "p",
         starkast? ? "s" : "u",
       ].join("-")
@@ -68,7 +74,7 @@ class PageController < BaseController
 
   get '/' do
     @page = Page
-      .select(:id, :slug, :title, :concealed, :revision, :updated_on, :compiled_content, :author_id, :sha1)
+      .select(:id, :slug, :title, :visibility, :revision, :updated_on, :compiled_content, :author_id, :sha1)
       .eager_graph(:author)
       .order(:id)
       .limit(1)
@@ -86,13 +92,30 @@ class PageController < BaseController
     # response is cheap to render anyway.
     etag_for_page(@page) unless @page.new?
 
+    @noindex = true unless @page.crawlable?
     haml :show
+  end
+
+  # Before the /:slug catch-all. Disallow-by-default; allow only crawlable pages.
+  get '/robots.txt' do
+    content_type "text/plain"
+    cache_control :public, max_age: 3600
+
+    crawlable = Page
+      .select(:slug)
+      .where(visibility: Page::CRAWLABLE)
+      .order(:slug)
+      .all
+
+    lines = ["User-Agent: Claude-User", "Allow: /", "", "User-Agent: *", "Disallow: /"]
+    crawlable.each { |page| lines << "Allow: /#{page.slug_for_uri}" }
+    lines.join("\n") + "\n"
   end
 
   get '/list' do
     @page_title = "Innehållsförteckning"
     @page_groups = Page
-      .select(:id, :slug, :title, :title_char, :revision, :concealed, :description)
+      .select(:id, :slug, :title, :title_char, :revision, :visibility, :description)
       .order(:title_char, :title)
       .with_concealed_if(starkast?)
       .to_hash_groups(:title_char)
@@ -103,7 +126,7 @@ class PageController < BaseController
   get '/latest' do
     @page_title = "Senast ändrad"
     @page_groups = Page
-      .select(:id, :slug, :title, :revision, :concealed, :comment, :updated_on, :author_id)
+      .select(:id, :slug, :title, :revision, :visibility, :comment, :updated_on, :author_id)
       .order(:updated_on).reverse
       .with_concealed_if(starkast?)
       .eager_graph(:author)
@@ -118,7 +141,7 @@ class PageController < BaseController
     @noindex = true
     @q = params[:q]
     @pages = Page
-      .select(:id, :slug, :title, :concealed, :description)
+      .select(:id, :slug, :title, :visibility, :description)
       .with_concealed_if(starkast?)
       .search(params[:q])
       .all
@@ -138,7 +161,8 @@ class PageController < BaseController
 
   post '/new*' do
     @page = Page.new
-    @page.set_fields(params, %i(title content description concealed comment))
+    @page.set_fields(params, %i(title content description comment))
+    apply_visibility(@page)
     @page.author = current_user
     @page.save
     redirect "#{@page.slug_for_uri}"
@@ -210,11 +234,11 @@ class PageController < BaseController
     upload = Upload[id.to_i]
     halt 404, "Upload not found" unless upload
     halt 404, "Upload not found" unless upload.page.slug.downcase == slug
-    halt 404, "Upload not found" if upload.page.concealed && !starkast?
+    halt 404, "Upload not found" if upload.page.concealed? && !starkast?
 
     # uploads to concealed pages should only be cached in a private cache,
     # such as a user's browser, not in shared caches like CDNs
-    cache_directive = upload.page.concealed ? :private : :public
+    cache_directive = upload.page.concealed? ? :private : :public
 
     cache_control cache_directive, max_age: 31536000
     content_type upload.content_type
@@ -275,7 +299,7 @@ class PageController < BaseController
 
   get '/:slug' do
     @page = Page
-      .select(:id, :slug, :title, :concealed, :revision, :updated_on, :compiled_content, :author_id, :sha1)
+      .select(:id, :slug, :title, :visibility, :revision, :updated_on, :compiled_content, :author_id, :sha1)
       .eager_graph(:author)
       .with_slug(slug)
       .limit(1)
@@ -286,6 +310,7 @@ class PageController < BaseController
     restrict_concealed(@page)
     cache_for_audience
     etag_for_page(@page)
+    @noindex = true unless @page.crawlable?
     haml :show
   end
 
@@ -295,6 +320,7 @@ class PageController < BaseController
     @page_title = "#{@page.title} (#{revision})"
     restrict_concealed(@page)
     cache_for_audience
+    @noindex = true
     haml :show
   end
 
@@ -305,18 +331,9 @@ class PageController < BaseController
     restrict_concealed(page)
     page.revise!
     page.set_fields(params, %i(title content description comment))
+    apply_visibility(page)
     page.author = current_user
     page.save
-
-    redirect "#{page.slug_for_uri}"
-  end
-
-  post '/:slug/conceal' do
-    page = Page.with_slug(slug).first
-    restrict_concealed(page)
-
-    # intentionally avoid Page save hook
-    page.this.update(concealed: !page.concealed)
 
     redirect "#{page.slug_for_uri}"
   end

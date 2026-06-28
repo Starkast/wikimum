@@ -9,11 +9,16 @@ class Page < Sequel::Model
 
   SEARCH_IN_COLUMNS = %i(title content description).freeze
 
+  CONCEALED = "concealed"
+  PUBLIC = "public"
+  CRAWLABLE = "crawlable"
+  VISIBILITIES = [CONCEALED, PUBLIC, CRAWLABLE].freeze
+
   dataset_module do
     def with_concealed_if(allowed_to_see_concealed)
       return self if allowed_to_see_concealed
 
-      self.exclude(concealed: true)
+      self.exclude(visibility: CONCEALED)
     end
 
     # Look up by slug case-insensitively. The route normalizes the request
@@ -48,13 +53,22 @@ class Page < Sequel::Model
   def revise!
     new_revision = Revision.new
     self.values.each do |key, value|
-      next if %i(id concealed).include?(key)
+      # Revisions have no visibility column; Revision#visibility delegates to the page.
+      next if %i(id visibility).include?(key)
       new_revision[key] = value
     end
     new_revision.page_id = self.id
     new_revision.save
 
     self.revision += 1
+  end
+
+  def concealed?
+    visibility == CONCEALED
+  end
+
+  def crawlable?
+    visibility == CRAWLABLE
   end
 
   def slug_for_uri

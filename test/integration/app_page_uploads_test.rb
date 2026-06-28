@@ -181,7 +181,7 @@ class AppPageUploadsTest < Minitest::Test
   end
 
   def test_get_upload_concealed_page_unauthorized
-    concealed_page = Page.create(title: "Concealed Page", author: @user, concealed: true)
+    concealed_page = Page.create(title: "Concealed Page", author: @user, visibility: "concealed")
     upload = Upload.create(
       page: concealed_page,
       author: @user,
@@ -200,7 +200,7 @@ class AppPageUploadsTest < Minitest::Test
   end
 
   def test_get_upload_concealed_page_as_starkast
-    concealed_page = Page.create(title: "Concealed Page", author: @user, concealed: true)
+    concealed_page = Page.create(title: "Concealed Page", author: @user, visibility: "concealed")
     upload = Upload.create(
       page: concealed_page,
       author: @user,

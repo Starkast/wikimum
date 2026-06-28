@@ -15,7 +15,11 @@ class Revision < Sequel::Model
     self.page.revisions
   end
 
-  def concealed
-    self.page.concealed
+  def visibility
+    self.page.visibility
+  end
+
+  def concealed?
+    visibility == Page::CONCEALED
   end
 end

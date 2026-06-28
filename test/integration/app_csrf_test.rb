@@ -83,7 +83,7 @@ class AppCsrfTest < Minitest::Test
   def test_logged_out_post_still_redirects_without_csrf_check
     env "rack.session", {}
 
-    post "/#{CGI.escape(@page.slug)}/conceal"
+    post "/#{CGI.escape(@page.slug)}", title: @page.title
 
     assert_equal 302, last_response.status
   end

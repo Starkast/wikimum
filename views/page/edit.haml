@@ -107,6 +107,21 @@
       %label.block{ for: 'comment' } Kommentar
       %input#comment{ type: :text, name: 'comment', maxlength: 74, size: 50 }
 
+      %label.block Synlighet
+      - if starkast?
+        %div
+          %label
+            %input{ type: :radio, name: 'visibility', value: 'concealed', checked: @page.concealed? }
+            Privat
+      %div
+        %label
+          %input{ type: :radio, name: 'visibility', value: 'public', checked: !@page.concealed? && !@page.crawlable? }
+          Publik
+      %div
+        %label
+          %input{ type: :radio, name: 'visibility', value: 'crawlable', checked: @page.crawlable? }
+          Publik, tillåt sökmotorer
+
       %p{ style: "margin-top: 1em;" }
         %button Spara
         eller
