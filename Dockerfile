@@ -16,6 +16,9 @@ ENV BUNDLE_DEPLOYMENT="1" \
     BUNDLE_CACHE_PATH="/usr/local/bundle/cache" \
     BUNDLE_WITHOUT="development"
 
+# Enable YJIT for better runtime performance
+ENV RUBY_YJIT_ENABLE="1"
+
 # Throw-away build stage to reduce size of final image
 FROM base as build
 
