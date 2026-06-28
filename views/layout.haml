@@ -131,3 +131,14 @@
           this.classList.remove('visible');
         }
       });
+
+      (function() {
+        var message = document.getElementById('message');
+        if (!message) return;
+        function dismiss() {
+          message.classList.add('hide');
+          setTimeout(function() { message.remove(); }, 400);
+        }
+        message.addEventListener('click', dismiss);
+        setTimeout(dismiss, 5000);
+      })();
