@@ -4,17 +4,24 @@ FROM registry.docker.com/library/ruby:$RUBY_VERSION-slim as base
 # The app lives here
 WORKDIR /app
 
-# Install base packages
+# Install pg_dump 18 from PGDG; it must be >= the production server's major version.
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y \
-    curl \
-    postgresql-client
+    apt-get install --no-install-recommends -y curl ca-certificates && \
+    curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc \
+      -o /usr/share/keyrings/pgdg.asc && \
+    echo "deb [signed-by=/usr/share/keyrings/pgdg.asc] https://apt.postgresql.org/pub/repos/apt $(. /etc/os-release && echo "$VERSION_CODENAME")-pgdg main" \
+      > /etc/apt/sources.list.d/pgdg.list && \
+    apt-get update -qq && \
+    apt-get install --no-install-recommends -y postgresql-client-18
 
 # Set production environment
 ENV BUNDLE_DEPLOYMENT="1" \
     BUNDLE_PATH="/usr/local/bundle" \
     BUNDLE_CACHE_PATH="/usr/local/bundle/cache" \
     BUNDLE_WITHOUT="development"
+
+# Enable YJIT for better runtime performance
+ENV RUBY_YJIT_ENABLE="1"
 
 # Throw-away build stage to reduce size of final image
 FROM base as build

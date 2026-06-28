@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "cgi"
+require "cgi/escape"
 require "securerandom"
 
 require_relative "../test_helper"
@@ -112,6 +112,16 @@ class AppNotLoggedInTest < Minitest::Test
     cc = last_response.headers["Cache-Control"].to_s
     assert_includes cc, "public"
     assert_includes cc, "no-cache"
+  end
+
+  def test_flashed_page_is_not_cacheable
+    get "/new"
+    follow_redirect!
+
+    assert last_response.ok?
+    assert_includes last_response.body, "logged in to create a new page"
+    assert_includes last_response.headers["Cache-Control"].to_s, "no-store",
+      "a response showing a flash must not be cacheable"
   end
 
   def test_page

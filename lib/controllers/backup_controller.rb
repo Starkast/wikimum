@@ -2,11 +2,14 @@
 
 require "base64"
 require "fileutils"
-require "tempfile"
+require "securerandom"
 
 class BackupController < Sinatra::Base
+  STALE_DUMP_AGE = 3600 # seconds
+
   post "/" do
-    dump_path    = create_sql_tempfile("dump").path
+    sweep_stale_dumps
+    dump_path    = create_dump_path
     rel_path     = dump_path.split(backup_tmpdir).last
     encoded_path = Base64.urlsafe_encode64(rel_path)
 
@@ -52,10 +55,22 @@ class BackupController < Sinatra::Base
       nil
     end
 
-    def create_sql_tempfile(filename)
-      tmpdir = FileUtils.mkdir_p(backup_tmpdir).first
+    # Own the path outright; Tempfile's finalizer would delete it before download.
+    def create_dump_path
+      FileUtils.mkdir_p(backup_tmpdir)
 
-      Tempfile.new([filename, ".sql"], tmpdir)
+      File.join(backup_tmpdir, "dump-#{SecureRandom.uuid}.sql")
+    end
+
+    # Replaces Tempfile's finalizer: drop dumps left behind by earlier backups.
+    def sweep_stale_dumps
+      cutoff = Time.now - STALE_DUMP_AGE
+
+      Dir.glob(File.join(backup_tmpdir, "dump-*.sql")).each do |path|
+        File.delete(path) if File.mtime(path) < cutoff
+      rescue Errno::ENOENT
+        nil
+      end
     end
   end
 end
