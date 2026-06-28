@@ -161,6 +161,7 @@ DEPENDENCIES
   html-pipeline
   httpx
   localhost
+  logger
   m
   minitest
   pg
