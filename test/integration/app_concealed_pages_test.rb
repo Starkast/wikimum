@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "cgi"
+require "cgi/escape"
 
 require_relative "../test_helper"
 require_relative "../integration_test_helper"

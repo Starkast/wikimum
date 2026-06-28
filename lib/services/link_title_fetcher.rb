@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'httpx'
-require 'cgi'
+require 'cgi/escape'
 
 class LinkTitleFetcher
   MAX_BYTES = 512 * 1024

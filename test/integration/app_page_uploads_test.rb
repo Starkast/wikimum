@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "base64"
-require "cgi"
+require "cgi/escape"
 require "json"
 require "securerandom"
 
