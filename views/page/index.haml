@@ -1,9 +1,10 @@
+%h1 Innehållsförteckning
+
 %ul#sections
   - @page_groups.each do |char, _|
     %li
       %a{ href: "\##{char}" }= char
 
-%h1 Innehållsförteckning
 - @page_groups.each do |char, pages|
   %h2
     %a{ href: "\##{char}", name: char }= char
