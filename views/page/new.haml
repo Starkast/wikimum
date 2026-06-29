@@ -13,8 +13,20 @@
   %label.block{ for: 'comment' } Kommentar
   %input#comment{ type: :text, name: 'comment', maxlength: 74, size: 50, value: @page.comment }
 
-  %label.block{ for: 'concealed' } Privat
-  %input#private{ type: :checkbox, name: 'concealed', checked: @page.concealed }
+  %label.block Synlighet
+  - if starkast?
+    %div
+      %label
+        %input{ type: :radio, name: 'visibility', value: 'concealed', checked: @page.concealed? }
+        Privat
+  %div
+    %label
+      %input{ type: :radio, name: 'visibility', value: 'public', checked: !@page.concealed? && !@page.crawlable? }
+      Publik
+  %div
+    %label
+      %input{ type: :radio, name: 'visibility', value: 'crawlable', checked: @page.crawlable? }
+      Publik, tillåt sökmotorer
 
   %p{ style: "margin-top: 1em;" }
     %button Skapa sida

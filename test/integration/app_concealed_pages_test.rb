@@ -15,16 +15,25 @@ class AppConcealedPagesTest < Minitest::Test
   def setup
     @page_title = "Concealed ÅÄÖ"
     @user = User.create(email: "test@test", login: "test")
-    @page = Page.create(title: @page_title, author: @user, concealed: true)
+    @page = Page.create(title: @page_title, author: @user, visibility: "concealed")
   end
 
   def teardown
+    @page.revisions.each(&:destroy)
     @page.destroy
     @user.destroy
   end
 
   def login_as_starkast
-    session = { login: @user.login, user_id: @user.id, starkast: true }
+    login_with(starkast: true)
+  end
+
+  def login_as_user
+    login_with(starkast: false)
+  end
+
+  def login_with(starkast:)
+    session = { login: @user.login, user_id: @user.id, starkast: }
     env "rack.session", session
     header "X-CSRF-Token", Rack::Protection::AuthenticityToken.token(session)
   end
@@ -46,18 +55,62 @@ class AppConcealedPagesTest < Minitest::Test
     login_as_starkast
     get "/#{@page.slug_for_uri}/edit"
     assert last_response.ok?
+    assert_includes last_response.body, 'value="concealed"',
+      "edit form should offer the concealed visibility option to starkast members"
   end
 
-  def test_toggle_concealed_logged_in_as_starkast
+  def test_starkast_makes_page_public_via_edit
     login_as_starkast
-    assert_equal true, @page.concealed
+    assert_predicate @page, :concealed?
 
-    post "/#{@page.slug_for_uri}/conceal"
+    post "/#{@page.slug_for_uri}", title: @page.title, visibility: "public"
 
     redirect_location = last_response["Location"]
     assert_equal 302, last_response.status
     assert_equal "/#{@page.slug_for_uri}", URI(redirect_location).path
-    assert_equal false, @page.reload.concealed
+    assert_equal "public", @page.reload.visibility,
+      "choosing Publik should reveal the page"
+  end
+
+  def test_starkast_makes_page_private_via_edit
+    public_page = Page.create(title: "Toggle ÅÄÖ", author: @user)
+    login_as_starkast
+
+    post "/#{public_page.slug_for_uri}", title: public_page.title, visibility: "concealed"
+
+    assert_equal 302, last_response.status
+    assert_equal "concealed", public_page.reload.visibility,
+      "choosing Privat should conceal the page"
+  ensure
+    public_page&.revisions&.each(&:destroy)
+    public_page&.destroy
+  end
+
+  def test_non_starkast_cannot_conceal_via_edit
+    public_page = Page.create(title: "Public ÅÄÖ", author: @user)
+    login_as_user
+
+    post "/#{public_page.slug_for_uri}", title: public_page.title, visibility: "concealed"
+
+    assert_equal 302, last_response.status
+    refute_predicate public_page.reload, :concealed?,
+      "a non-starkast user must not be able to conceal a page"
+  ensure
+    public_page&.revisions&.each(&:destroy)
+    public_page&.destroy
+  end
+
+  def test_making_a_crawlable_page_concealed
+    crawlable_page = Page.create(title: "Both ÅÄÖ", author: @user, visibility: "crawlable")
+    login_as_starkast
+
+    post "/#{crawlable_page.slug_for_uri}", title: crawlable_page.title, visibility: "concealed"
+
+    assert_equal "concealed", crawlable_page.reload.visibility,
+      "a concealed page can't also be crawlable — the enum makes it one value"
+  ensure
+    crawlable_page&.revisions&.each(&:destroy)
+    crawlable_page&.destroy
   end
 
   def test_latest
