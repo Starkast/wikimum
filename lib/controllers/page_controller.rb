@@ -14,7 +14,7 @@ class PageController < BaseController
       if page.concealed?
         flash[:error] = "Not authorized!"
 
-        redirect back
+        redirect safe_back
       end
     end
 
