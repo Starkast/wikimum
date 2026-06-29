@@ -2,6 +2,7 @@
 
 require 'rack-flash'
 require 'rack/protection'
+require 'uri'
 require 'sinatra/haml_helpers'
 require 'sinatra/reloader'
 require 'tilt/haml'
@@ -83,13 +84,22 @@ class BaseController < Sinatra::Base
       Rack::Protection::AuthenticityToken.token(session)
     end
 
+    # Only follow the Referer when it points at our own host, never off-site.
+    def safe_back
+      referrer = request.referrer
+      return "/" unless referrer && URI.parse(referrer).host == request.host
+      referrer
+    rescue URI::InvalidURIError
+      "/"
+    end
+
     def prevent_unauthorized_modifications
       return if request.request_method == "GET"
 
       unless logged_in?
         flash[:error] = "Not authorized!"
 
-        redirect back
+        redirect safe_back
       end
 
       halt 403, "Forbidden" unless CSRF.accepts?(request.env)

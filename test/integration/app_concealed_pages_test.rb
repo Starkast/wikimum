@@ -45,6 +45,26 @@ class AppConcealedPagesTest < Minitest::Test
     assert last_response.ok?
   end
 
+  def test_concealed_does_not_redirect_to_external_referrer
+    header "Referer", "https://github.com/Starkast/wikimum/issues/6"
+
+    get "/#{@page.slug_for_uri}"
+
+    assert_equal 302, last_response.status
+    assert_equal "/", URI(last_response["Location"]).path,
+      "an off-site referrer must not be followed back; fall back to the front page"
+  end
+
+  def test_concealed_redirects_back_to_same_host_referrer
+    header "Referer", "http://#{current_session.default_host}/list"
+
+    get "/#{@page.slug_for_uri}"
+
+    assert_equal 302, last_response.status
+    assert_equal "/list", URI(last_response["Location"]).path,
+      "a same-host referrer is ours, so redirect back is honoured"
+  end
+
   def test_concealed_logged_in_as_starkast
     login_as_starkast
     get "/#{@page.slug_for_uri}"

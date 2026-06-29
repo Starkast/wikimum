@@ -61,7 +61,7 @@ class AuthorizeController < BaseController
     request.env["rack.session.options"][:drop] = true
     response.delete_cookie('wikimum_session', path: '/')
 
-    redirect back
+    redirect safe_back
   end
 
   get '/dev' do
