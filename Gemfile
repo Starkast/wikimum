@@ -22,7 +22,7 @@ gem 'racksh'
 gem 'warning'
 gem 'rake'
 gem 'zeitwerk'
-gem 'rubocop', '~> 1.88.0', require: false
+gem 'rubocop', '~> 1.88.1', require: false
 gem 'dyno_metadata'
 gem 'localhost'
 
