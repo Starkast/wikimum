@@ -21,7 +21,7 @@ class MarkdownFilter < HTMLPipeline::TextFilter
   # Keep rendering close to what github-markup 5.0.1 + commonmarker 0.x used to
   # produce. Defaults that match what we want are not listed; defaults that
   # don't are overridden here. See Commonmarker::Config::OPTIONS for the full
-  # set: https://github.com/gjtorikian/commonmarker/blob/v2.8.2/lib/commonmarker/config.rb
+  # set: https://github.com/gjtorikian/commonmarker/blob/v2.9.0/lib/commonmarker/config.rb
   COMMONMARKER_OPTIONS = {
     render: {
       hardbreaks: false,         # default true; single \n stays a soft break, not <br />
