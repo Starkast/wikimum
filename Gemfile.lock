@@ -14,7 +14,7 @@ GEM
     commonmarker (2.9.0-arm64-darwin)
     commonmarker (2.9.0-x86_64-darwin)
     commonmarker (2.9.0-x86_64-linux)
-    concurrent-ruby (1.3.7)
+    concurrent-ruby (1.3.8)
     console (1.34.3)
       fiber-annotation
       fiber-local (~> 1.1)
@@ -109,7 +109,7 @@ GEM
     selma (0.5.0-arm64-darwin)
     selma (0.5.0-x86_64-darwin)
     selma (0.5.0-x86_64-linux)
-    sentry-ruby (6.7.0)
+    sentry-ruby (7.0.0)
       bigdecimal
       concurrent-ruby (~> 1.0, >= 1.0.2)
       logger
@@ -194,7 +194,7 @@ CHECKSUMS
   commonmarker (2.9.0-arm64-darwin) sha256=1748dbfa4f5813b0d2a14bb4bbfa65a4ec293aa1c825016d60029ee0e132b046
   commonmarker (2.9.0-x86_64-darwin) sha256=0a9914ccfd2f5d2a59c7bd0dda4fe90eb084cf513b477e499008e09ec9d6edd6
   commonmarker (2.9.0-x86_64-linux) sha256=8cfe92970eef585a19ddf6613224b91cab64d6029834661bda801f877c9c7f43
-  concurrent-ruby (1.3.7) sha256=4412caec3a5ea2e5fdc52076724c071a81f2c0593d83b2ac8cbb8ca63b3151b0
+  concurrent-ruby (1.3.8) sha256=b2f1be836e968ccc78ccfce277ea79c72a88633f22306782c16ff23fb415d1e1
   console (1.34.3) sha256=869fbd74697efc4c606f102d2812b0b008e4e7fd738a91c591e8577140ec0dcc
   crack (1.0.0) sha256=c83aefdb428cdc7b66c7f287e488c796f055c0839e6e545fec2c7047743c4a49
   drb (2.2.3) sha256=0b00d6fdb50995fe4a45dea13663493c841112e4068656854646f418fda13373
@@ -246,7 +246,7 @@ CHECKSUMS
   selma (0.5.0-arm64-darwin) sha256=18ad9fa862a80f8ae3bdb19cb05a54456ba51d9cdb398dac0ba8a5b061d7ab79
   selma (0.5.0-x86_64-darwin) sha256=c98d8b2b629d8aefdae40f6ede063cfae2014d4ecb43d2429a8302c1b73a3b5e
   selma (0.5.0-x86_64-linux) sha256=12c00dc7dbe142eda730b2b6c38c3430902c3c88a192dfab5305313d1d79c85b
-  sentry-ruby (6.7.0) sha256=b4b915d79a0395ad02106d4012aa1914641456e042ce36393f15bd1630d8db42
+  sentry-ruby (7.0.0) sha256=e9616ff521355a983fad404ca575d8bb1f1949a8cac42a7a893dd02156bcdb1a
   sequel (5.107.0) sha256=019629313205295b007f6df2c5eab19ddc40710d549fd445ac300f2853a370db
   sequel_pg (1.19.0) sha256=cf384d09c6ea2c0ab31d1f95dcf12b0801b34829fe496ac102e43394498a82f3
   sinatra (4.2.1) sha256=b7aeb9b11d046b552972ade834f1f9be98b185fa8444480688e3627625377080
