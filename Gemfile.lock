@@ -115,7 +115,7 @@ GEM
       logger
     sequel (5.107.0)
       bigdecimal
-    sequel_pg (1.19.0)
+    sequel_pg (1.20.0)
       pg (>= 0.18.0, != 1.2.0)
       sequel (>= 4.38.0)
     sinatra (4.2.1)
@@ -248,7 +248,7 @@ CHECKSUMS
   selma (0.5.0-x86_64-linux) sha256=12c00dc7dbe142eda730b2b6c38c3430902c3c88a192dfab5305313d1d79c85b
   sentry-ruby (6.7.0) sha256=b4b915d79a0395ad02106d4012aa1914641456e042ce36393f15bd1630d8db42
   sequel (5.107.0) sha256=019629313205295b007f6df2c5eab19ddc40710d549fd445ac300f2853a370db
-  sequel_pg (1.19.0) sha256=cf384d09c6ea2c0ab31d1f95dcf12b0801b34829fe496ac102e43394498a82f3
+  sequel_pg (1.20.0) sha256=230a8094cf4cb07754a928fa3a3fe1c34794a81001c978c6c51d5bd5acbd33a2
   sinatra (4.2.1) sha256=b7aeb9b11d046b552972ade834f1f9be98b185fa8444480688e3627625377080
   sinatra-contrib (4.2.1) sha256=10d091c944d268aa910c618ea40a3c3ebe0533e6e32990d84af92235a3d26b4a
   spinels-rack-ssl-enforcer (1.0.0) sha256=1d6b155a847a97622155f7d459d3145f9a50aedcd6b2b5cd87c469566e36244c
