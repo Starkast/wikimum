@@ -1,0 +1,85 @@
+.review-tabs {
+  display: flex;
+  gap: 0.4em;
+  border-bottom: 1px solid #c4c4c4;
+  margin-bottom: 1em;
+}
+.review-tabs button {
+  padding: 0.6em 1em;
+  border: 1px solid transparent;
+  border-radius: 4px 4px 0 0;
+  cursor: pointer;
+  background: transparent;
+  color: inherit;
+}
+.review-tabs button[aria-selected="true"] {
+  background: #ffeaea;
+  border-color: #c4c4c4;
+  font-weight: bold;
+}
+.review-tabs button:focus-visible {
+  outline: 2px solid #356caa;
+  outline-offset: 2px;
+}
+#diff {
+  max-height: 75vh;
+  overflow: auto;
+  padding: 1em;
+  border-left: thin dashed #c4c4c4;
+}
+.review-note { color: #666; }
+#diff-summary { font-weight: bold; }
+#diff-content h2 { font-size: 1.8em; margin-bottom: 0.5em; }
+.diff-lines {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 1.5em;
+  overflow: hidden;
+}
+.diff-line {
+  display: flex;
+  font: 1.3em/1.6 monospace;
+  min-height: 1.6em;
+}
+.diff-number {
+  flex: 0 0 3em;
+  text-align: right;
+  padding-right: 0.6em;
+  color: #666;
+  user-select: none;
+  border-right: 1px solid #ccc;
+}
+.diff-text {
+  padding: 0 0.5em;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.diff-added { background: #e2f4e7; color: #19552a; }
+.diff-removed { background: #fce5e5; color: #862222; }
+@media (prefers-color-scheme: dark) {
+  .review-tabs button[aria-selected="true"] { background: #555; }
+  .review-note, .diff-number { color: #bbb; }
+  .diff-added { background: #203e2a; color: #bcf0ca; }
+  .diff-removed { background: #502a2a; color: #ffcdcd; }
+  .review-tabs, .review-tabs button[aria-selected="true"], #diff,
+  .diff-lines, .diff-number { border-color: #666; }
+}
+@media (max-width: 800px) {
+  body:has(.editor-review) { margin: 2em 1.5em; }
+  #diff, #preview { max-height: 65vh; }
+  .diff-number { flex-basis: 2em; }
+  body:has(.editor-review) #navigation {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    height: auto;
+    padding: 0.8em;
+  }
+  body:has(.editor-review) #navigation ul,
+  body:has(.editor-review) #search_input { float: none; padding: 0; }
+  body:has(.editor-review) #sub-navigation { height: auto; min-height: 3em; }
+  body:has(.editor-review) #content { clear: both; }
+  body:has(.editor-review) #footer hr { max-width: 100%; }
+  .flex-item input[type="file"] { box-sizing: border-box; max-width: 100%; }
+}
