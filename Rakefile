@@ -74,7 +74,9 @@ namespace(:test) do
     end
 
     begin
-      sh "TEST_URL=#{test_url} node --test test/browser/*_test.js"
+      # Each browser suite launches Chromium against this shared server.
+      # Serial execution avoids competing browser startups on CI runners.
+      sh "TEST_URL=#{test_url} node --test --test-concurrency=1 test/browser/*_test.js"
     ensure
       puts "Stopping server..."
       Process.kill('TERM', pid)
