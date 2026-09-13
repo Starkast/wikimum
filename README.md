@@ -36,6 +36,15 @@ In production, the script `bin/start` is used, but we avoid using that in the `P
 
 Go to [http://wikimum.127.0.0.1.nip.io:8080](http://wikimum.127.0.0.1.nip.io:8080) (the GitHub app for development is configured with this address).
 
+### Reviewing page edits
+
+The editor opens with a live **Förhandsvisning** (preview). Select **Diff** to
+compare your unsaved title, Markdown content, description, and visibility with
+the page when you opened the editor. Added and removed lines have `+` and `−`
+markers and line numbers. Switching views preserves your draft; saving and
+reopening the editor starts a new comparison. Use the arrow keys to switch
+between the focused tabs.
+
 ### Environment variables
 
 ```bash

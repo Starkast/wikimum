@@ -6,7 +6,17 @@
     justify-content: space-between;
   }
   .flex-item {
-    width: 45%;
+    width: 48%;
+    min-width: 0;
+  }
+  .flex-item input[type="text"], .flex-item textarea {
+    box-sizing: border-box;
+    width: 100%;
+  }
+  .flex-item hr { max-width: 100%; }
+  @media (max-width: 800px) {
+    .flex-item { width: 100%; }
+    .editor-review { margin-top: 2em; }
   }
   #preview {
     max-height: 75vh;
@@ -102,7 +112,7 @@
       %label.block{ for: 'page-content' }
         Innehåll
         != haml :'_link_titles', layout: false
-      %textarea#page-content{ name: 'content', cols: 78, rows: 20, "hx-post": "/#{@page.slug}/preview", "hx-target": "#preview", "hx-trigger": "keyup changed delay:500ms", autofocus: true, onpaste: "handlePaste(event)", ondragover: "handleDragOver(event)", ondragleave: "handleDragLeave(event)", ondrop: "handleDrop(event)" }= @page.content
+      %textarea#page-content{ name: 'content', cols: 78, rows: 20, "hx-post": "/#{@page.slug}/preview", "hx-target": "#preview", "hx-trigger": "input changed delay:500ms, keyup changed delay:500ms, change", "hx-sync": "this:replace", autofocus: true, onpaste: "handlePaste(event)", ondragover: "handleDragOver(event)", ondragleave: "handleDragLeave(event)", ondrop: "handleDrop(event)" }= @page.content
 
       %label.block{ for: 'comment' } Kommentar
       %input#comment{ type: :text, name: 'comment', maxlength: 74, size: 50 }
@@ -147,9 +157,19 @@
             %a.upload-link{ href: upload.path, target: "_blank", title: "Öppna fil" } &#x1F517;
             %button.delete-btn{ type: "button", onclick: "deleteUpload(this.parentElement.dataset.id)" } Ta bort
 
-  .flex-item
-    #preview
+  .flex-item.editor-review
+    .review-tabs{ role: 'tablist', 'aria-label': 'Granska ändringar' }
+      %button#preview-tab{ type: 'button', role: 'tab', 'aria-controls': 'preview', 'aria-selected': 'true', tabindex: '0' } Förhandsvisning
+      %button#diff-tab{ type: 'button', role: 'tab', 'aria-controls': 'diff', 'aria-selected': 'false', tabindex: '-1' } Diff
+    #preview{ role: 'tabpanel', 'aria-labelledby': 'preview-tab', tabindex: '0' }
       != haml :preview, layout: false
+    #diff{ role: 'tabpanel', 'aria-labelledby': 'diff-tab', tabindex: '0', hidden: true }
+      %p.review-note Ändringar jämfört med sidan när du öppnade redigeraren.
+      %p#diff-summary{ role: 'status' } Inga ändringar ännu.
+      #diff-content
+
+%link{ href: "/stylesheets/editor-review.css?#{App.cache_bust}", rel: 'stylesheet' }
+%script{ src: "/javascripts/editor-review.js?#{App.cache_bust}", defer: true }
 
 :javascript
   function escapeHtml(text) {
