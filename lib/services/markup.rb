@@ -41,7 +41,7 @@ class MarkdownFilter < HTMLPipeline::TextFilter
 end
 
 class WikiLinkFilter < HTMLPipeline::TextFilter
-  WIKI_LINK_REGEXP = /\[\[(?<link>[\d\w\sÅÄÖåäö:-]{1,35})\]\]/i.freeze
+  WIKI_LINK_REGEXP = /\[\[(?<link>[\d\w\sÅÄÖåäö.:-]{1,35})\]\]/i.freeze
 
   def call(text, context: {}, result: {})
     text.gsub(WIKI_LINK_REGEXP) do |word|
