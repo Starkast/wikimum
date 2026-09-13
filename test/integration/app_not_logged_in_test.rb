@@ -233,7 +233,7 @@ class AppNotLoggedInTest < Minitest::Test
   end
 
   def test_page_with_space_in_slug_redirects_to_underscore
-    get "/foo%20bar"
+    get "/Foo%20bar"
 
     assert_equal 301, last_response.status
     assert_equal "/foo_bar", URI(last_response["Location"]).path

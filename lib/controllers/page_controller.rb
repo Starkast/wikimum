@@ -300,7 +300,7 @@ class PageController < BaseController
 
   get '/:slug' do
     if params[:slug].include?(" ")
-      redirect "/#{params[:slug].tr(' ', '_')}", 301
+      redirect "/#{URI.encode_uri_component(slug)}", 301
     end
     @page = Page
       .select(:id, :slug, :title, :visibility, :revision, :updated_on, :compiled_content, :author_id, :sha1)
