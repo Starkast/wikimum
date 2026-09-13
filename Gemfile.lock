@@ -15,7 +15,7 @@ GEM
     commonmarker (2.10.0-x86_64-darwin)
     commonmarker (2.10.0-x86_64-linux)
     concurrent-ruby (1.3.8)
-    console (1.34.3)
+    console (1.37.0)
       fiber-annotation
       fiber-local (~> 1.1)
       json
@@ -195,7 +195,7 @@ CHECKSUMS
   commonmarker (2.10.0-x86_64-darwin) sha256=01e0830ed0319825ecdc16411c90acd3f661d1568dfc178731b3f64d0ce2363d
   commonmarker (2.10.0-x86_64-linux) sha256=945c510c0bfca9022245928e2248468fe3ddad58c939be0c37b20082cc392880
   concurrent-ruby (1.3.8) sha256=b2f1be836e968ccc78ccfce277ea79c72a88633f22306782c16ff23fb415d1e1
-  console (1.34.3) sha256=869fbd74697efc4c606f102d2812b0b008e4e7fd738a91c591e8577140ec0dcc
+  console (1.37.0) sha256=8093b286c2595a063849c098594fee5155ecc7967d36f3aa8cbe7569c8f3efd7
   crack (1.0.0) sha256=c83aefdb428cdc7b66c7f287e488c796f055c0839e6e545fec2c7047743c4a49
   drb (2.2.3) sha256=0b00d6fdb50995fe4a45dea13663493c841112e4068656854646f418fda13373
   dyno_metadata (0.0.4) sha256=8b19c8fe3b72a48bc61777b64f3a27de2f47c64464f68923e628c91254f9e23d
