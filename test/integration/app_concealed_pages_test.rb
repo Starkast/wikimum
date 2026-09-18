@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "cgi/escape"
+require "securerandom"
 
 require_relative "../test_helper"
 require_relative "../integration_test_helper"
@@ -38,7 +39,39 @@ class AppConcealedPagesTest < Minitest::Test
     header "X-CSRF-Token", Rack::Protection::AuthenticityToken.token(session)
   end
 
-  def test_concealed
+  def test_concealed_is_indistinguishable_from_missing_for_anonymous
+    get "/#{@page.slug_for_uri}"
+    concealed = last_response
+
+    get "/#{SecureRandom.hex}"
+    missing = last_response
+
+    assert_equal 404, concealed.status
+    without_cache_bust = ->(body) { body.gsub(/\?\d+"/, '"') }
+    assert_equal without_cache_bust.(missing.body), without_cache_bust.(concealed.body)
+    assert_equal missing.headers["Cache-Control"], concealed.headers["Cache-Control"]
+    refute_includes concealed.body, @page.slug
+  end
+
+  def test_concealed_revision_is_a_404_for_anonymous
+    @page.revise!
+    @page.save
+
+    get "/#{@page.slug_for_uri}/1"
+
+    assert_equal 404, last_response.status
+    refute_includes last_response.body, @page_title
+  end
+
+  def test_concealed_edit_view_redirects_like_missing_for_anonymous
+    get "/#{@page.slug_for_uri}/edit"
+
+    assert_equal 302, last_response.status
+    assert_equal "/#{@page.slug_for_uri}", URI(last_response["Location"]).path
+  end
+
+  def test_concealed_logged_in_as_user
+    login_as_user
     get "/#{@page.slug_for_uri}"
     follow_redirect!
     assert last_response.body.include?("Not authorized")
@@ -46,6 +79,7 @@ class AppConcealedPagesTest < Minitest::Test
   end
 
   def test_concealed_does_not_redirect_to_external_referrer
+    login_as_user
     header "Referer", "https://github.com/Starkast/wikimum/issues/6"
 
     get "/#{@page.slug_for_uri}"
@@ -56,6 +90,7 @@ class AppConcealedPagesTest < Minitest::Test
   end
 
   def test_concealed_redirects_back_to_same_host_referrer
+    login_as_user
     header "Referer", "http://#{current_session.default_host}/list"
 
     get "/#{@page.slug_for_uri}"
@@ -188,12 +223,12 @@ class AppConcealedPagesTest < Minitest::Test
     visible&.destroy
   end
 
-  def test_etag_does_not_short_circuit_concealed_redirect_for_anonymous
+  def test_etag_does_not_short_circuit_concealed_404_for_anonymous
     # Anonymous visitor sends an If-None-Match that *would* match the etag
     # computed for an anonymous view of this concealed page. The auth-gate
     # (restrict_concealed) must run BEFORE the etag check so the 304
     # path can't bypass authorization. If the order ever swaps, a 304 is
-    # returned instead of the 302 redirect.
+    # returned instead of the 404.
     # Sinatra's `etag` helper wraps the value in double quotes per HTTP spec,
     # so If-None-Match must match the quoted form to actually short-circuit.
     matching_etag = %("#{[@page.sha1, "c", "p", "u"].join("-")}")
@@ -203,7 +238,7 @@ class AppConcealedPagesTest < Minitest::Test
 
     refute_equal 304, last_response.status,
       "etag check must run after restrict_concealed; got 304 — auth gate bypassed"
-    assert_equal 302, last_response.status
+    assert_equal 404, last_response.status
   end
 
   def test_etag_encodes_starkast_audience_with_s_suffix

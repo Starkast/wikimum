@@ -11,10 +11,13 @@ class PageController < BaseController
 
     def restrict_concealed(page)
       return if starkast?
-      if page.concealed?
-        flash[:error] = "Not authorized!"
+      return unless page.concealed?
 
+      if logged_in?
+        flash[:error] = "Not authorized!"
         redirect safe_back
+      else
+        not_found_page
       end
     end
 
@@ -73,6 +76,7 @@ class PageController < BaseController
     end
 
     def not_found_page
+      @page = nil
       @page_title = "Sidan finns inte"
       @noindex = true
       cache_for_audience
@@ -214,15 +218,11 @@ class PageController < BaseController
   end
 
   get '/:slug/edit' do
-    @page = Page.with_slug(slug).first
     unless logged_in?
       flash[:error] = "Not authorized to edit!"
-      if @page
-        redirect "/#{@page.slug_for_uri}"
-      else
-        redirect "/"
-      end
+      redirect "/#{URI.encode_uri_component(slug)}"
     end
+    @page = Page.with_slug(slug).first
     redirect "new/#{slug}" unless @page
     @page_title = "Ändrar #{@page.title}"
     restrict_concealed(@page)
@@ -255,6 +255,8 @@ class PageController < BaseController
   end
 
   get '/:slug/uploads' do
+    halt 401, "Not authorized" unless logged_in?
+
     page = Page.with_slug(slug).first
     halt 404, "Page not found" unless page
     restrict_concealed(page)
