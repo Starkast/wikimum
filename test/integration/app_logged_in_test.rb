@@ -33,6 +33,14 @@ class AppLoggedInTest < Minitest::Test
     @user.destroy
   end
 
+  def test_nonexistent_page_redirects_to_new
+    random_slug = SecureRandom.hex
+    get "/#{random_slug}"
+
+    assert_equal 302, last_response.status
+    assert_equal "/new/#{random_slug}", URI(last_response["Location"]).path
+  end
+
   def test_logged_in_response_still_sets_session_cookie
     # Counterpart to test_anonymous_get_does_not_set_a_session_cookie in
     # app_not_logged_in_test: the skip-empty-session after-filter must NOT

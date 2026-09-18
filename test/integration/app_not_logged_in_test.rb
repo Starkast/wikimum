@@ -189,13 +189,28 @@ class AppNotLoggedInTest < Minitest::Test
       "GET /:slug must bound the page lookup with LIMIT 1, got: #{queries.first.inspect}")
   end
 
-  def test_nonexistent_page
-    random_slug = SecureRandom.hex
-    get "/#{random_slug}"
+  def test_nonexistent_page_is_a_cacheable_404
+    queries = []
+    counting = Logger.new(File::NULL).tap do |l|
+      l.define_singleton_method(:add) do |_severity, message = nil, progname = nil|
+        sql = message || progname
+        queries << sql if sql.is_a?(String)
+        true
+      end
+    end
+    DB.loggers << counting
+    begin
+      get "/#{SecureRandom.hex}"
+    ensure
+      DB.loggers.delete(counting)
+    end
 
-    redirect_location = last_response["Location"]
-    assert_equal 302, last_response.status
-    assert_equal "/new/#{random_slug}", URI(redirect_location).path
+    assert_equal 404, last_response.status
+    assert_includes last_response.body, "Sidan finns inte"
+    assert_includes last_response.body, '<meta content="noindex" name="robots">'
+    assert_includes last_response.headers["Cache-Control"].to_s, "public"
+    assert_nil last_response.headers["Set-Cookie"]
+    assert_equal 1, queries.size, "missing page should use one DB query, got #{queries.inspect}"
   end
 
   def test_page_lookup_handles_legacy_mixed_case_slug
