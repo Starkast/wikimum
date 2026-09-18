@@ -71,6 +71,13 @@ class PageController < BaseController
         cache_control :public, :no_cache, s_maxage: 600
       end
     end
+
+    def not_found_page
+      @page_title = "Sidan finns inte"
+      @noindex = true
+      cache_for_audience
+      halt 404, haml(:not_found)
+    end
   end
 
   get '/' do
@@ -309,7 +316,13 @@ class PageController < BaseController
       .limit(1)
       .all
       .first
-    redirect "new/#{slug}" unless @page
+    unless @page
+      if logged_in?
+        redirect "new/#{slug}"
+      else
+        not_found_page
+      end
+    end
     @page_title = @page.title
     restrict_concealed(@page)
     cache_for_audience
@@ -320,7 +333,13 @@ class PageController < BaseController
 
   get '/:slug/:revision' do |_, revision|
     @page = Revision.with_slug(slug).where(revision: revision.to_i).first
-    redirect "#{slug}" unless @page
+    unless @page
+      if logged_in?
+        redirect "#{slug}"
+      else
+        not_found_page
+      end
+    end
     @page_title = "#{@page.title} (#{revision})"
     restrict_concealed(@page)
     cache_for_audience
