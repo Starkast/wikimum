@@ -49,6 +49,26 @@ class AppLoggedInTest < Minitest::Test
     assert_equal "/#{random_slug}", URI(last_response["Location"]).path
   end
 
+  def test_redirects_percent_encode_non_ascii_slugs
+    encoded = CGI.escape("åäö")
+    {
+      "/#{encoded}" => "/new/#{encoded}",
+      "/#{encoded}/1" => "/#{encoded}",
+      "/#{encoded}/edit" => "/new/#{encoded}",
+      "/#{encoded}/" => "/#{encoded}",
+    }.each do |path, location|
+      get path
+
+      assert_equal location, URI(last_response["Location"]).path, "GET #{path}"
+    end
+  end
+
+  def test_single_search_hit_redirect_percent_encodes_slug
+    get "/search", q: "ÅÄÖ"
+
+    assert_equal "/#{@page.slug_for_uri}", URI(last_response["Location"]).path
+  end
+
   def test_logged_in_response_still_sets_session_cookie
     # Counterpart to test_anonymous_get_does_not_set_a_session_cookie in
     # app_not_logged_in_test: the skip-empty-session after-filter must NOT
