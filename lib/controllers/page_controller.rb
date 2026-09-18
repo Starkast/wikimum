@@ -255,6 +255,8 @@ class PageController < BaseController
   end
 
   get '/:slug/uploads' do
+    halt 401, "Not authorized" unless logged_in?
+
     page = Page.with_slug(slug).first
     halt 404, "Page not found" unless page
     restrict_concealed(page)

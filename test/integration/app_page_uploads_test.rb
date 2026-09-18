@@ -88,6 +88,13 @@ class AppPageUploadsTest < Minitest::Test
     assert_includes last_response.headers["cache-control"], "public"
   end
 
+  def test_list_uploads_requires_login
+    env "rack.session", {}
+    get "/#{CGI.escape(@page.slug)}/uploads"
+
+    assert_equal 401, last_response.status
+  end
+
   def test_list_uploads
     Upload.create(
       page: @page,
