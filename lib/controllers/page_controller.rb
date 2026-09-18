@@ -218,15 +218,11 @@ class PageController < BaseController
   end
 
   get '/:slug/edit' do
-    @page = Page.with_slug(slug).first
     unless logged_in?
       flash[:error] = "Not authorized to edit!"
-      if @page
-        redirect "/#{@page.slug_for_uri}"
-      else
-        redirect "/"
-      end
+      redirect "/#{URI.encode_uri_component(slug)}"
     end
+    @page = Page.with_slug(slug).first
     redirect "new/#{slug}" unless @page
     @page_title = "Ändrar #{@page.title}"
     restrict_concealed(@page)

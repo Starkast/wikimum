@@ -63,6 +63,13 @@ class AppConcealedPagesTest < Minitest::Test
     refute_includes last_response.body, @page_title
   end
 
+  def test_concealed_edit_view_redirects_like_missing_for_anonymous
+    get "/#{@page.slug_for_uri}/edit"
+
+    assert_equal 302, last_response.status
+    assert_equal "/#{@page.slug_for_uri}", URI(last_response["Location"]).path
+  end
+
   def test_concealed_logged_in_as_user
     login_as_user
     get "/#{@page.slug_for_uri}"
