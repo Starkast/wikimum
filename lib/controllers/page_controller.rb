@@ -328,6 +328,7 @@ class PageController < BaseController
 
   get '/:slug/:revision' do |_, revision|
     @page = Revision.with_slug(slug).where(revision: revision.to_i).first
+    not_found_page if !@page && !logged_in?
     redirect "#{slug}" unless @page
     @page_title = "#{@page.title} (#{revision})"
     restrict_concealed(@page)

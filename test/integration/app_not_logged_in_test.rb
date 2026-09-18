@@ -247,6 +247,13 @@ class AppNotLoggedInTest < Minitest::Test
     revision&.destroy
   end
 
+  def test_nonexistent_revision_is_a_404
+    get "/#{SecureRandom.hex}/1"
+
+    assert_equal 404, last_response.status
+    assert_includes last_response.headers["Cache-Control"].to_s, "public"
+  end
+
   def test_page_with_space_in_slug_redirects_to_underscore
     get "/Foo%20bar"
 
