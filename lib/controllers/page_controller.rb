@@ -11,10 +11,13 @@ class PageController < BaseController
 
     def restrict_concealed(page)
       return if starkast?
-      if page.concealed?
-        flash[:error] = "Not authorized!"
+      return unless page.concealed?
 
+      if logged_in?
+        flash[:error] = "Not authorized!"
         redirect safe_back
+      else
+        not_found_page
       end
     end
 
@@ -73,6 +76,7 @@ class PageController < BaseController
     end
 
     def not_found_page
+      @page = nil
       @page_title = "Sidan finns inte"
       @noindex = true
       cache_for_audience
