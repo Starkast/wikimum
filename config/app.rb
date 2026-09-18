@@ -20,7 +20,10 @@ loader.setup
 # https://github.com/ged/ruby-pg/issues/311#issuecomment-1609970533
 ENV["PGGSSENCMODE"] = "disable" if App.macos?
 
-DB = Sequel.connect(ENV.fetch('DATABASE_URL', 'postgres://localhost/wikimum'))
+DB = Sequel.connect(
+  ENV.fetch('DATABASE_URL', 'postgres://localhost/wikimum'),
+  max_connections: App.max_threads
+)
 
 # https://github.com/Starkast/wikimum/issues/412
 # https://sequel.jeremyevans.net/rdoc-plugins/files/lib/sequel/extensions/connection_validator_rb.html
