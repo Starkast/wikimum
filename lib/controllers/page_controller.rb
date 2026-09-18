@@ -9,6 +9,10 @@ class PageController < BaseController
       Slug.slugify(params[:slug]) if params[:slug]
     end
 
+    def slug_for_uri
+      URI.encode_uri_component(slug)
+    end
+
     def restrict_concealed(page)
       return if starkast?
       if page.concealed?
@@ -160,7 +164,7 @@ class PageController < BaseController
       haml :search
     when 1
       flash[:confirm] = "Din sökning gav bara denna sida som träff"
-      redirect @pages.first.slug
+      redirect @pages.first.slug_for_uri
     else
       flash.now[:confirm] = "Din sökning gav #{@pages.size} träffar"
       haml :search
@@ -223,7 +227,7 @@ class PageController < BaseController
         redirect "/"
       end
     end
-    redirect "new/#{slug}" unless @page
+    redirect "new/#{slug_for_uri}" unless @page
     @page_title = "Ändrar #{@page.title}"
     restrict_concealed(@page)
     @edit_mode = true
@@ -302,12 +306,12 @@ class PageController < BaseController
   end
 
   get '/:slug/' do
-    redirect "/#{slug}"
+    redirect "/#{slug_for_uri}"
   end
 
   get '/:slug' do
     if params[:slug].include?(" ")
-      redirect "/#{URI.encode_uri_component(slug)}", 301
+      redirect "/#{slug_for_uri}", 301
     end
     @page = Page
       .select(:id, :slug, :title, :visibility, :revision, :updated_on, :compiled_content, :author_id, :sha1)
@@ -318,7 +322,7 @@ class PageController < BaseController
       .first
     unless @page
       if logged_in?
-        redirect "new/#{slug}"
+        redirect "new/#{slug_for_uri}"
       else
         not_found_page
       end
@@ -335,7 +339,7 @@ class PageController < BaseController
     @page = Revision.with_slug(slug).where(revision: revision.to_i).first
     unless @page
       if logged_in?
-        redirect "#{slug}"
+        redirect "#{slug_for_uri}"
       else
         not_found_page
       end
