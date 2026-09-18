@@ -69,6 +69,11 @@ class App
       username_ok && password_ok
     end
 
+    # Shared by Puma threads and the Sequel pool so every thread gets a connection
+    def max_threads
+      Integer(ENV.fetch("MAX_THREADS", 16))
+    end
+
     def puma_debug_logging?
       thruthy? ENV["PUMA_DEBUG_LOGGING"]
     end

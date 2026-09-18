@@ -3,7 +3,7 @@
 require_relative "../lib/app"
 
 workers 0
-threads 1, 16
+threads 1, App.max_threads
 
 preload_app!
 
