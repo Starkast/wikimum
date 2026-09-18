@@ -316,8 +316,13 @@ class PageController < BaseController
       .limit(1)
       .all
       .first
-    not_found_page if !@page && !logged_in?
-    redirect "new/#{slug}" unless @page
+    unless @page
+      if logged_in?
+        redirect "new/#{slug}"
+      else
+        not_found_page
+      end
+    end
     @page_title = @page.title
     restrict_concealed(@page)
     cache_for_audience
@@ -328,8 +333,13 @@ class PageController < BaseController
 
   get '/:slug/:revision' do |_, revision|
     @page = Revision.with_slug(slug).where(revision: revision.to_i).first
-    not_found_page if !@page && !logged_in?
-    redirect "#{slug}" unless @page
+    unless @page
+      if logged_in?
+        redirect "#{slug}"
+      else
+        not_found_page
+      end
+    end
     @page_title = "#{@page.title} (#{revision})"
     restrict_concealed(@page)
     cache_for_audience
