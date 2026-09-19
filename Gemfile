@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 source 'https://rubygems.org/'
-ruby file: '.ruby-version'
+ruby '~> 4.0.2'
 
 gem 'sequel', "5.107.0"
 gem 'pg'
