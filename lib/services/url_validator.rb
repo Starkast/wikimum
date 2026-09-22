@@ -5,16 +5,22 @@ require "resolv"
 require "ipaddr"
 
 class UrlValidator
-  PRIVATE_RANGES = [
+  BLOCKED_RANGES = [
+    IPAddr.new("0.0.0.0/8"),
     IPAddr.new("10.0.0.0/8"),
-    IPAddr.new("172.16.0.0/12"),
-    IPAddr.new("192.168.0.0/16"),
+    IPAddr.new("100.64.0.0/10"),
     IPAddr.new("127.0.0.0/8"),
     IPAddr.new("169.254.0.0/16"),
-    IPAddr.new("0.0.0.0/8"),
+    IPAddr.new("172.16.0.0/12"),
+    IPAddr.new("192.168.0.0/16"),
+    IPAddr.new("224.0.0.0/4"),
+    IPAddr.new("240.0.0.0/4"),
+    IPAddr.new("::/128"),
     IPAddr.new("::1/128"),
+    IPAddr.new("64:ff9b::/96"),
     IPAddr.new("fc00::/7"),
-    IPAddr.new("fe80::/10")
+    IPAddr.new("fe80::/10"),
+    IPAddr.new("ff00::/8")
   ].freeze
 
   BLOCKED_HOSTS = %w[localhost].freeze
@@ -23,41 +29,52 @@ class UrlValidator
     new(url).safe?
   end
 
-  def initialize(url)
+  def initialize(url, resolver: Resolv)
     @url = url
+    @resolver = resolver
   end
 
   def safe?
-    uri = URI.parse(@url)
-    return false unless %w[http https].include?(uri.scheme)
-    return false unless uri.host
-    return false if BLOCKED_HOSTS.include?(uri.host.downcase)
-    return false if private_ip?(uri.host)
+    !addresses.empty?
+  end
 
-    # Resolve DNS and check resolved IPs
-    ips = resolve_ips(uri.host)
-    return false if ips.empty?
-    return false if ips.any? { |ip| private_ip?(ip) }
-
-    true
-  rescue URI::InvalidURIError, ArgumentError
-    false
+  # Public IPs the URL host resolves to, or [] when the URL must not be fetched.
+  def addresses
+    @addresses ||= resolve_addresses
   end
 
   private
 
-  def private_ip?(host)
-    return false unless host
+  def resolve_addresses
+    uri = URI.parse(@url)
+    return [] unless %w[http https].include?(uri.scheme)
 
-    ip = IPAddr.new(host)
-    PRIVATE_RANGES.any? { |range| range.include?(ip) }
-  rescue IPAddr::InvalidAddressError
-    false
+    host = uri.hostname
+    return [] if host.nil? || host.empty?
+    return [] if BLOCKED_HOSTS.include?(host.downcase)
+
+    ips = ip_addresses(host)
+    return [] if ips.empty? || ips.any? { |ip| blocked?(ip) }
+
+    ips.map(&:to_s)
+  rescue URI::InvalidURIError, ArgumentError
+    []
   end
 
-  def resolve_ips(host)
-    Resolv.getaddresses(host)
+  def ip_addresses(host)
+    [IPAddr.new(host)]
+  rescue IPAddr::InvalidAddressError
+    lookup(host).map { |address| IPAddr.new(address) }
+  end
+
+  def lookup(host)
+    @resolver.getaddresses(host)
   rescue Resolv::ResolvError
     []
+  end
+
+  def blocked?(ip)
+    ip = ip.native if ip.ipv4_mapped?
+    BLOCKED_RANGES.any? { |range| range.include?(ip) }
   end
 end
