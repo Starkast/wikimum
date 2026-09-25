@@ -1,0 +1,53 @@
+name: Deploy to Biff
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Commit, branch or tag to deploy
+        default: main
+
+jobs:
+  deploy:
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.head_branch == github.event.repository.default_branch)
+    concurrency: biff-deploy
+    runs-on: ubuntu-slim
+    timeout-minutes: 30
+    permissions:
+      deployments: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      # The VM deploys it on GitHub's webhook, see Starkast/ansible
+      - name: Create deployment
+        id: deployment
+        run: |
+          id=$(gh api "repos/$GITHUB_REPOSITORY/deployments" \
+            -f ref="$REF" -f environment=biff -F auto_merge=false -F 'required_contexts[]' \
+            --jq .id)
+          echo "id=$id" >> "$GITHUB_OUTPUT"
+        env:
+          REF: ${{ github.event.workflow_run.head_sha || inputs.ref }}
+      - name: Wait for deploy
+        run: |
+          last=
+          while :; do
+            status=$(gh api "repos/$GITHUB_REPOSITORY/deployments/$ID/statuses" \
+              --jq '.[0] | "\(.state // "pending") \(.description // "")"')
+            [ "$status" = "$last" ] || echo "$status"
+            last=$status
+            case $status in
+              success*) exit 0 ;;
+              failure*|error*) echo "::error::${status#* }"; exit 1 ;;
+            esac
+            sleep 5
+          done
+        env:
+          ID: ${{ steps.deployment.outputs.id }}
