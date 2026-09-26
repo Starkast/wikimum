@@ -107,7 +107,7 @@ gh gem-bump --merge 860
 
 ### Production
 
-When CI passes on `main`, the commit is deployed to Fly.io (`deploy-fly.yml`) and to the OpenBSD VM on Biff (`deploy-biff.yml`), which serves https://next.starkast.wiki/. The Biff workflow creates a GitHub deployment that the VM picks up through a webhook, see [Starkast/ansible](https://github.com/Starkast/ansible). Run `Deploy to Biff` by hand to deploy another commit, e.g. to roll back.
+When CI passes on `main`, the commit is deployed to the OpenBSD VM on Biff (`deploy-biff.yml`), which serves https://starkast.wiki/. The Biff workflow creates a GitHub deployment that the VM picks up through a webhook, see [Starkast/ansible](https://github.com/Starkast/ansible). Run `Deploy to Biff` by hand to deploy another commit, e.g. to roll back.
 
 ### Preview
 
