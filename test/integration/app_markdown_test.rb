@@ -106,6 +106,29 @@ class AppMarkdownTest < Minitest::Test
     refute_includes last_response.body, "Resultat"
   end
 
+  def test_search_as_markdown_lists_every_hit
+    get "/search.md", q: "Geekbench"
+
+    assert last_response.ok?
+    assert_equal "text/markdown;charset=utf-8", last_response.content_type
+    assert_includes last_response.body, "- [Geekbench 5](/#{@page.slug_for_uri}.md)"
+  end
+
+  def test_search_as_markdown_without_hits
+    get "/search.md", q: "nonexistent"
+
+    assert last_response.ok?
+    assert_equal "# Sökresultat för nonexistent\n\n", last_response.body
+  end
+
+  def test_search_as_markdown_hides_concealed_pages_from_anonymous
+    @page.update(visibility: "concealed")
+
+    get "/search.md", q: "Geekbench"
+
+    refute_includes last_response.body, "Geekbench 5"
+  end
+
   def test_unicode_slug_as_markdown
     page = Page.create(title: "Åäö sida", content: "Hej", author: @user)
 

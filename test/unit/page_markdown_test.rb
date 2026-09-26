@@ -8,6 +8,7 @@ require_relative "../../lib/services/page_markdown"
 
 class PageMarkdownTest < Minitest::Test
   FakePage = Struct.new(:title, :description, :revision, :updated_on, :content, keyword_init: true)
+  ListedPage = Struct.new(:title, :description, :slug_for_uri)
 
   def page(**attrs)
     FakePage.new(title: "Geekbench 5", revision: 3, content: "# Resultat\n", **attrs)
@@ -42,5 +43,29 @@ class PageMarkdownTest < Minitest::Test
     markdown = PageMarkdown.new(page(content: nil)).to_s
 
     assert markdown.end_with?("---\n\n")
+  end
+
+  def test_list_links_to_markdown_with_descriptions
+    pages = [
+      ListedPage.new("Geekbench 5", "CPU-test\nfrån 2019", "geekbench_5"),
+      ListedPage.new("Geekbench 6", nil, "geekbench_6"),
+    ]
+
+    assert_equal <<~MARKDOWN, PageMarkdown.list("Sökresultat", pages)
+      # Sökresultat
+
+      - [Geekbench 5](/geekbench_5.md): CPU-test från 2019
+      - [Geekbench 6](/geekbench_6.md)
+    MARKDOWN
+  end
+
+  def test_list_escapes_brackets_in_titles
+    pages = [ListedPage.new("[Arkiv] Geekbench", nil, "arkiv_geekbench")]
+
+    assert_includes PageMarkdown.list("Sökresultat", pages), "- [\\[Arkiv\\] Geekbench](/arkiv_geekbench.md)"
+  end
+
+  def test_empty_list_is_only_a_heading
+    assert_equal "# Sökresultat\n\n", PageMarkdown.list("Sökresultat", [])
   end
 end

@@ -185,6 +185,17 @@ class PageController < BaseController
     end
   end
 
+  get '/search.md' do
+    pages = Page
+      .select(:slug, :title, :description)
+      .with_concealed_if(starkast?)
+      .search(params[:q])
+      .all
+
+    content_type "text/markdown", charset: "utf-8"
+    PageMarkdown.list("Sökresultat för #{params[:q].to_s.strip}", pages)
+  end
+
   post '/new*' do
     @page = Page.new
     @page.set_fields(params, %i(title content description comment))
