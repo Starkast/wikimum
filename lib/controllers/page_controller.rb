@@ -360,6 +360,15 @@ class PageController < BaseController
     haml :show
   end
 
+  get '/:slug/:revision.md' do |_, revision|
+    @markdown = true
+    @page = Revision.with_slug(slug).where(revision: revision.to_i).first
+    not_found_page unless @page
+    restrict_concealed(@page)
+    cache_for_audience
+    render_markdown(@page)
+  end
+
   get '/:slug/:revision' do |_, revision|
     @page = Revision.with_slug(slug).where(revision: revision.to_i).first
     unless @page

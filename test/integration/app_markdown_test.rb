@@ -78,6 +78,34 @@ class AppMarkdownTest < Minitest::Test
     assert_includes last_response["Cache-Control"], "private"
   end
 
+  def test_revision_as_markdown
+    @page.revise!
+    @page.update(content: "# Nytt")
+
+    get "/#{@page.slug_for_uri}/1.md"
+
+    assert last_response.ok?
+    assert_includes last_response.body, "revision: 1\n"
+    assert_includes last_response.body, "# Resultat"
+    refute_includes last_response.body, "# Nytt"
+  end
+
+  def test_missing_revision_as_markdown_is_a_404
+    get "/#{@page.slug_for_uri}/9.md"
+
+    assert_equal 404, last_response.status
+  end
+
+  def test_concealed_revision_as_markdown_is_a_404_for_anonymous
+    @page.revise!
+    @page.update(visibility: "concealed")
+
+    get "/#{@page.slug_for_uri}/1.md"
+
+    assert_equal 404, last_response.status
+    refute_includes last_response.body, "Resultat"
+  end
+
   def test_unicode_slug_as_markdown
     page = Page.create(title: "Åäö sida", content: "Hej", author: @user)
 
