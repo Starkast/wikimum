@@ -79,8 +79,18 @@ class PageController < BaseController
       end
     end
 
+    def render_markdown(page)
+      content_type "text/markdown", charset: "utf-8"
+      PageMarkdown.new(page).to_s
+    end
+
     def not_found_page
       @page = nil
+      if @markdown
+        cache_for_audience
+        content_type "text/markdown", charset: "utf-8"
+        halt 404, "# Sidan finns inte\n"
+      end
       @page_title = "Sidan finns inte"
       @noindex = true
       cache_for_audience
@@ -305,6 +315,19 @@ class PageController < BaseController
 
     content_type :json
     { success: true }.to_json
+  end
+
+  get '/:slug.md' do
+    @markdown = true
+    @page = Page
+      .select(:id, :slug, :title, :description, :visibility, :revision, :updated_on, :content, :sha1)
+      .with_slug(slug)
+      .first
+    not_found_page unless @page
+    restrict_concealed(@page)
+    cache_for_audience
+    etag_for_page(@page)
+    render_markdown(@page)
   end
 
   get '/:slug/' do
