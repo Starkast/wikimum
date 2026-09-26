@@ -65,6 +65,18 @@ class PageMarkdownTest < Minitest::Test
     assert_includes PageMarkdown.list("Sökresultat", pages), "- [\\[Arkiv\\] Geekbench](/arkiv_geekbench.md)"
   end
 
+  def test_list_escapes_backslashes_in_titles
+    pages = [ListedPage.new("Geekbench \\", nil, "geekbench")]
+
+    assert_includes PageMarkdown.list("Sökresultat", pages), "- [Geekbench \\\\](/geekbench.md)"
+  end
+
+  def test_list_keeps_titles_on_one_line
+    pages = [ListedPage.new("Geekbench\n\n# Injected", nil, "geekbench")]
+
+    assert_includes PageMarkdown.list("Sökresultat", pages), "- [Geekbench # Injected](/geekbench.md)"
+  end
+
   def test_empty_list_is_only_a_heading
     assert_equal "# Sökresultat\n\n", PageMarkdown.list("Sökresultat", [])
   end

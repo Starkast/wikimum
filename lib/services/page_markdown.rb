@@ -5,14 +5,19 @@ require "yaml"
 class PageMarkdown
   def self.list(heading, pages)
     items = pages.map do |page|
-      title = page.title.gsub(/[\[\]]/) { "\\#{_1}" }
-      description = page.description.to_s.split.join(" ")
+      title = single_line(page.title).gsub(/[\\\[\]]/) { "\\#{_1}" }
+      description = single_line(page.description)
       item = "- [#{title}](/#{page.slug_for_uri}.md)"
       description.empty? ? item : "#{item}: #{description}"
     end
 
     "# #{heading}\n\n#{items.map { "#{_1}\n" }.join}"
   end
+
+  def self.single_line(text)
+    text.to_s.split.join(" ")
+  end
+  private_class_method :single_line
 
   def initialize(page)
     @page = page
