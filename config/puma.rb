@@ -2,7 +2,8 @@
 
 require_relative "../lib/app"
 
-workers 0
+# Workers come from WEB_CONCURRENCY, default 0 (single mode). In cluster mode
+# the master replaces crashed or hung workers.
 threads 1, App.max_threads
 
 preload_app!
@@ -29,7 +30,7 @@ end
 
 silence_fork_callback_warning
 
-# so we don't need to remember adding it back if we start using cluster mode
-before_worker_boot do
+# preload_app! may connect in the master, don't share those sockets with workers
+before_fork do
   App.db.disconnect
 end
