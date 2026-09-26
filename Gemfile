@@ -25,7 +25,7 @@ gem 'zeitwerk'
 group :development do
   gem 'localhost'
   gem 'racksh'
-  gem 'rubocop', '~> 1.89.0', require: false
+  gem 'rubocop', '~> 1.91.0', require: false
 end
 
 group :development, :test do
