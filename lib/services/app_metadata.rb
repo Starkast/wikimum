@@ -1,19 +1,18 @@
 # frozen_string_literal: true
 
-require "dyno_metadata"
-
+# The release being run, set by wikimum-deploy (see Starkast/ansible)
 module AppMetadata
   module_function
 
   def release_version
-    DynoMetadata.release_version
+    ENV.fetch("RELEASE_VERSION", "dev")
   end
 
   def commit
-    DynoMetadata.commit
+    ENV.fetch("RELEASE_COMMIT", "HEAD")
   end
 
   def short_commit
-    DynoMetadata.short_commit
+    commit[0, 7]
   end
 end

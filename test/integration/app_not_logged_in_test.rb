@@ -473,7 +473,7 @@ class AppNotLoggedInTest < Minitest::Test
       <a href="/cookies">Om cookies</a>
       </li>
       <li>
-      v42
+      dev
       (<a href="https://github.com/Starkast/wikimum/commit/#{AppMetadata.commit}">#{AppMetadata.short_commit}</a>)
       </li>
       <li>

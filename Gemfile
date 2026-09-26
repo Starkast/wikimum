@@ -20,7 +20,6 @@ gem 'sentry-ruby'
 gem 'logger'
 gem 'rake'
 gem 'zeitwerk'
-gem 'dyno_metadata'
 
 # Not installed in production, see BUNDLE_WITHOUT in Starkast/ansible
 group :development do
