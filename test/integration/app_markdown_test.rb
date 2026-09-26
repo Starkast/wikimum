@@ -129,6 +129,22 @@ class AppMarkdownTest < Minitest::Test
     refute_includes last_response.body, "Geekbench 5"
   end
 
+  def test_list_as_markdown
+    get "/list.md"
+
+    assert last_response.ok?
+    assert last_response.body.start_with?("# Innehållsförteckning\n")
+    assert_includes last_response.body, "- [Geekbench 5](/#{@page.slug_for_uri}.md)"
+  end
+
+  def test_list_as_markdown_hides_concealed_pages_from_anonymous
+    @page.update(visibility: "concealed")
+
+    get "/list.md"
+
+    refute_includes last_response.body, "Geekbench 5"
+  end
+
   def test_unicode_slug_as_markdown
     page = Page.create(title: "Åäö sida", content: "Hej", author: @user)
 

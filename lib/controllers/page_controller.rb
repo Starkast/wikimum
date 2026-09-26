@@ -149,6 +149,17 @@ class PageController < BaseController
     haml :index
   end
 
+  get '/list.md' do
+    pages = Page
+      .select(:slug, :title, :description)
+      .order(:title_char, :title)
+      .with_concealed_if(starkast?)
+      .all
+    cache_for_audience
+    content_type "text/markdown", charset: "utf-8"
+    PageMarkdown.list("Innehållsförteckning", pages)
+  end
+
   get '/latest' do
     @page_title = "Senast ändrad"
     @page_groups = Page
