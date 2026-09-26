@@ -29,6 +29,7 @@ class BaseController < Sinatra::Base
     @page       = nil
     @page_title = nil
     @markdown   = nil
+    @markdown_path = nil
   end
 
   # Don't write a session cookie back when there's nothing to persist.

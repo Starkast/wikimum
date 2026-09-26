@@ -145,6 +145,28 @@ class AppMarkdownTest < Minitest::Test
     refute_includes last_response.body, "Geekbench 5"
   end
 
+  def test_page_links_to_its_markdown
+    get "/#{@page.slug_for_uri}"
+
+    assert_includes last_response.body,
+      %(<link href="/#{@page.slug_for_uri}.md" rel="alternate" type="text/markdown">)
+  end
+
+  def test_revision_links_to_its_markdown
+    @page.revise!
+    @page.save
+
+    get "/#{@page.slug_for_uri}/1"
+
+    assert_includes last_response.body, %(href="/#{@page.slug_for_uri}/1.md" rel="alternate")
+  end
+
+  def test_list_does_not_link_to_markdown_page
+    get "/list"
+
+    refute_includes last_response.body, %(rel="alternate")
+  end
+
   def test_unicode_slug_as_markdown
     page = Page.create(title: "Åäö sida", content: "Hej", author: @user)
 

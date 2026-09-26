@@ -118,6 +118,8 @@ class PageController < BaseController
     # response is cheap to render anyway.
     etag_for_page(@page) unless @page.new?
 
+    @markdown_path = "/#{@page.slug_for_uri}.md" unless @page.new?
+
     @noindex = true unless @page.crawlable?
     haml :show
   end
@@ -379,6 +381,7 @@ class PageController < BaseController
     cache_for_audience
     etag_for_page(@page)
     @noindex = true unless @page.crawlable?
+    @markdown_path = "/#{slug_for_uri}.md"
     haml :show
   end
 
@@ -404,6 +407,7 @@ class PageController < BaseController
     restrict_concealed(@page)
     cache_for_audience
     @noindex = true
+    @markdown_path = "/#{slug_for_uri}/#{@page.revision}.md"
     haml :show
   end
 
