@@ -118,7 +118,13 @@ class AppMarkdownTest < Minitest::Test
     get "/search.md", q: "nonexistent"
 
     assert last_response.ok?
-    assert_equal "# Sökresultat för nonexistent\n\n", last_response.body
+    assert_equal "# Sökresultat\n\n", last_response.body
+  end
+
+  def test_search_as_markdown_does_not_echo_the_query
+    get "/search.md", q: "x\n\n[Logga in](https://evil.example)"
+
+    refute_includes last_response.body, "evil.example"
   end
 
   def test_search_as_markdown_hides_concealed_pages_from_anonymous

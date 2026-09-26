@@ -206,7 +206,7 @@ class PageController < BaseController
       .all
 
     content_type "text/markdown", charset: "utf-8"
-    PageMarkdown.list("Sökresultat för #{params[:q].to_s.strip}", pages)
+    PageMarkdown.list("Sökresultat", pages)
   end
 
   post '/new*' do
