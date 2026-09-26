@@ -2,14 +2,19 @@
 
 require 'bundler/setup'
 require 'rake/testtask'
-require 'rubocop/rake_task'
 
 Dir['tasks/*.rake'].each { |f| load f }
 
 task default: [:test]
 task test: ['test:unit', 'test:integration', 'test:javascript', 'rubocop']
 
-RuboCop::RakeTask.new
+# RuboCop is only installed for development, production runs db:migrate
+begin
+  require 'rubocop/rake_task'
+  RuboCop::RakeTask.new
+rescue LoadError
+  nil
+end
 
 namespace(:test) do
   Rake::TestTask.new(:integration) do |t|

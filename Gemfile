@@ -18,13 +18,20 @@ gem 'httpx'
 gem 'addressable'
 gem 'sentry-ruby'
 gem 'logger'
-gem 'racksh'
-gem 'warning'
 gem 'rake'
 gem 'zeitwerk'
-gem 'rubocop', '~> 1.89.0', require: false
 gem 'dyno_metadata'
-gem 'localhost'
+
+# Not installed in production, see BUNDLE_WITHOUT in Starkast/ansible
+group :development do
+  gem 'localhost'
+  gem 'racksh'
+  gem 'rubocop', '~> 1.89.0', require: false
+end
+
+group :development, :test do
+  gem 'warning'
+end
 
 group :test do
   gem 'climate_control'
