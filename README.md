@@ -109,33 +109,6 @@ gh gem-bump --merge 860
 
 When CI passes on `main`, the commit is deployed to the OpenBSD VM on Biff (`deploy-biff.yml`), which serves https://starkast.wiki/. The Biff workflow creates a GitHub deployment that the VM picks up through a webhook, see [Starkast/ansible](https://github.com/Starkast/ansible). Run `Deploy to Biff` by hand to deploy another commit, e.g. to roll back.
 
-### Preview
-
-_TODO: the staging database is not online._
-
-Fly.io app `wikimum-preview` exist to test changes before production. It can be reached at https://wikimum-preview.fly.dev/
-
-The first deploy was manual:
-
-```bash
-flyctl deploy --ha=false --build-arg "RUBY_VERSION=$(cat .ruby-version)" --app=wikimum-preview
-```
-
-The preview app uses a PostgreSQL database from Aiven, deployed in AWS eu-north-1.
-
-These are the secrets configured:
-
-```bash
-fly secrets set --detach --app wikimum-preview DATABASE_URL="$(pbpaste)"
-fly secrets set --detach --app wikimum-preview SESSION_SECRET="$(pbpaste)"
-```
-
-To keep the preview database (at Aiven) from being removed prematurely, GitHub Actions has been configured with the `cron.yml` workflow and this secret:
-
-```bash
-gh secret --repo Starkast/wikimum set PREVIEW_DATABASE_URL --body "$(pbpaste)"
-```
-
 ## Code Scanning
 
 GitHub Actions scan the code using [Brakeman](https://github.com/presidentbeef/brakeman).
