@@ -13,6 +13,8 @@
       = "#{@page_title} - " if @page_title
       Starkast Wiki
     %link{ href: '/favicon.ico', rel: 'shortcut icon', type: 'image/ico' }
+    - if @markdown_path
+      %link{ href: @markdown_path, rel: 'alternate', type: 'text/markdown' }
     %link{ href: "/stylesheets/default.css?#{App.cache_bust}", rel: 'stylesheet', type: 'text/css' }
     %script{ src: '/javascripts/mousetrap.min.js' }
     %script{ src: '/javascripts/mousetrap-global-bind.min.js' }
