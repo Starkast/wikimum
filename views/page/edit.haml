@@ -158,6 +158,9 @@
             %a.upload-link{ href: upload.path, target: "_blank", title: "Öppna fil" } &#x1F517;
             %button.delete-btn{ type: "button", onclick: "deleteUpload(this.parentElement.dataset.id)" } Ta bort
 
+    %p
+      %a{ href: "/#{@page.slug_for_uri}/bots" } Botar med skrivrätt
+
   .flex-item.editor-review
     .review-tabs{ role: 'tablist', 'aria-label': 'Granska ändringar' }
       %button#preview-tab{ type: 'button', role: 'tab', 'aria-controls': 'preview', 'aria-selected': 'true', tabindex: '0' } Förhandsvisning

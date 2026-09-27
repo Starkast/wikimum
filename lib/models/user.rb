@@ -4,6 +4,7 @@ class User < Sequel::Model
 
   one_to_many :pages
   one_to_many :revision
+  many_to_one :owner, class: :User
 
   def before_save
     self.created_on ||= Time.now
@@ -11,6 +12,6 @@ class User < Sequel::Model
   end
 
   def to_s
-    self.login
+    owner ? "#{login} (via #{owner.login})" : login
   end
 end

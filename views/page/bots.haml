@@ -1,0 +1,51 @@
+%h1.title
+  Botar för
+  %a{ href: "/#{@page.slug_for_uri}" }= @page.title
+
+%p
+  En bot kan läsa och skriva om den här sidan, och bara den här sidan.
+  Den som skapar en bot är den enda som kan återkalla den.
+
+- if @enrollment_token
+  %h2 Registreringsnyckel för #{@credential.bot.login}
+  %p
+    Nyckeln visas bara nu, kan användas en gång och slutar gälla
+    = @credential.enrollment_expires_on.strftime("%H:%M")
+  %pre= @enrollment_token
+
+%h2 Botar
+- credentials = @page.bot_credentials_dataset.eager(bot: :owner).order(:id).all
+- if credentials.empty?
+  %p Inga botar har skrivrätt.
+- else
+  %table
+    %tr
+      %th Namn
+      %th Status
+      %th Senast använd
+      %th
+    - credentials.each do |credential|
+      %tr
+        %td= credential.bot
+        %td
+          - if credential.revoked_on
+            Återkallad
+          - elsif credential.enrolled?
+            Aktiv
+          - elsif credential.enrollment_expires_on < Time.now
+            Registrering utgången
+          - else
+            Väntar på registrering
+        %td= credential.last_used_on&.strftime("%Y-%m-%d %H:%M")
+        %td
+          - if credential.revoked_on.nil? && credential.bot.owner_id == current_user.id
+            %form{ action: "/#{@page.slug_for_uri}/bots/#{credential.id}/revoke", method: :post }
+              %input{ type: :hidden, name: 'authenticity_token', value: csrf_token }
+              %button Återkalla
+
+%h2 Ny bot
+%form{ action: "/#{@page.slug_for_uri}/bots", method: :post }
+  %input{ type: :hidden, name: 'authenticity_token', value: csrf_token }
+  %label.block{ for: 'name' } Namn
+  %input#name{ type: :text, name: 'name', maxlength: 74, size: 50 }
+  %button Skapa

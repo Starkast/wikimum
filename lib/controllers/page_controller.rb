@@ -341,6 +341,43 @@ class PageController < BaseController
     { success: true }.to_json
   end
 
+  get '/:slug/bots' do
+    halt 401, "Not authorized" unless logged_in?
+
+    @page = Page.with_slug(slug).first
+    not_found_page unless @page
+    restrict_concealed(@page)
+
+    @page_title = "Botar för #{@page.title}"
+    haml :bots
+  end
+
+  post '/:slug/bots' do
+    @page = Page.with_slug(slug).first
+    not_found_page unless @page
+    restrict_concealed(@page)
+
+    name = params[:name].to_s.strip
+    halt 400, "Missing name" if name.empty?
+
+    @credential, @enrollment_token = BotCredential.issue(page: @page, owner: current_user, name: name)
+    @page_title = "Botar för #{@page.title}"
+    cache_control :private, no_store: true
+    haml :bots
+  end
+
+  post '/:slug/bots/:id/revoke' do |_, id|
+    page = Page.with_slug(slug).first
+    not_found_page unless page
+    restrict_concealed(page)
+    credential = page.bot_credentials_dataset.first(id: id.to_i)
+    halt 404, "Bot not found" unless credential
+    halt 403, "Forbidden" unless credential.bot.owner_id == current_user.id
+
+    credential.revoke!
+    redirect "/#{page.slug_for_uri}/bots"
+  end
+
   get '/:slug.md' do
     @markdown = true
     @page = Page
