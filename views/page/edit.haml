@@ -104,6 +104,11 @@
     %h1.title
       Ändrar
       %a{ href: "/#{@page.slug}" }= @page.title
+    %p#page-changed{ hidden: true }
+      %span.error
+        Någon ändrade i sidans innehåll medan du jobbade med den, jämför med
+        %a{ href: "/#{@page.slug_for_uri}", target: "_blank" } senaste versionen
+        innan du sparar.
     %form{ name: :create, action: "/#{@page.slug}", method: :post }
       %input{ type: :hidden, name: 'authenticity_token', value: csrf_token }
       %input{ type: :hidden, name: 'sha1', value: @page.sha1 }
@@ -174,6 +179,7 @@
 
 %link{ href: "/stylesheets/editor-review.css?#{App.cache_bust}", rel: 'stylesheet' }
 %script{ src: "/javascripts/editor-review.js?#{App.cache_bust}", defer: true }
+%script{ src: "/javascripts/page-changes.js?#{App.cache_bust}", defer: true }
 
 :javascript
   function escapeHtml(text) {
