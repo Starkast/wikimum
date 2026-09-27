@@ -62,4 +62,8 @@ map "/user" do
   run UserController
 end
 
+map "/api" do
+  run ApiController
+end
+
 run PageController

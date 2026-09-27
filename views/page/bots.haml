@@ -12,6 +12,11 @@
     Nyckeln visas bara nu, kan användas en gång och slutar gälla
     = @credential.enrollment_expires_on.strftime("%H:%M")
   %pre= @enrollment_token
+  %p Boten byter nyckeln mot en egen hemlighet, läser sidan och skriver med den version den läste:
+  %pre
+    = "curl -X POST -H 'Authorization: Bearer #{@enrollment_token}' #{request.base_url}/api/enroll"
+    = "curl -i -H 'Authorization: Bearer wm_bot_…' #{request.base_url}/api/pages/#{@page.id}"
+    = "curl -X PUT -H 'Authorization: Bearer wm_bot_…' -H 'If-Match: \"<ETag>\"' -H 'Content-Type: text/markdown' --data-binary @page.md #{request.base_url}/api/pages/#{@page.id}"
 
 %h2 Botar
 - credentials = @page.bot_credentials_dataset.eager(bot: :owner).order(:id).all
