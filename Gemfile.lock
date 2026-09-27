@@ -38,8 +38,8 @@ GEM
     html-pipeline (3.2.4)
       selma (~> 0.4)
       zeitwerk (~> 2.5)
-    http-2 (1.2.0)
-    httpx (1.8.1)
+    http-2 (1.2.3)
+    httpx (1.8.4)
       http-2 (>= 1.2.0)
     json (2.21.2)
     language_server-protocol (3.17.0.6)
@@ -211,8 +211,8 @@ CHECKSUMS
   haml (7.5.1) sha256=91c5843dd85d32042cc6218d2df8c81282403459958aa53caa58fda238adc287
   hashdiff (1.2.1) sha256=9c079dbc513dfc8833ab59c0c2d8f230fa28499cc5efb4b8dd276cf931457cd1
   html-pipeline (3.2.4) sha256=b6029ddc1e6f8e67e8d0d1b0100f0965a3d807807eab1e1d2b7c5e2d34afb72e
-  http-2 (1.2.0) sha256=5bed923379ae67895d3bde440502219543da2885104b46ed7d604f5990efad1c
-  httpx (1.8.1) sha256=8d9e003019b2c1a8f582daac9371ec9da96182c23064e211386eaad70b6e12e5
+  http-2 (1.2.3) sha256=f4e3a7000e9a8ab97595f09eac44c6ec10a2aa438360758124df0ca5bcb280d4
+  httpx (1.8.4) sha256=1782ecde81eb4e961ad8735ec74a6fec8e60efeaa4592c6b2f55d72e19aaeca8
   json (2.21.2) sha256=1f1d3b7cf2b3ba1a69beca0bb6db13d5438b80bff3cd54cdaaa620b9b07c1c6a
   language_server-protocol (3.17.0.6) sha256=5ef2c0c138f8267e1bc631d3328347d354f96724b0af22f2c79516120443b7f0
   lint_roller (1.1.0) sha256=2c0c845b632a7d172cb849cc90c1bce937a28c5c8ccccb50dfd46a485003cc87
