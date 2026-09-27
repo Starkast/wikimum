@@ -3,20 +3,6 @@
 require 'html-pipeline'
 require 'commonmarker'
 
-class Markup
-  def self.to_html(content)
-    # Commonmarker 2.x rejects non-UTF-8 input; nil.to_s is US-ASCII.
-    return "" if content.nil? || content.empty?
-
-    text_filters = [
-      MarkdownFilter.new,
-      WikiLinkFilter.new,
-    ]
-    pipeline = HTMLPipeline.new(text_filters:)
-    pipeline.to_html(content, context: {}, result: {})
-  end
-end
-
 class MarkdownFilter < HTMLPipeline::TextFilter
   # Keep rendering close to what github-markup 5.0.1 + commonmarker 0.x used to
   # produce. Defaults that match what we want are not listed; defaults that
@@ -48,5 +34,16 @@ class WikiLinkFilter < HTMLPipeline::TextFilter
       link = word.match(WIKI_LINK_REGEXP)[:link]
       %(<a href="/#{link}">#{link}</a>)
     end
+  end
+end
+
+class Markup
+  PIPELINE = HTMLPipeline.new(text_filters: [MarkdownFilter.new, WikiLinkFilter.new])
+
+  def self.to_html(content)
+    # Commonmarker 2.x rejects non-UTF-8 input; nil.to_s is US-ASCII.
+    return "" if content.nil? || content.empty?
+
+    PIPELINE.to_html(content, context: {}, result: {})
   end
 end
