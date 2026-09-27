@@ -341,6 +341,43 @@ class PageController < BaseController
     { success: true }.to_json
   end
 
+  get '/:slug/bots' do
+    halt 401, "Not authorized" unless logged_in?
+
+    @page = Page.with_slug(slug).first
+    not_found_page unless @page
+    restrict_concealed(@page)
+
+    @page_title = "Botar för #{@page.title}"
+    haml :bots
+  end
+
+  post '/:slug/bots' do
+    @page = Page.with_slug(slug).first
+    not_found_page unless @page
+    restrict_concealed(@page)
+
+    name = params[:name].to_s.strip
+    halt 400, "Missing name" if name.empty?
+
+    @credential, @enrollment_token = BotCredential.issue(page: @page, owner: current_user, name: name)
+    @page_title = "Botar för #{@page.title}"
+    cache_control :private, no_store: true
+    haml :bots
+  end
+
+  post '/:slug/bots/:id/revoke' do |_, id|
+    page = Page.with_slug(slug).first
+    not_found_page unless page
+    restrict_concealed(page)
+    credential = page.bot_credentials_dataset.first(id: id.to_i)
+    halt 404, "Bot not found" unless credential
+    halt 403, "Forbidden" unless credential.bot.owner_id == current_user.id
+
+    credential.revoke!
+    redirect "/#{page.slug_for_uri}/bots"
+  end
+
   get '/:slug.md' do
     @markdown = true
     @page = Page
@@ -416,11 +453,26 @@ class PageController < BaseController
 
     page = Page.with_slug(slug).first
     restrict_concealed(page)
-    page.revise!
-    page.set_fields(params, %i(title content description comment))
-    apply_visibility(page)
-    page.author = current_user
-    page.save
+
+    saved = Page.db.transaction do
+      page.lock!
+      next false unless params[:sha1] == page.sha1
+
+      page.revise!
+      page.set_fields(params, %i(title content description comment))
+      apply_visibility(page)
+      page.author = current_user
+      page.save
+    end
+
+    unless saved
+      @page = page
+      @page.set_fields(params, %i(title content description))
+      @page_title = "Ändrar #{@page.title}"
+      @edit_mode = true
+      flash.now[:error] = %(Sidan har ändrats sedan du började redigera, jämför med <a href="/#{page.slug_for_uri}" target="_blank">senaste versionen</a> och spara igen.)
+      halt 409, haml(:edit)
+    end
 
     redirect "#{page.slug_for_uri}"
   end

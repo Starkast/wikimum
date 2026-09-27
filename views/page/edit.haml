@@ -106,6 +106,7 @@
       %a{ href: "/#{@page.slug}" }= @page.title
     %form{ name: :create, action: "/#{@page.slug}", method: :post }
       %input{ type: :hidden, name: 'authenticity_token', value: csrf_token }
+      %input{ type: :hidden, name: 'sha1', value: @page.sha1 }
       %label.block{ for: 'title' } Titel
       %input#title{ type: :text, name: 'title', maxlength: 74, size: 50, value: @page.title }
 
@@ -156,6 +157,9 @@
             %span.upload-filename{ title: "Infoga markdown", onclick: "insertMarkdown(this.parentElement.dataset.markdown)" }= upload.filename
             %a.upload-link{ href: upload.path, target: "_blank", title: "Öppna fil" } &#x1F517;
             %button.delete-btn{ type: "button", onclick: "deleteUpload(this.parentElement.dataset.id)" } Ta bort
+
+    %p
+      %a{ href: "/#{@page.slug_for_uri}/bots" } Botar med skrivrätt
 
   .flex-item.editor-review
     .review-tabs{ role: 'tablist', 'aria-label': 'Granska ändringar' }

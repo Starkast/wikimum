@@ -5,6 +5,7 @@ require "uri"
 class Page < Sequel::Model
   one_to_many :revisions
   one_to_many :uploads
+  one_to_many :bot_credentials
   many_to_one :author, class: :User
 
   SEARCH_IN_COLUMNS = %i(title content description).freeze

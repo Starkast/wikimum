@@ -45,6 +45,37 @@ markers and line numbers. Switching views preserves your draft; saving and
 reopening the editor starts a new comparison. Use the arrow keys to switch
 between the focused tabs.
 
+Saving is rejected if the page changed after the editor was opened, the form
+is shown again with the draft kept.
+
+### Bots
+
+A bot is a program allowed to read and replace the content of one page, for
+example to keep exchange rates up to date. Create one from **Botar med
+skrivrätt** in the editor. It gets a one-time enrollment token, valid for ten
+minutes, that it exchanges for its own secret:
+
+    curl -X POST -H "Authorization: Bearer wm_enroll_…" https://wiki/api/enroll
+
+Writes must name the version they are based on, taken from the `ETag` of a
+read, and are rejected with `412` if the page changed in between:
+
+    curl -i -H "Authorization: Bearer wm_bot_…" https://wiki/api/pages/42
+    curl -X PUT -H "Authorization: Bearer wm_bot_…" -H 'If-Match: "<ETag>"' \
+      -H "Content-Type: text/markdown" --data-binary @page.md \
+      "https://wiki/api/pages/42?comment=Updated%20rates"
+
+Edits are attributed to the bot and its owner. Only the owner can revoke a bot.
+
+[`contrib/wikimum-bot`](contrib/wikimum-bot) wraps this and redoes an edit
+when the page changed in between:
+
+    eval "$(contrib/wikimum-bot enroll https://wiki wm_enroll_…)"
+    export WIKIMUM_PAGE WIKIMUM_SECRET
+
+    contrib/wikimum-bot -m "Deploy" append "- $(date +%F) api v1.42"
+    contrib/wikimum-bot -m "Daily rates" edit ./render-rates
+
 ### Environment variables
 
 ```bash

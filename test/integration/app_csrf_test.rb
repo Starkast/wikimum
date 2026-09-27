@@ -36,7 +36,7 @@ class AppCsrfTest < Minitest::Test
   def test_state_changing_post_without_token_is_forbidden
     login
 
-    post "/#{CGI.escape(@page.slug)}", title: @page.title, content: "no token"
+    post "/#{CGI.escape(@page.slug)}", title: @page.title, sha1: @page.sha1, content: "no token"
 
     assert_equal 403, last_response.status
   end
@@ -44,7 +44,7 @@ class AppCsrfTest < Minitest::Test
   def test_state_changing_post_with_token_param_succeeds
     login
 
-    post "/#{CGI.escape(@page.slug)}", title: @page.title,
+    post "/#{CGI.escape(@page.slug)}", title: @page.title, sha1: @page.sha1,
                                        content: "with token",
                                        authenticity_token: csrf_token
 
@@ -57,7 +57,7 @@ class AppCsrfTest < Minitest::Test
     login
     header "X-CSRF-Token", token
 
-    post "/#{CGI.escape(@page.slug)}", title: @page.title, content: "header token"
+    post "/#{CGI.escape(@page.slug)}", title: @page.title, sha1: @page.sha1, content: "header token"
 
     assert_equal 302, last_response.status
   ensure
@@ -72,7 +72,7 @@ class AppCsrfTest < Minitest::Test
     token = last_response.body[/authenticity_token['"][^>]*?value=['"]([^'"]+)['"]/, 1]
     refute_nil token, "edit form should render a CSRF token"
 
-    post "/#{CGI.escape(@page.slug)}", title: @page.title,
+    post "/#{CGI.escape(@page.slug)}", title: @page.title, sha1: @page.sha1,
                                        content: "round trip",
                                        authenticity_token: token
 
@@ -83,7 +83,7 @@ class AppCsrfTest < Minitest::Test
   def test_logged_out_post_still_redirects_without_csrf_check
     env "rack.session", {}
 
-    post "/#{CGI.escape(@page.slug)}", title: @page.title
+    post "/#{CGI.escape(@page.slug)}", title: @page.title, sha1: @page.sha1
 
     assert_equal 302, last_response.status
   end

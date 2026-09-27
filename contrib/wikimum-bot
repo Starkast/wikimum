@@ -1,0 +1,92 @@
+#!/usr/bin/env bash
+#
+# Client for the wikimum bot API, see "Bots" in README.md. Needs curl and jq.
+
+set -euo pipefail
+
+usage() {
+  cat >&2 <<'USAGE'
+Usage:
+  wikimum-bot enroll <wiki url> <enrollment token>
+  wikimum-bot get
+  wikimum-bot [-m comment] edit <command> [args...]
+  wikimum-bot [-m comment] append <text>
+
+enroll prints WIKIMUM_PAGE and WIKIMUM_SECRET to export, the other commands
+read them from the environment.
+
+edit pipes the page through a command and saves its output, e.g.
+  wikimum-bot -m "Daily rates" edit ./render-rates
+  wikimum-bot edit sed 's/^SEK .*/SEK 1.10/'
+
+If someone else saves the page in between, the edit is redone on the new
+version.
+USAGE
+  exit 64
+}
+
+comment=""
+max_attempts=5
+
+api() {
+  curl --silent --show-error --header "Authorization: Bearer $WIKIMUM_SECRET" "$@" "$WIKIMUM_PAGE"
+}
+
+enroll() {
+  local url=${1%/} token=$2
+  curl --fail --silent --show-error --request POST \
+    --header "Authorization: Bearer $token" "$url/api/enroll" |
+    jq --raw-output --arg url "$url" '"WIKIMUM_PAGE=\($url)\(.page)", "WIKIMUM_SECRET=\(.secret)"'
+}
+
+get() {
+  api --fail-with-body
+}
+
+edit() {
+  local tmp etag status attempt
+  tmp=$(mktemp -d)
+  trap 'rm -rf "$tmp"' RETURN
+
+  for ((attempt = 1; attempt <= max_attempts; attempt++)); do
+    api --fail-with-body --dump-header "$tmp/headers" --output "$tmp/page"
+    etag=$(awk 'tolower($1) == "etag:" { sub(/\r$/, "", $2); print $2 }' "$tmp/headers")
+
+    "$@" <"$tmp/page" >"$tmp/edited"
+
+    status=$(api --request PUT --header "If-Match: $etag" \
+      --header "Content-Type: text/markdown" --data-binary "@$tmp/edited" \
+      --url-query "comment=$comment" --output "$tmp/response" --write-out "%{http_code}")
+
+    case $status in
+      200) return ;;
+      412) continue ;;
+      *) echo "wikimum-bot: HTTP $status $(cat "$tmp/response")" >&2; return 1 ;;
+    esac
+  done
+
+  echo "wikimum-bot: page kept changing, gave up after $max_attempts attempts" >&2
+  return 1
+}
+
+append_line() {
+  local page
+  page=$(cat)
+  printf '%s\n%s\n' "$page" "$1"
+}
+
+while getopts m: opt; do
+  case $opt in
+    m) comment=$OPTARG ;;
+    *) usage ;;
+  esac
+done
+shift $((OPTIND - 1))
+
+case ${1:-} in
+  enroll) (($# == 3)) || usage; enroll "$2" "$3" ;;
+  get) get ;;
+  edit) (($# >= 2)) || usage; shift; edit "$@" ;;
+  append) (($# == 2)) || usage; edit append_line "$2" ;;
+  *) usage ;;
+esac
