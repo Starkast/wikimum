@@ -67,6 +67,15 @@ read, and are rejected with `412` if the page changed in between:
 
 Edits are attributed to the bot and its owner. Only the owner can revoke a bot.
 
+[`contrib/wikimum-bot`](contrib/wikimum-bot) wraps this and redoes an edit
+when the page changed in between:
+
+    eval "$(contrib/wikimum-bot enroll https://wiki wm_enroll_…)"
+    export WIKIMUM_PAGE WIKIMUM_SECRET
+
+    contrib/wikimum-bot -m "Deploy" append "- $(date +%F) api v1.42"
+    contrib/wikimum-bot -m "Daily rates" edit ./render-rates
+
 ### Environment variables
 
 ```bash
