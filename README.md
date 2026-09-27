@@ -45,8 +45,9 @@ markers and line numbers. Switching views preserves your draft; saving and
 reopening the editor starts a new comparison. Use the arrow keys to switch
 between the focused tabs.
 
-Saving is rejected if the page changed after the editor was opened, the form
-is shown again with the draft kept.
+The editor checks every 30 seconds whether someone else saved the page and
+warns if so. Saving is rejected if the page changed after the editor was
+opened, the form is shown again with the draft kept.
 
 ### Bots
 

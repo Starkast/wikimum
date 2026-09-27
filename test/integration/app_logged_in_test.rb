@@ -193,6 +193,22 @@ class AppLoggedInTest < Minitest::Test
     assert_equal "written meanwhile", @page.content
   end
 
+  def test_page_sha1_for_change_polling
+    get "/#{CGI.escape(@page.slug)}/sha1"
+
+    assert_equal 200, last_response.status
+    assert_equal @page.sha1, last_response.body
+    assert_includes last_response.headers["Cache-Control"], "no-store"
+  end
+
+  def test_page_sha1_requires_login
+    env "rack.session", {}
+
+    get "/#{CGI.escape(@page.slug)}/sha1"
+
+    assert_equal 401, last_response.status
+  end
+
   def test_page_edit_rejects_missing_sha1
     post "/#{CGI.escape(@page.slug)}", title: @page.title, content: "blind write"
 

@@ -341,6 +341,18 @@ class PageController < BaseController
     { success: true }.to_json
   end
 
+  get '/:slug/sha1' do
+    halt 401, "Not authorized" unless logged_in?
+
+    page = Page.select(:id, :visibility, :sha1).with_slug(slug).first
+    halt 404, "Page not found" unless page
+    restrict_concealed(page)
+
+    cache_control :private, no_store: true
+    content_type :text
+    page.sha1
+  end
+
   get '/:slug/bots' do
     halt 401, "Not authorized" unless logged_in?
 
