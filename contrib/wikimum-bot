@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Client for the wikimum bot API, see "Bots" in README.md.
+# Client for the wikimum bot API, see "Bots" in README.md. Needs curl and jq.
 
 set -euo pipefail
 
@@ -28,21 +28,15 @@ USAGE
 comment=""
 max_attempts=5
 
-json_field() {
-  sed -n "s/.*\"$1\":\"\([^\"]*\)\".*/\1/p"
-}
-
 api() {
   curl --silent --show-error --header "Authorization: Bearer $WIKIMUM_SECRET" "$@" "$WIKIMUM_PAGE"
 }
 
 enroll() {
-  local url=${1%/} token=$2 response
-  response=$(curl --fail-with-body --silent --show-error --request POST \
-    --header "Authorization: Bearer $token" "$url/api/enroll")
-
-  echo "WIKIMUM_PAGE=$url$(json_field page <<<"$response")"
-  echo "WIKIMUM_SECRET=$(json_field secret <<<"$response")"
+  local url=${1%/} token=$2
+  curl --fail --silent --show-error --request POST \
+    --header "Authorization: Bearer $token" "$url/api/enroll" |
+    jq --raw-output --arg url "$url" '"WIKIMUM_PAGE=\($url)\(.page)", "WIKIMUM_SECRET=\(.secret)"'
 }
 
 get() {
