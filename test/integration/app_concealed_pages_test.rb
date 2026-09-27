@@ -118,7 +118,7 @@ class AppConcealedPagesTest < Minitest::Test
     login_as_starkast
     assert_predicate @page, :concealed?
 
-    post "/#{@page.slug_for_uri}", title: @page.title, visibility: "public"
+    post "/#{@page.slug_for_uri}", title: @page.title, sha1: @page.sha1, visibility: "public"
 
     redirect_location = last_response["Location"]
     assert_equal 302, last_response.status
@@ -131,7 +131,7 @@ class AppConcealedPagesTest < Minitest::Test
     public_page = Page.create(title: "Toggle ÅÄÖ", author: @user)
     login_as_starkast
 
-    post "/#{public_page.slug_for_uri}", title: public_page.title, visibility: "concealed"
+    post "/#{public_page.slug_for_uri}", title: public_page.title, sha1: public_page.sha1, visibility: "concealed"
 
     assert_equal 302, last_response.status
     assert_equal "concealed", public_page.reload.visibility,
@@ -145,7 +145,7 @@ class AppConcealedPagesTest < Minitest::Test
     public_page = Page.create(title: "Public ÅÄÖ", author: @user)
     login_as_user
 
-    post "/#{public_page.slug_for_uri}", title: public_page.title, visibility: "concealed"
+    post "/#{public_page.slug_for_uri}", title: public_page.title, sha1: public_page.sha1, visibility: "concealed"
 
     assert_equal 302, last_response.status
     refute_predicate public_page.reload, :concealed?,
@@ -159,7 +159,7 @@ class AppConcealedPagesTest < Minitest::Test
     crawlable_page = Page.create(title: "Both ÅÄÖ", author: @user, visibility: "crawlable")
     login_as_starkast
 
-    post "/#{crawlable_page.slug_for_uri}", title: crawlable_page.title, visibility: "concealed"
+    post "/#{crawlable_page.slug_for_uri}", title: crawlable_page.title, sha1: crawlable_page.sha1, visibility: "concealed"
 
     assert_equal "concealed", crawlable_page.reload.visibility,
       "a concealed page can't also be crawlable — the enum makes it one value"

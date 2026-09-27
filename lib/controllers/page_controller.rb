@@ -416,11 +416,26 @@ class PageController < BaseController
 
     page = Page.with_slug(slug).first
     restrict_concealed(page)
-    page.revise!
-    page.set_fields(params, %i(title content description comment))
-    apply_visibility(page)
-    page.author = current_user
-    page.save
+
+    saved = Page.db.transaction do
+      page.lock!
+      next false unless params[:sha1] == page.sha1
+
+      page.revise!
+      page.set_fields(params, %i(title content description comment))
+      apply_visibility(page)
+      page.author = current_user
+      page.save
+    end
+
+    unless saved
+      @page = page
+      @page.set_fields(params, %i(title content description))
+      @page_title = "Ändrar #{@page.title}"
+      @edit_mode = true
+      flash.now[:error] = %(Sidan har ändrats sedan du började redigera, jämför med <a href="/#{page.slug_for_uri}" target="_blank">senaste versionen</a> och spara igen.)
+      halt 409, haml(:edit)
+    end
 
     redirect "#{page.slug_for_uri}"
   end

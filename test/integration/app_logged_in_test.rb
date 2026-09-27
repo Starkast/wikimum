@@ -142,7 +142,7 @@ class AppLoggedInTest < Minitest::Test
   def test_edit_can_make_page_crawlable
     refute_predicate @page.reload, :crawlable?
 
-    post "/#{CGI.escape(@page.slug)}", title: @page.title, visibility: "crawlable"
+    post "/#{CGI.escape(@page.slug)}", title: @page.title, sha1: @page.sha1, visibility: "crawlable"
 
     assert_equal 302, last_response.status
     assert_predicate @page.reload, :crawlable?,
@@ -167,12 +167,37 @@ class AppLoggedInTest < Minitest::Test
   def test_page_edit
     assert_nil @page.reload.content
 
-    post "/#{CGI.escape(@page.slug)}", title: @page.title, content: "foo bar"
+    post "/#{CGI.escape(@page.slug)}", title: @page.title, sha1: @page.sha1, content: "foo bar"
 
     redirect_location = last_response["Location"]
     assert_equal 302, last_response.status
     assert_equal "/#{CGI.escape(@page.slug)}", URI(redirect_location).path
     assert_equal "foo bar", @page.reload.content
+  end
+
+  def test_page_edit_form_carries_sha1
+    get "/#{CGI.escape(@page.slug)}/edit"
+
+    assert_includes last_response.body, %(name="sha1" type="hidden" value="#{@page.sha1}")
+  end
+
+  def test_page_edit_rejects_stale_sha1
+    stale_sha1 = @page.sha1
+    @page.update(content: "written meanwhile")
+
+    post "/#{CGI.escape(@page.slug)}", title: @page.title, sha1: stale_sha1, content: "my draft"
+
+    assert_equal 409, last_response.status
+    assert_includes last_response.body, "my draft"
+    assert_includes last_response.body, %(name="sha1" type="hidden" value="#{@page.reload.sha1}")
+    assert_equal "written meanwhile", @page.content
+  end
+
+  def test_page_edit_rejects_missing_sha1
+    post "/#{CGI.escape(@page.slug)}", title: @page.title, content: "blind write"
+
+    assert_equal 409, last_response.status
+    assert_nil @page.reload.content
   end
 
   def test_page_preview
