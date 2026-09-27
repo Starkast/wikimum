@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Upload < Sequel::Model
+  plugin :lazy_attributes, :data
+
   many_to_one :page
   many_to_one :author, class: :User
 

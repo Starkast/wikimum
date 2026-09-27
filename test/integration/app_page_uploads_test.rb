@@ -121,6 +121,21 @@ class AppPageUploadsTest < Minitest::Test
     assert_equal "file2.txt", response[1]["filename"]
   end
 
+  def test_uploads_load_data_only_when_read
+    Upload.create(
+      page: @page,
+      author: @user,
+      filename: "test.txt",
+      content_type: "text/plain",
+      data: Sequel.blob("Hello, World!")
+    )
+
+    upload = @page.uploads.first
+
+    refute upload.values.key?(:data)
+    assert_equal "Hello, World!", upload.data
+  end
+
   def test_delete_upload
     upload = Upload.create(
       page: @page,
