@@ -24,34 +24,53 @@ jobs:
     concurrency: biff-deploy
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    # Secrets and variables from Starkast/ansible's bin/github-deploy-keys
+    environment: biff
     permissions:
-      deployments: write
-    env:
-      GH_TOKEN: ${{ github.token }}
+      contents: read
     steps:
-      # The VM deploys it on GitHub's webhook, see Starkast/ansible
-      - name: Create deployment
-        id: deployment
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || inputs.ref }}
+          persist-credentials: false
+      # biff only lets this peer SSH to the VM
+      - name: Connect to Biff over WireGuard
         run: |
-          id=$(gh api "repos/$GITHUB_REPOSITORY/deployments" \
-            -f ref="$REF" -f environment=biff -F auto_merge=false -F 'required_contexts[]' \
-            --jq .id)
-          echo "id=$id" >> "$GITHUB_OUTPUT"
+          sudo apt-get update --quiet
+          sudo apt-get install --quiet --yes --no-install-recommends wireguard-tools
+          umask 077
+          printf '%s\n' \
+            '[Interface]' \
+            "PrivateKey = $WIREGUARD_PRIVATE_KEY" \
+            "Address = $WIREGUARD_ADDRESS/32" \
+            '[Peer]' \
+            "PublicKey = $WIREGUARD_PEER_PUBLIC_KEY" \
+            "Endpoint = $WIREGUARD_ENDPOINT" \
+            "AllowedIPs = $DEPLOY_HOST/32" \
+            'PersistentKeepalive = 25' > "$RUNNER_TEMP/wg0.conf"
+          # AppArmor only lets wg-quick read its configs in /etc/wireguard
+          sudo install -m 600 "$RUNNER_TEMP/wg0.conf" /etc/wireguard/wg0.conf
+          sudo wg-quick up wg0
         env:
-          REF: ${{ github.event.workflow_run.head_sha || inputs.ref }}
-      - name: Wait for deploy
+          WIREGUARD_PRIVATE_KEY: ${{ secrets.WIREGUARD_PRIVATE_KEY }}
+          WIREGUARD_ADDRESS: ${{ vars.WIREGUARD_ADDRESS }}
+          WIREGUARD_PEER_PUBLIC_KEY: ${{ vars.WIREGUARD_PEER_PUBLIC_KEY }}
+          WIREGUARD_ENDPOINT: ${{ vars.WIREGUARD_ENDPOINT }}
+          DEPLOY_HOST: ${{ vars.DEPLOY_HOST }}
+      # The key's forced command reads `deploy <sha>` and the release on stdin
+      - name: Deploy
         run: |
-          last=
-          while :; do
-            status=$(gh api "repos/$GITHUB_REPOSITORY/deployments/$ID/statuses" \
-              --jq '.[0] | "\(.state // "pending") \(.description // "")"')
-            [ "$status" = "$last" ] || echo "$status"
-            last=$status
-            case $status in
-              success*) exit 0 ;;
-              failure*|error*) echo "::error::${status#* }"; exit 1 ;;
-            esac
-            sleep 5
-          done
+          set -o pipefail
+          umask 077
+          printf '%s\n' "$DEPLOY_SSH_KEY" > "$RUNNER_TEMP/deploy_key"
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > "$RUNNER_TEMP/known_hosts"
+          git archive --format=tar.gz --prefix=wikimum/ HEAD |
+            ssh -i "$RUNNER_TEMP/deploy_key" -o IdentitiesOnly=yes -o BatchMode=yes \
+              -o UserKnownHostsFile="$RUNNER_TEMP/known_hosts" -o StrictHostKeyChecking=yes \
+              -o ConnectTimeout=30 -o ServerAliveInterval=15 \
+              "$DEPLOY_USER@$DEPLOY_HOST" deploy "$(git rev-parse HEAD)"
         env:
-          ID: ${{ steps.deployment.outputs.id }}
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ vars.DEPLOY_KNOWN_HOSTS }}
+          DEPLOY_HOST: ${{ vars.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ vars.DEPLOY_USER }}
