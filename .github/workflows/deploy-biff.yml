@@ -13,9 +13,13 @@ on:
 
 jobs:
   deploy:
+    # Only pushes to this repo's main, a fork's pull request can come from a
+    # branch named main too
     if: |
       github.event_name == 'workflow_dispatch' ||
       (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.event == 'push' &&
+       github.event.workflow_run.head_repository.full_name == github.repository &&
        github.event.workflow_run.head_branch == github.event.repository.default_branch)
     concurrency: biff-deploy
     runs-on: ubuntu-latest
