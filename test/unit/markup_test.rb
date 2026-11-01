@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require_relative '../test_helper'
+require_relative '../../lib/services/markdown_filter'
+require_relative '../../lib/services/wiki_link_filter'
 require_relative '../../lib/services/markup'
 
 class MarkupTest < Minitest::Test
