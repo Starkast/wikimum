@@ -107,7 +107,7 @@ gh gem-bump --merge 860
 
 ### Production
 
-When CI passes on `main`, the commit is deployed to the OpenBSD VM on Biff (`deploy-biff.yml`), which serves https://starkast.wiki/. The workflow connects to Biff over WireGuard and deploys over SSH, with the keys and settings in the `biff` environment, see [Starkast/ansible](https://github.com/Starkast/ansible). Run `Deploy to Biff` by hand to deploy another commit, e.g. to roll back.
+When CI passes on `main`, the commit is deployed to the OpenBSD VM on Biff (the `deploy` job in `ci.yml`), which serves https://starkast.wiki/. The workflow connects to Biff over WireGuard and deploys over SSH, with the keys and settings in the `biff` environment, see [Starkast/ansible](https://github.com/Starkast/ansible). Run `CI` by hand on `main` with a `ref` to deploy another commit, e.g. to roll back.
 
 ## Code Scanning
 
