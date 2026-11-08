@@ -62,4 +62,7 @@ map "/user" do
   run UserController
 end
 
+# Once the app has loaded, YJIT compiles request code instead of boot code
+RubyVM::YJIT.enable if defined?(RubyVM::YJIT.enable)
+
 run PageController
