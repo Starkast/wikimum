@@ -37,6 +37,9 @@ class PageController < BaseController
     # Halts the response with 304 before the view renders when the browser's
     # If-None-Match matches. Components of the etag value:
     #
+    #   - release commit — a deploy can change how an unchanged page renders
+    #     (layout, footer), and nginx revalidates its cached copy with the
+    #     etag, so without it a 304 keeps serving the old release's render.
     #   - page.sha1 — content fingerprint, recomputed in Page#before_save.
     #   - concealed flag — keeps concealed and public renders in separate cache entries.
     #   - audience suffix (a/p for logged_in?, s/u for starkast?) — keeps
@@ -51,6 +54,7 @@ class PageController < BaseController
     # keep them out of shared caches.
     def etag_for_page(page)
       etag [
+        AppMetadata.commit,
         page.sha1,
         page.concealed? ? "c" : "x",
         logged_in? ? "a" : "p",

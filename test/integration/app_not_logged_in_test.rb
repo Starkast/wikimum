@@ -75,6 +75,16 @@ class AppNotLoggedInTest < Minitest::Test
     assert_empty last_response.body
   end
 
+  def test_root_returns_200_for_an_etag_from_another_release
+    ClimateControl.modify(RELEASE_COMMIT: "0" * 40) { get "/" }
+    etag = last_response.headers["ETag"]
+
+    header "If-None-Match", etag
+    ClimateControl.modify(RELEASE_COMMIT: "1" * 40) { get "/" }
+
+    assert_equal 200, last_response.status
+  end
+
   def test_root_uses_one_bounded_query_and_renders_author
     # Create extra pages so the route can't accidentally fetch the whole
     # table — `Page.eager_graph(:author).all.first` without LIMIT would
