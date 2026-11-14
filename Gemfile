@@ -40,3 +40,4 @@ group :test do
   gem 'wait_for_it'
   gem 'webmock'
 end
+gem "rack", "3.2.8"
